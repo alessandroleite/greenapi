@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project default="jar" name="" basedir=".">
+
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="dest.jar.name" value="system-monitor.jar" />
+	<property name="compile.dest.dir" value="${basedir}/bin" />
+	<property name="dist.dir" value="${basedir}/dist" />
+	<property name="run.lib.dir" value="${dist.dir}/lib" />
+
+	<property name="ajc" value="org.aspectj.tools.ant.taskdefs.Ajc11CompilerAdapter" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+
+	<target name="init">
+		<delete dir="${run.lib.dir}/" />			
+		<mkdir dir="${run.lib.dir}" />
+		
+		<!--<delete dir="${compile.dest.dir}" />
+		<mkdir dir="${compile.dest.dir}" />-->
+	</target>
+
+	<target name="compile" depends="init">
+		<!-- <javac srcdir="${basedir}/src" destdir="${run.lib.dir}" debug="on" classpathref="classpath" encoding="UTF-8"
+			includeantruntime="true" includes="**/*.java">
+			<compilerarg compiler="${ajc}" line="-argfile ${basedir}/src/args.lst" /> 
+		</javac>-->
+		
+		<!-- <javac srcdir="${basedir}/src" destdir="${run.lib.dir}" debug="on" classpathref="classpath" encoding="UTF-8" /> -->
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${run.lib.dir}/${dest.jar.name}">
+			<manifest>
+				<attribute name="Main-Class" value="monitor.main.Main" />
+				<attribute name="Class-Path" value=". log4j.jar sigar.jar aspectjrt.jar jfreechart-1.0.14.jar jcommon-1.0.17.jar commons-dbcp-1.4.jar commons-pool-1.5.6.jar guava-13.0.jar mysql-connector-java-5.1.6.jar" />
+			</manifest>
+			<fileset dir="${basedir}/bin" />
+		</jar>
+
+
+		<copy file="${lib.dir}/log4j.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/sigar.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/aspectjrt.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/jfreechart-1.0.14.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/jcommon-1.0.17.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/commons-dbcp-1.4.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/commons-pool-1.5.6.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/guava-13.0.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/mysql-connector-java-5.1.6.jar" todir="${run.lib.dir}" />
+		<copy file="${lib.dir}/libsigar-amd64-linux.so" todir="${run.lib.dir}" />
+	</target>
+</project>

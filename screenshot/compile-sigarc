@@ -1,0 +1,11 @@
+export LD_LIBRARY_PATH=/home/alessandro/hyperic-sigar-1.6.4/sigar-bin/lib:$LD_LIBRARY_PATH
+
+Compile
+gcc -I/home/alessandro/hyperic-sigar-1.6.4/sigar-bin/include -L/home/alessandro/sigar.git/bindings/java/sigar-bin/lib -o cpuinfo cpuinfo.c -lsigar-amd64-linux -ldl
+
+to execute
+export LD_LIBRARY_PATH=/home/alessandro/sigar.git/bindings/java/sigar-bin/lib:$LD_LIBRARY_PATH
+
+error undefined reference to dlopen
+http://stackoverflow.com/questions/956640/linux-c-error-undefined-reference-to-dlopen
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/log4j.jar"/>
+	<classpathentry kind="lib" path="lib/sigar.jar"/>
+	<classpathentry kind="con" path="org.eclipse.ajdt.core.ASPECTJRT_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.14.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/Users/alessandro/projetos/unb/phd-projects/resource-monitor/lib/jfreechart-1.0.14-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/commons-dbcp-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-pool-1.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/guava-13.0.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
