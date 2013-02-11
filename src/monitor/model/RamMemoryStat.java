@@ -12,8 +12,8 @@ public class RamMemoryStat extends IOStat {
 	 */
 	private static final long serialVersionUID = 4141705067361748420L;
 
-	public RamMemoryStat(final String device) {
-		super(device);
+	public RamMemoryStat(Machine machine, String device) {
+		super(machine, device);
 	}
 
 	@Override

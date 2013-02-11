@@ -5,16 +5,25 @@ public class IOStatProperty implements Data<Double> {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -543464276764983717L;
+	private static final long serialVersionUID = -9004443006436945284L;
 
 	private final String name;
 
 	private final Double value;
 
+	/**
+	 * 
+	 */
+	private final long timestamp;
+
 	public IOStatProperty(String name, Double value) {
-		super();
+		this(name, value, System.currentTimeMillis());
+	}
+
+	public IOStatProperty(String name, Double value, long timeMillis) {
 		this.name = name;
 		this.value = value;
+		this.timestamp = timeMillis;
 	}
 
 	/**
@@ -29,31 +38,48 @@ public class IOStatProperty implements Data<Double> {
 		return this.value;
 	}
 
+	/**
+	 * @return the timestamp
+	 */
+	public long timestamp() {
+		return timestamp;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		
-		if (getClass() != obj.getClass())
+		}
+		if (!(obj instanceof IOStatProperty)) {
 			return false;
-		
+		}
 		IOStatProperty other = (IOStatProperty) obj;
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
+		}
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		} else if (!value.equals(other.value)) {
+			return false;
+		}
 		return true;
 	}
 

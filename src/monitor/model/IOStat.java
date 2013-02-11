@@ -19,12 +19,17 @@ public class IOStat implements Data<IOStat>, Resource {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 7459220861405937200L;
+	private static final long serialVersionUID = 5056903635052667206L;
 
 	/**
 	 * Device name
 	 */
 	private final String device;
+
+	/**
+	 * 
+	 */
+	private final Machine machine;
 
 	/**
 	 * Properties of the {@link IOStat};
@@ -33,9 +38,11 @@ public class IOStat implements Data<IOStat>, Resource {
 
 	/**
 	 * 
+	 * @param machine
 	 * @param device
 	 */
-	public IOStat(String device) {
+	public IOStat(Machine machine, String device) {
+		this.machine = machine;
 		this.device = device;
 	}
 
@@ -49,6 +56,13 @@ public class IOStat implements Data<IOStat>, Resource {
 	 */
 	public String device() {
 		return device;
+	}
+
+	/**
+	 * @return the machine
+	 */
+	public Machine machine() {
+		return machine;
 	}
 
 	/**
@@ -93,4 +107,5 @@ public class IOStat implements Data<IOStat>, Resource {
 	public Sensor<?, Data<?>>[] sensors() {
 		return null;
 	}
+
 }

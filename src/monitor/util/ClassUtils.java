@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import monitor.model.exception.MonitoringException;
 
 public final class ClassUtils {
-	
+
 	private ClassUtils() {
 		throw new UnsupportedOperationException();
 	}
@@ -20,11 +20,21 @@ public final class ClassUtils {
 		}
 		return cl;
 	}
-	
-	public static Object newInstanceForName(String name){
-		try{
-			return Class.forName(checkNotNull(name)).newInstance();
-		}catch(Exception exception){
+
+	/**
+	 * Create a instance of a given class.
+	 * 
+	 * @param fullClassName
+	 *            The name of the class to be instantiate.
+	 * @return An instance of the given class.
+	 * @throws MonitoringException
+	 *             If the given class doesn't exist or in case of any other
+	 *             exception.
+	 */
+	public static Object newInstanceForName(String fullClassName) {
+		try {
+			return Class.forName(checkNotNull(fullClassName)).newInstance();
+		} catch (Exception exception) {
 			throw new MonitoringException(exception);
 		}
 	}

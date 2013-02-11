@@ -29,7 +29,7 @@ public aspect MachineAspect {
 		this.id = id;
 	}
 	
-	public Integer Machine.getId(){
+	public Integer Machine.id(){
 		return this.id;
 	}
 	

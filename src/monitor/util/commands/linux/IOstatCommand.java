@@ -4,17 +4,23 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.*;
+
 import monitor.model.IOStat;
 import monitor.model.IOStatProperty;
 import monitor.model.IOStats;
+import monitor.model.Machine;
 import monitor.util.IOUtils;
 import monitor.util.Strings;
 import monitor.util.commands.AbstractRuntimeCommand;
 
 public class IOstatCommand extends AbstractRuntimeCommand<IOStats> {
+	
+	private final Machine machine;
 
-	public IOstatCommand() {
+	public IOstatCommand(Machine machine) {
 		super("bash", "-c", "iostat ALL -x");
+		this.machine = checkNotNull(machine);
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public class IOstatCommand extends AbstractRuntimeCommand<IOStats> {
 			for(Integer i = 6, j = 0; i < devices_measures.length; i++, j = 0) {
 				String[] fields = devices_measures[i].trim().split(" ");
 				
-				IOStat stat = new IOStat(fields[j++]);
+				IOStat stat = new IOStat(machine, fields[j++]);
 				stat.add(new IOStatProperty("rrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
 				stat.add(new IOStatProperty("wrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
 				stat.add(new IOStatProperty("r/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));

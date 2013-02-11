@@ -21,4 +21,18 @@ create table cpu_monitoring (
   idle double not null,
   temperature double,
   frequency long not null
-)
+)engine = innodb;
+
+create table io_stat(
+  id integer not null auto_increment primary key,
+  machine_id integer not null references machine (id),
+  device varchar(60) not null
+)engine = innodb;
+
+create table io_stat_property(
+  id integer not null auto_increment primary key,
+  io_stat_id integer not null references io_stat (id),
+  name varchar(30) not null,
+  value double not null,
+  timestamp_stat timestamp not null
+)engine = innodb;

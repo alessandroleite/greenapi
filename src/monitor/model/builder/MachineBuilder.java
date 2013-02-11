@@ -11,7 +11,7 @@ public class MachineBuilder extends ResourceBuilder<Machine> {
 	public Machine fetch() throws ResourceException {
 		Machine machine = new Machine(machineName(),
 				MemoryBuilder.build(), CpuBuilder.build());
-		machine.updateIOStats(CommandFactory.instance().iostat().execute());
+		machine.updateIOStats(CommandFactory.instance().iostat(machine).execute());
 		
 		return machine;
 	}

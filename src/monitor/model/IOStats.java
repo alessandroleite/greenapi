@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class IOStats implements Data<List<IOStat>>, Iterable<IOStat> {
+public final class IOStats implements Data<List<IOStat>>, Iterable<IOStat> {
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>

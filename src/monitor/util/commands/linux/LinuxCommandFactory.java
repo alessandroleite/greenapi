@@ -7,6 +7,7 @@ import java.util.Map;
 import monitor.model.Cpu;
 import monitor.model.Frequency;
 import monitor.model.IOStats;
+import monitor.model.Machine;
 import monitor.model.OnlineState;
 import monitor.model.Temperature;
 import monitor.util.commands.Command;
@@ -64,7 +65,7 @@ public class LinuxCommandFactory extends CommandFactory {
 	}
 
 	@Override
-	public Command<IOStats> iostat() {
-		return new IOstatCommand();
+	public Command<IOStats> iostat(Machine machine) {
+		return new IOstatCommand(machine);
 	}
 }

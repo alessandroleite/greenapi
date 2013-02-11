@@ -22,7 +22,7 @@ public class IOSensor implements Sensor<List<IOStat>, IOStats> {
 	
 	@Override
 	public IOStats collect() {
-		machine.updateIOStats(CommandFactory.instance().iostat().execute());
+		machine.updateIOStats(CommandFactory.instance().iostat(machine).execute());
 		return machine.ioStats();
 	}
 

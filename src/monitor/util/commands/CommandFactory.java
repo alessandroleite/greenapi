@@ -8,6 +8,7 @@ import java.util.Map;
 import monitor.model.Cpu;
 import monitor.model.Frequency;
 import monitor.model.IOStats;
+import monitor.model.Machine;
 import monitor.model.OnlineState;
 import monitor.model.Temperature;
 import monitor.util.commands.linux.LinuxCommandFactory;
@@ -34,7 +35,7 @@ public abstract class CommandFactory {
 	
 	public abstract Command<Map<Integer, Map<String, String>>> decodeDimms();
 	
-	public abstract Command<IOStats> iostat();
+	public abstract Command<IOStats> iostat(Machine machine);
 
 	private static CommandFactory instance;
 

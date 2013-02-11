@@ -77,7 +77,7 @@ public class Machine implements Resource {
 	 * @param iostats
 	 */
 	public void updateIOStats(IOStats iostats) {
-		synchronized(this){
+		synchronized(this) {
 		  this.iostats = iostats;
 		}		
 	}
