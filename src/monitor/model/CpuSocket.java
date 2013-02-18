@@ -1,6 +1,8 @@
 package monitor.model;
 
-import static monitor.util.Strings.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static monitor.util.Strings.NEW_LINE;
+import static monitor.util.Strings.TAB;
 
 import java.util.Arrays;
 
@@ -32,37 +34,50 @@ public class CpuSocket implements Resource {
 	/**
 	 * Cores available in this socket.
 	 */
-	private final Cores cores = new Cores(this);
-	
+	private final Cores cores;
+
 	/**
-	 * 
+	 * The frequencies available.
 	 */
 	private final Frequency[] availableFrequencies;
-	
+
 	/**
 	 * The cache size;
 	 */
 	private final long cacheSize;
 
 	/**
-	 * 
+	 * The cpu state.
 	 */
 	private CpuSocketState state;
-	
 
 	/**
+	 * 
 	 * @param vendor
 	 * @param model
 	 * @param mhz
 	 * @param cacheSize
+	 * @param frequencies
 	 */
-	public CpuSocket(String vendor, String model, int mhz, long cacheSize, Frequency ... frequencies) {
+	public CpuSocket(String vendor, String model, int mhz, long cacheSize, Frequency... frequencies) {
+
 		this.vendor = vendor;
 		this.model = model;
 		this.mhz = mhz;
 		this.cacheSize = cacheSize;
-		this.availableFrequencies = (frequencies == null ? new Frequency[]{ new Frequency(new Long(mhz)) } : frequencies);
+
+		this.availableFrequencies = (frequencies == null ? new Frequency[] { new Frequency(new Long(mhz)) } : frequencies);
 		Arrays.sort(this.availableFrequencies);
+		this.cores = new Cores(this);
+	}
+
+	/**
+	 * Add a given CPU (core) to this {@link CpuSocket}.
+	 * 
+	 * @param cpu The CPU (core) to be added.
+	 */
+	public void add(Cpu cpu) {
+		this.cores().add(checkNotNull(cpu));
 	}
 
 	@Override
@@ -121,12 +136,12 @@ public class CpuSocket implements Resource {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Vendor......:").append(this.getVendor()).append(NEW_LINE);
-		builder.append("Model.......:").append(this.getModel()).append("-").append(this.getMhz()).append(NEW_LINE);
-		builder.append("Frequency...:").append(this.currentFrequency().inMhz()).append(" Mhz").append(NEW_LINE);
+		builder.append("Vendor......:").append(this.vendor()).append(NEW_LINE);
+		builder.append("Model.......:").append(this.model()).append("-").append(this.mhz()).append(NEW_LINE);
+		builder.append("Frequency...:").append(this.frequency().inMhz()).append(" Mhz").append(NEW_LINE);
 		builder.append("Cores.......:\n[").append(NEW_LINE);
 
-		for (Cpu cpu : this.getCores().get()) {
+		for (Cpu cpu : this.cores().get()) {
 			builder.append(TAB).append(cpu).append(NEW_LINE);
 		}
 
@@ -140,45 +155,44 @@ public class CpuSocket implements Resource {
 	 * 
 	 * @return The current frequency.
 	 */
-	public Frequency currentFrequency() {
+	public Frequency frequency() {
 		synchronized (this) {
-			return (this.state() == null || this.state().currentFrequency() == null) ? Frequency.NULL_FREQUENCY
-					: this.state().currentFrequency();
+			return (this.state() == null || this.state().frequency() == null) ? Frequency.NULL_FREQUENCY : this.state().frequency();
 		}
 	}
 
 	/**
 	 * @return the vendor
 	 */
-	public String getVendor() {
+	public String vendor() {
 		return vendor;
 	}
 
 	/**
 	 * @return the model
 	 */
-	public String getModel() {
+	public String model() {
 		return model;
 	}
 
 	/**
 	 * @return the mhz
 	 */
-	public int getMhz() {
+	public int mhz() {
 		return mhz;
 	}
 
 	/**
 	 * @return the cores
 	 */
-	public Cores getCores() {
+	public Cores cores() {
 		return cores;
 	}
 
 	/**
 	 * @return the cacheSize
 	 */
-	public long getCacheSize() {
+	public long cacheSize() {
 		return cacheSize;
 	}
 
@@ -201,11 +215,11 @@ public class CpuSocket implements Resource {
 	public Double getCombinedLoad() {
 
 		double sum = 0.0D;
-		for (Cpu cpu : getCores()) {
+		for (Cpu cpu : cores()) {
 			sum += cpu.getLoad();
 		}
 
-		return (sum / getCores().size());
+		return (sum / cores().size());
 	}
 
 	/**
@@ -213,9 +227,11 @@ public class CpuSocket implements Resource {
 	 * @param state
 	 *            the new state of this {@link CpuSocket}.
 	 */
-	public void updateState(CpuSocketState state) {
+	public CpuSocketState setState(CpuSocketState state) {
 		synchronized (this) {
+			final CpuSocketState previousSocketState = this.state;
 			this.state = state;
+			return previousSocketState;
 		}
 	}
 
@@ -238,6 +254,6 @@ public class CpuSocket implements Resource {
 	 * @return
 	 */
 	public String description() {
-		return this.getVendor() + " " + this.getModel() + "-" + this.getMhz();
+		return this.vendor() + " " + this.model() + "-" + this.mhz();
 	}
 }

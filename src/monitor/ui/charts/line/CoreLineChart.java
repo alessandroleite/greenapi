@@ -24,8 +24,8 @@ public class CoreLineChart extends LineChartPanelSupport<Cpu> {
 		if (this.getSeries().size() < 1) {
 			this.getTimeSeries().addSeries(
 					new TimeSeries("CPU " + getResource().getName() + " "
-							+ this.getResource().getCpuSocket().getVendor() + " "
-							+ this.getResource().getCpuSocket().getModel()));
+							+ this.getResource().getCpuSocket().vendor() + " "
+							+ this.getResource().getCpuSocket().model()));
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
 		}
 	}

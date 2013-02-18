@@ -1,5 +1,6 @@
 package monitor.model.builder;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import monitor.model.Cpu;
@@ -22,20 +23,24 @@ public class CpuBuilder extends ResourceBuilder<CpuSocket> {
 			CpuSocket socket = new CpuSocket(infos[0].getVendor(),
 					infos[0].getModel(), infos[0].getMhz(),
 					infos[0].getCacheSize(), CommandFactory.instance().cpuScalingAvailableFrequencies(0).execute());
+			
 
-			//LmSensors lmSensors = LmSensors.fetch();
 			Map<String, Temperature> temperatures = CommandFactory.instance().cpuTemperature().execute();
 			for (int i = 0; i < cpus.length; i++) {
 				
 				Cpu cpu = new Cpu(socket, String.valueOf(i), cpus[i].getIrq(),
 						cpus[i].getSoftIrq(), cpus[i].getStolen());
 				
-				cpu.updateState(new CpuState(cpu, cpus[i].getCombined(), 
+				cpu.setState(new CpuState(cpu, cpus[i].getCombined(), 
 						cpus[i].getUser(), cpus[i].getSys(), cpus[i].getIdle(), 
 						cpus[i].getWait(), cpus[i].getNice(), CommandFactory.instance().currentCpuFrequency(cpu).execute()));
 				
-				cpu.updateTemperature(temperatures.get(cpu.getName()));
-				socket.getCores().add(cpu);				
+				cpu.setTemperature(temperatures.get(cpu.getName()));
+				socket.add(cpu);				
+			}
+			
+			for(Cpu cpu : socket.cores().get()){
+				socket.cores().add(Arrays.asList(cpu.sensors()));
 			}
 			
 			return socket;

@@ -28,7 +28,7 @@ public class SystemLoadLineChart extends LineChartPanelSupport<Machine> {
 	protected void createSeries() {
 
 		if (this.getSeries().size() < 1) {
-			this.getTimeSeries().addSeries(new TimeSeries("Combined CPUs: " + this.getResource().cpus()[0].getCores().size()));
+			this.getTimeSeries().addSeries(new TimeSeries("Combined CPUs: " + this.getResource().cpus()[0].cores().size()));
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
 		}
 	}

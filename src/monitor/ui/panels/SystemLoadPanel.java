@@ -75,7 +75,7 @@ public class SystemLoadPanel extends JPanel {
 		corePanel.setLayout(new BoxLayout(corePanel, 0));
 
 		int i = 0;
-		for (Cpu cpu : this.machine.cpus()[0].getCores()) {
+		for (Cpu cpu : this.machine.cpus()[0].cores()) {
 			CoreLineChart coreChart = new CoreLineChart(cpu);
 			coreChart.setDefaultSeriesPaint();
 			coreChart.cleanChart();

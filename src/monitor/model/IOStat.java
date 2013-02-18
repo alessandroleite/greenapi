@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import monitor.model.sensors.Sensor;
-
 /**
  * 
  * @author Alessandro
@@ -14,7 +12,7 @@ import monitor.model.sensors.Sensor;
  *         Field descriptions extracted from: <a
  *         href="http://dom.as/2009/03/11/iostat/">iostat -x</a>
  */
-public class IOStat implements Data<IOStat>, Resource {
+public class IOStat implements Data<IOStat> {
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>
@@ -102,10 +100,4 @@ public class IOStat implements Data<IOStat>, Resource {
 	public IOStatProperty getProperty(String name) {
 		return this.properties.get(name);
 	}
-
-	@Override
-	public Sensor<?, Data<?>>[] sensors() {
-		return null;
-	}
-
 }

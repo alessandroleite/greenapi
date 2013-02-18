@@ -35,8 +35,8 @@ public class TemperatureMultiCoreLineChart extends
 
 	@Override
 	protected void createSeries() {
-		if (this.getSeries().size() < getResource().getCores().size()) {
-			for (Cpu cpu : getResource().getCores()) {
+		if (this.getSeries().size() < getResource().cores().size()) {
+			for (Cpu cpu : getResource().cores()) {
 				this.getTimeSeries().addSeries(
 						new TimeSeries(String.format("CPU %s", cpu.getName())));
 			}
@@ -46,12 +46,12 @@ public class TemperatureMultiCoreLineChart extends
 
 	@Override
 	public void update() {
-		if (this.getSeries().size() < getResource().getCores().size()) {
+		if (this.getSeries().size() < getResource().cores().size()) {
 			return;
 		}
 
 		int i = 0;
-		for (Cpu cpu : getResource().getCores()) {
+		for (Cpu cpu : getResource().cores()) {
 			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu
 					.getTemperature().value());
 		}

@@ -74,7 +74,7 @@ public final class MachineDao {
 			CpuSocket[] cpus) throws SQLException {
 
 		for (CpuSocket cpuSocket : cpus) {
-			for (Cpu cpu : cpuSocket.getCores()) {
+			for (Cpu cpu : cpuSocket.cores()) {
 				this.persist(connection, machine, cpu);
 			}
 		}

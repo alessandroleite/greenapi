@@ -17,12 +17,9 @@ public class CpuTemperature implements Sensor<Double, Temperature>{
 
 	@Override
 	public Temperature collect () {
-		
 		Temperature temperature = CommandFactory.instance().cpuTemperature().execute().get(this.cpu.getName()); 
-				//LmSensors.fetch().getCpuTemperature(this.cpu.getName());
 		temperature = (temperature == null ? NULL_TEMPERATURE : temperature);
-		
-		this.cpu.updateTemperature(temperature);
+		this.cpu.setTemperature(temperature);
 		return temperature;
 	}
 

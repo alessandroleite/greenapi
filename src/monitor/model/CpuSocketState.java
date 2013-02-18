@@ -22,7 +22,7 @@ public class CpuSocketState implements Data<CpuState[]> {
 
 	@Override
 	public CpuState[] value() {
-		Collection<Cpu> cores = this.socket.getCores().get();
+		Collection<Cpu> cores = this.socket.cores().get();
 		
 		CpuState[] states = new CpuState[cores.size()];
 				
@@ -36,7 +36,7 @@ public class CpuSocketState implements Data<CpuState[]> {
 	/**
 	 * @return the currentFrequency
 	 */
-	public Frequency currentFrequency() {
+	public Frequency frequency() {
 		return currentFrequency;
 	}
 }

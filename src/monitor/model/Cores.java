@@ -1,7 +1,8 @@
 package monitor.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -16,9 +17,28 @@ public final class Cores implements Iterable<Cpu> {
 	private final Map<String, Cpu> cpus = new ConcurrentHashMap<String, Cpu>();
 
 	private final CpuSocket cpuSocket;
+	
+	private final List< Sensor<?, Data<?>>> sensors;
 
 	public Cores(CpuSocket cpuSocket) {
+		this(cpuSocket, new ArrayList< Sensor<?, Data<?>>>());
+	}
+
+	public Cores(CpuSocket cpuSocket, List< Sensor<?, Data<?>>> sensors) {
 		this.cpuSocket = cpuSocket;
+		this.sensors = sensors;
+	}
+	
+	public void add(Sensor<?, Data<?>> sensor) {
+		this.add(Collections.<Sensor<?, Data<?>>> singletonList(sensor));
+	}
+	
+	public void add(final List<Sensor<?, Data<?>>> sensors2Add) {
+		for(Sensor<?, Data<?>> sensor: checkNotNull(sensors2Add)){
+			if (!this.sensors.contains(checkNotNull(sensor))) {
+				this.sensors.add(sensor);
+			}	
+		}
 	}
 
 	/**
@@ -46,17 +66,8 @@ public final class Cores implements Iterable<Cpu> {
 	 * 
 	 * @return the sensors available in each core.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked"})
 	public Sensor<?, Data<?>>[] sensors() {
-		if (cpus.isEmpty())
-			return Sensor.NULL_SENSORS;
-		
-		List< Sensor<?, Data<?>>> sensors = new ArrayList();
-		
-		for(Cpu cpu : this.cpus.values()){
-			sensors.addAll(Arrays.asList(cpu.sensors()));
-		}
-		
 		return sensors.toArray(new Sensor[sensors.size()]);
 	}
 

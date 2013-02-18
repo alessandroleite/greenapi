@@ -37,8 +37,9 @@ public class Cpu implements Resource, Comparable<Cpu> {
 	}
 
 	/**
+	 * Returns CPU id.
 	 * 
-	 * @return
+	 * @return this CPU id.
 	 */
 	public Integer id() {
 		return Integer.parseInt(this.getName().replaceAll("\\D", ""));
@@ -106,9 +107,13 @@ public class Cpu implements Resource, Comparable<Cpu> {
 				+ (this.getTemperature() != null ? this.getTemperature() : "");
 	}
 
-	public void updateState(CpuState state) {
+	public CpuState setState(CpuState state) {
 		synchronized (this) {
+
+			CpuState old_state = this.state;
 			this.state = state;
+			
+			return old_state;
 		}
 	}
 
@@ -116,9 +121,12 @@ public class Cpu implements Resource, Comparable<Cpu> {
 	 * @param temperature
 	 *            the temperature to set
 	 */
-	public void updateTemperature(Temperature temperature) {
+	public Temperature setTemperature(Temperature temperature) {
 		synchronized (this) {
+			final Temperature previousTemperature = this.temperature;
+
 			this.temperature = temperature;
+			return previousTemperature;
 		}
 	}
 
@@ -171,11 +179,12 @@ public class Cpu implements Resource, Comparable<Cpu> {
 		return stole;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Sensor<?, Data<?>>[] sensors() {
-		// return new Sensor[] { new CoreLoadSensor(this), new
-		// CpuTemperature(this) };
 		return new Sensor[] { new CpuTemperature(this) };
 	}
 }

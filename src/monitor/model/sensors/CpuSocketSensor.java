@@ -29,14 +29,14 @@ public class CpuSocketSensor implements Sensor<CpuState[], CpuSocketState> {
 		CpuPerc[] cpus = SigarFactory.getInstance().getCpuPercList();		
 		CpuSocketState state = new CpuSocketState(this.socket, CommandFactory
 				.instance()
-				.currentCpuFrequency(this.socket.getCores().iterator().next())
+				.currentCpuFrequency(this.socket.cores().iterator().next())
 				.execute());			
 
 		int i = 0;
-		for (Cpu cpu : this.socket.getCores()) {
-			cpu.updateState(new CpuState(cpu, cpus[i].getCombined(), cpus[i]
+		for (Cpu cpu : this.socket.cores()) {
+			cpu.setState(new CpuState(cpu, cpus[i].getCombined(), cpus[i]
 					.getUser(), cpus[i].getSys(), cpus[i].getIdle(), cpus[i]
-					.getWait(), cpus[i].getNice(), state.currentFrequency()));
+					.getWait(), cpus[i].getNice(), state.frequency()));
 
 			for (Sensor<?, Data<?>> sensor : cpu.sensors()) {
 				sensor.collect();
@@ -44,9 +44,8 @@ public class CpuSocketSensor implements Sensor<CpuState[], CpuSocketState> {
 
 			i++;
 		}
-
-		socket.updateState(state);
-
+		socket.setState(state);
+		
 		return state;
 	}
 

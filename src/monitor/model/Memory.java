@@ -13,17 +13,18 @@ public abstract class Memory implements Resource {
 
 	/** The total memory size */
 	private final long size;
-	
+
 	/** The memory state */
 	private MemoryState state;
-	
-	/** The memory properties*/
-	private final Map<Integer, Map<String, String>> propertiesMap = new HashMap<Integer, Map<String,String>>();
+
+	/** The memory properties */
+	private final Map<Integer, Map<String, String>> propertiesMap = new HashMap<Integer, Map<String, String>>();
 
 	/**
 	 * Instantiate a memory with a given size.
 	 * 
-	 * @param size The size of the memory. Must be greater than zero.
+	 * @param size
+	 *            The size of the memory. Must be greater than zero.
 	 */
 	public Memory(long size) {
 		this.size = size;
@@ -33,8 +34,9 @@ public abstract class Memory implements Resource {
 		this(size);
 		this.state = usage;
 	}
-	
-	public Memory(long size, MemoryState usage, Map<Integer, Map<String, String>> properties) {
+
+	public Memory(long size, MemoryState usage,
+			Map<Integer, Map<String, String>> properties) {
 		this(size);
 		this.state = usage;
 		this.propertiesMap.putAll(properties);
@@ -50,6 +52,7 @@ public abstract class Memory implements Resource {
 
 	/**
 	 * Returns the size of this {@link Memory}
+	 * 
 	 * @return The size of this {@link Memory}
 	 */
 	public long size() {
@@ -59,24 +62,28 @@ public abstract class Memory implements Resource {
 	/**
 	 * Update the state of this {@link Memory}.
 	 * 
-	 * @param newMemoryState The new state of this {@link Memory}.
+	 * @param newMemoryState
+	 *            The new state of this {@link Memory}.
 	 */
-	public void updateState(MemoryState newMemoryState) {
+	public MemoryState setState(MemoryState newMemoryState) {
 		synchronized (this) {
+			final MemoryState previousMemoryState = this.state;
 			this.state = newMemoryState;
+			
+			return previousMemoryState;
 		}
 	}
 
 	/**
 	 * Returns the current state of this {@link Memory}.
+	 * 
 	 * @return the current state of this {@link Memory}.
 	 * @see MemoryState
 	 */
 	public MemoryState state() {
 		return this.state;
 	}
-	
-	
+
 	/**
 	 * @return the propertiesMap
 	 */
@@ -99,7 +106,7 @@ public abstract class Memory implements Resource {
 					+ propertiesMap.size() + "/"
 					+ propertiesMap.get(1).get("Size"));
 		}
-		
+
 		return description.toString();
 	}
 }

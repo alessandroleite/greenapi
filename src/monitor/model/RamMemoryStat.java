@@ -18,7 +18,6 @@ public class RamMemoryStat extends IOStat {
 
 	@Override
 	public Collection<IOStatProperty> properties() {
-		// Collection<IOStatProperty> properties = new ArrayList<IOStatProperty>(super.properties());
 		return Collections2.filter(super.properties(), new Predicate<IOStatProperty>() {
 					public boolean apply(IOStatProperty property) {
 						return property.name().startsWith("dm");

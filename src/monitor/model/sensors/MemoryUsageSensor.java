@@ -24,7 +24,7 @@ public class MemoryUsageSensor implements Sensor<Double, MemoryState>{
 	public MemoryState collect() {
 		Mem mem = SigarFactory.getInstance().getMem();
 		MemoryState memoryUsage = new MemoryState(mem.getUsedPercent(), mem.getFreePercent());
-		this.memory.updateState(memoryUsage);		
+		this.memory.setState(memoryUsage);		
 		return memoryUsage;
 	}
 

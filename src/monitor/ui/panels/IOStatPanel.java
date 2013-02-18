@@ -1,13 +1,9 @@
 package monitor.ui.panels;
 
-import static monitor.ui.util.ComponentsUtil.createPainelContainer;
-
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import monitor.model.IOStat;
 import monitor.model.Machine;
-import monitor.ui.charts.line.IOMultiLineChart;
 
 public class IOStatPanel extends JPanel {
 	
@@ -25,11 +21,11 @@ public class IOStatPanel extends JPanel {
 	
 	
 	private void createStatPanels() {
-		int i = 0;
+		/*int i = 0;
 		for (IOStat stat: this.machine.ioStats()) {
 			if (++i > 10)
 				this.add(createPainelContainer(stat.device(), new IOMultiLineChart(stat)));
 			
-		}		
+		}*/		
 	}
 }

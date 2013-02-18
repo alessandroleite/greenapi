@@ -15,7 +15,6 @@ import monitor.ui.charts.line.CpuLoadMultiCoreLineChart;
 import monitor.ui.charts.line.SystemMemoryLineChart;
 import monitor.ui.charts.line.TemperatureMultiCoreLineChart;
 import monitor.ui.panels.CpuFrequencyPanel;
-import monitor.ui.panels.IOStatPanel;
 
 import com.google.common.base.Preconditions;
 
@@ -45,7 +44,7 @@ public class PanelCharts extends JFrame {
 		this.addPanel(new CpuFrequencyLineChart(machine.cpus()[0]));
 		this.addPanel(new SystemMemoryLineChart(machine.memory()));
 		this.addPanel(new CpuFrequencyPanel(machine.cpus()[0]));
-		this.addPanel(new IOStatPanel(machine));
+		//this.addPanel(new IOStatPanel(machine));
 		//this.addPanel(new SystemLoadPanel(machine));
 		
 		this.tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);

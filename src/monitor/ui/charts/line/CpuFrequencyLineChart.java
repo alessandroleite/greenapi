@@ -34,9 +34,9 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 
 	@Override
 	protected void createSeries() {
-		if (this.getSeries().size() < this.getResource().getCores().size()) {
+		if (this.getSeries().size() < this.getResource().cores().size()) {
 			
-			for (Cpu cpu : this.getResource().getCores()) {
+			for (Cpu cpu : this.getResource().cores()) {
 				this.getTimeSeries().addSeries(new TimeSeries(String.format("CPU %s", cpu.getName())));
 			}
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
@@ -46,12 +46,12 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 	@Override
 	public void update() {
 		
-		if (this.getSeries().size() < this.getResource().getCores().size()) {
+		if (this.getSeries().size() < this.getResource().cores().size()) {
 			return;
 		}
 
 		int i = 0;
-		for (Cpu cpu : this.getResource().getCores()) {
+		for (Cpu cpu : this.getResource().cores()) {
 			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu.getState().getFrequency().inMhz());
 		}
 	}

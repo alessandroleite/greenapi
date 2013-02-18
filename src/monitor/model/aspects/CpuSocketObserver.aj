@@ -8,7 +8,8 @@ public aspect CpuSocketObserver extends ObserverPattern {
 
 	declare parents: CpuSocket implements Subject;
 
-	pointcut stateChanges(Subject s): target(s) && (call (void CpuSocket.updateState(..)));
+	pointcut stateChanges(Subject s): target(s) && (call 
+			(CpuSocketState CpuSocket.setState(..)));
 
 	public CpuSocketState CpuSocket.getData() {
 		return this.state();

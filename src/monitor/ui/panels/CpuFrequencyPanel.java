@@ -51,8 +51,8 @@ public class CpuFrequencyPanel extends JPanel {
 
 		if (frequencies.length > 1) {			
 			final JComboBox<Frequency> combo = new JComboBox<Frequency>(frequencies);			
-			combo.setSelectedIndex(Arrays.binarySearch(frequencies, this.socket.currentFrequency()));
-			combo.setSelectedItem(this.socket.currentFrequency());
+			combo.setSelectedIndex(Arrays.binarySearch(frequencies, this.socket.frequency()));
+			combo.setSelectedItem(this.socket.frequency());
 			
 			JButton apply = new JButton("Apply...");
 			apply.addActionListener(new ActionListener() {

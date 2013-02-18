@@ -42,17 +42,16 @@ public class Machine implements Resource {
 		return this.cpus[0].getCombinedLoad();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked"})
 	@Override
 	public Sensor<?, Data<?>>[] sensors()  {
-		List<Sensor<?, Data<?>>> sensors = new ArrayList();
+		List<Sensor<?, Data<?>>> sensors = new ArrayList<Sensor<?, Data<?>>>();
 		
 		for(CpuSocket cpu : this.cpus()) {
 			sensors.addAll(Arrays.asList(cpu.sensors()));	
 		}
 		
 		sensors.addAll(Arrays.asList(this.memory.sensors()));
-		
 		sensors.addAll((Collection<? extends Sensor<?, Data<?>>>) Arrays.asList(new Sensor[] {new IOSensor(this)}));
 		
 		return sensors.toArray(new Sensor[sensors.size()]);
@@ -68,7 +67,7 @@ public class Machine implements Resource {
 	/**
 	 * @param memory the memory to set
 	 */
-	public void updateMemory(Memory memory) {		
+	public void setMemory(Memory memory) {		
 		this.memory = memory;
 	}
 	
@@ -76,9 +75,11 @@ public class Machine implements Resource {
 	 * 
 	 * @param iostats
 	 */
-	public void updateIOStats(IOStats iostats) {
-		synchronized(this) {
-		  this.iostats = iostats;
+	public IOStats setIOStats(IOStats iostats) {
+		synchronized (this) {
+			final IOStats previousIOStats = this.ioStats();
+			this.iostats = iostats;
+			return previousIOStats;
 		}		
 	}
 
