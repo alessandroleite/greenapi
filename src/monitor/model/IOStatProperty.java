@@ -10,21 +10,25 @@ public class IOStatProperty implements Data<Double> {
 	private final String name;
 
 	private final Double value;
+	
+	private final IOStat stat;
 
 	/**
 	 * 
 	 */
 	private final long timestamp;
 
-	public IOStatProperty(String name, Double value) {
-		this(name, value, System.currentTimeMillis());
+	public IOStatProperty(String name, Double value, IOStat stat) {
+		this(name, value, System.currentTimeMillis(), stat);
 	}
 
-	public IOStatProperty(String name, Double value, long timeMillis) {
+	public IOStatProperty(String name, Double value, long timeMillis, IOStat stat) {
 		this.name = name;
 		this.value = value;
 		this.timestamp = timeMillis;
+		this.stat = stat;
 	}
+
 
 	/**
 	 * @return the name
@@ -32,11 +36,14 @@ public class IOStatProperty implements Data<Double> {
 	public String name() {
 		return name;
 	}
-
-	@Override
-	public Double value() {
-		return this.value;
+	
+	/**
+	 * @return the stat
+	 */
+	public IOStat stat() {
+		return stat;
 	}
+	
 
 	/**
 	 * @return the timestamp
@@ -44,6 +51,12 @@ public class IOStatProperty implements Data<Double> {
 	public long timestamp() {
 		return timestamp;
 	}
+	
+	@Override
+	public Double value() {
+		return this.value;
+	}
+	
 
 	@Override
 	public int hashCode() {

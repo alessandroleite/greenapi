@@ -37,19 +37,19 @@ public class IOstatCommand extends AbstractRuntimeCommand<IOStats> {
 				String[] fields = devices_measures[i].trim().split(" ");
 				
 				IOStat stat = new IOStat(machine, fields[j++]);
-				stat.add(new IOStatProperty("rrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("wrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("r/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("w/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("rkB/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("wkB/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("avgrq-sz", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("avgqu-sz", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("r_await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("w_await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("svctm", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
-				stat.add(new IOStatProperty("%util", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)])));
+				stat.add(new IOStatProperty("rrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("wrqm/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("r/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("w/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("rkB/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("wkB/s", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("avgrq-sz", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("avgqu-sz", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("r_await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("w_await", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("svctm", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
+				stat.add(new IOStatProperty("%util", Double.parseDouble(fields[j = nextFieldValue(fields, ++j)]),stat));
 				
 				measures.add(stat);
 			}

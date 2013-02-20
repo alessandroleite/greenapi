@@ -20,7 +20,7 @@ public class RamMemoryStat extends IOStat {
 	public Collection<IOStatProperty> properties() {
 		return Collections2.filter(super.properties(), new Predicate<IOStatProperty>() {
 					public boolean apply(IOStatProperty property) {
-						return property.name().startsWith("dm");
+						return property.stat().device().startsWith("dm");
 					}
 				});
 	}
