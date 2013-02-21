@@ -22,6 +22,24 @@
  */
 package monitorapi.core.model.software.os;
 
-public class OperatingSystem {
+import monitorapi.core.model.IOStats;
 
+public abstract class OperatingSystem {
+
+	private final String name;
+
+	/**
+	 * Returns the I/O states of the machine.
+	 * 
+	 * @return the I/O states of the machine.
+	 */
+	public abstract IOStats iostats();
+
+	public OperatingSystem(String name) {
+		this.name = name;
+	}
+
+	public String name() {
+		return name;
+	}
 }

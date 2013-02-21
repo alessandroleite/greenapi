@@ -199,12 +199,12 @@
 				<configuration>
 					<additionalProjectnatures>
 						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<projectnature> org.maven.ide.eclipse.maven2Nature</projectnature>
-						<projectnature> org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-						<projectnature> org.eclipse.wst.jsdt.core.jsNature </projectnature>						
+						<projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
+						<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
+						<projectnature>org.eclipse.wst.jsdt.core.jsNature </projectnature>						
 					</additionalProjectnatures>
 					<additionalBuildcommands>
-						<buildcommand> org.maven.ide.eclipse.maven2Builder </buildcommand>
+						<buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
 						<forceRecheck>true</forceRecheck>
 					</additionalBuildcommands>
 					<useProjectReferences>true</useProjectReferences>
@@ -261,6 +261,7 @@
                 			<outxml>true</outxml>
 					<source>${source.version}</source>
 					<target>${source.version}</target>
+					<!--<ajdtBuildDefFile>build-1-7.aj.properties</ajdtBuildDefFile> -->
 				</configuration>
 			</plugin>			
 		</plugins>

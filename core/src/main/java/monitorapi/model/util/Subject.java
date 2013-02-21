@@ -28,12 +28,38 @@ import monitorapi.core.model.Data;
 
 public interface Subject {
 
+	/**
+	 * Add a new {@link Observer} to this observable ({@link Subject}) that will
+	 * be notified when the state of the observable object change.
+	 * 
+	 * @param obs
+	 *            The {@link Observable} to be add. Must be not
+	 *            <code>null</code>.
+	 */
 	void add(Observer obs);
 
+	/**
+	 * Remove a given {@link Observer} of this {@link Subject}.
+	 * 
+	 * @param obs
+	 *            The {@link Observer} to be removed of this {@link Subject}.
+	 */
 	void remove(Observer obs);
 
+	/**
+	 * Returns a read-only {@link Collection} with the {@link Observer}s of a
+	 * {@link Subject}.
+	 * 
+	 * @return A read-only {@link Collection} with the {@link Observer}s of a
+	 *         {@link Subject}.
+	 */
 	Collection<Observer> getObservers();
 
+	/**
+	 * Returns the new state of the observable object.
+	 * 
+	 * @return The new state of the observable object.
+	 */
 	@SuppressWarnings("rawtypes")
 	Data getData();
 }

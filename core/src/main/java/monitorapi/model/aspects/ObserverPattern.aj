@@ -22,7 +22,6 @@
  */
 package monitorapi.model.aspects;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;

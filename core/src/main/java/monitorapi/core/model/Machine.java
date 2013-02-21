@@ -22,6 +22,8 @@
  */
 package monitorapi.core.model;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collection;
 
 import monitorapi.core.model.software.os.OperatingSystem;
@@ -68,20 +70,17 @@ public class Machine implements Resource {
 	 */
 	private final OperatingSystem os;
 
-	/** I/O states of this machine */
-	private IOStats iostats;
-
 	public Machine(String id, String name, Memory[] memories,
 			Storages storages, NetworkInterface[] networkInterfaces,
 			CpuSocket[] cpuSockets, OperatingSystem os) {
 
-		this.id = id;
-		this.name = name;
-		this.memories = memories;
-		this.storages = storages;
+		this.id = requireNonNull(id);
+		this.name = requireNonNull(name);
+		this.memories = requireNonNull(memories);
+		this.storages = requireNonNull(storages);
 		this.networkInterfaces = networkInterfaces;
-		this.cpus = cpuSockets;
-		this.os = os;
+		this.cpus = requireNonNull(cpuSockets);
+		this.os = requireNonNull(os);
 	}
 
 	/**
@@ -134,18 +133,7 @@ public class Machine implements Resource {
 	public Memory swap() {
 		return filterMemoryBy(MemoryType.SWAP)[0];
 	}
-
-	/**
-	 * 
-	 * @param iostats
-	 */
-	public IOStats setIOStats(IOStats iostats) {
-		synchronized (this) {
-			final IOStats previousIOStats = this.ioStats();
-			this.iostats = iostats;
-			return previousIOStats;
-		}
-	}
+	
 
 	/**
 	 * @return the name
@@ -161,13 +149,6 @@ public class Machine implements Resource {
 		return cpus;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public IOStats ioStats() {
-		return this.iostats;
-	}
 
 	private Memory[] filterMemoryBy(final MemoryType type) {
 		Collection<Memory> filtered = Collections2.filter(
