@@ -1,0 +1,102 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+     	<parent>
+	    <groupId>system-monitor</groupId>
+	    <artifactId>super-pom</artifactId>	   
+            <version>1.0.0-SNAPSHOT</version>
+	    <relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>system-monitor</groupId>
+	<artifactId>core</artifactId>
+	<packaging>jar</packaging>
+        
+
+	<dependencies>
+		<!-- Test Scope -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Compile Scope -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>${jcommander.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+
+                <dependency>
+			<groupId>org.jfree</groupId> 
+                        <artifactId>jfreechart</artifactId>    
+                        <version>${jfreechart.version}</version>
+                </dependency>
+
+		<dependency>	
+               		<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+  			<version>${commons-dbcp.version}</version>
+		</dependency>
+
+		<dependency>	
+               		<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+  			<version>${log4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector.version}</version>
+		</dependency>
+                
+                <dependency>
+			<groupId>org.hyperic</groupId>
+			<artifactId>sigar</artifactId>
+			<version>${sigar.version}</version>
+		</dependency>
+		            
+	</dependencies>
+
+
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<internal.snapshots.repo.path>file://${basedir}/../maven-repo/snapshots</internal.snapshots.repo.path>
+		<internal.release.repo.path>file://${basedir}/../maven-repo/releases</internal.release.repo.path>
+		<license-header-file>${basedir}/../License.txt</license-header-file>
+		<source.version>1.7</source.version>
+		<junit.version>4.10</junit.version>
+		<jcommander.version>1.17</jcommander.version>
+		<guava.version>13.0.1</guava.version>		
+		<jfreechart.version>1.0.14</jfreechart.version>
+		<commons-dbcp.version>1.4</commons-dbcp.version>
+		<log4j.version>1.2.17</log4j.version>
+		<mysql-connector.version>5.1.23</mysql-connector.version>
+		<sigar.version>1.6.4</sigar.version>
+	</properties>
+</project>

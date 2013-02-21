@@ -3,13 +3,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>system-monitor</groupId>
-	<artifactId>system-monitor</artifactId>
-	<packaging>jar</packaging>
+	<artifactId>super-pom</artifactId>
+	<packaging>pom</packaging>
+
 	<version>1.0.0-SNAPSHOT</version>
 	<inceptionYear>2012</inceptionYear>
 
 	<description>
-	This is a system to keep track of system resources, such as CPU usage, frequency, temperature and the amount of memory used. Also, it's possible to change the CPU frequency.
+	This is a system to keep track of system resources, such as CPU usage, frequency, temperature and the amount of memory used.
         </description>
 
 	<repositories>
@@ -46,6 +47,29 @@
 			<releases>
 				<enabled>false</enabled>
 			</releases>
+		</repository>
+		<repository>
+			<id>internal-snapshots-repo</id>
+			<name>Internal Maven repository of snapshots artifats</name>
+			<url>${internal.snapshots.repo.path}</url>
+			<snapshots>
+     			     	<enabled>true</enabled>
+      				<updatePolicy>always</updatePolicy>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>internal-release-repo</id>
+			<name>Internal Maven repository of release artifats</name>
+			<url>${internal.release.repo.path}</url>
+			<snapshots>
+     			     	<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>			
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -89,71 +113,12 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	<dependencies>
-		<!-- Test Scope -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Compile Scope -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.beust</groupId>
-			<artifactId>jcommander</artifactId>
-			<version>${jcommander.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
-		</dependency>
-
-                <dependency>
-			<groupId>org.jfree</groupId> 
-                        <artifactId>jfreechart</artifactId>    
-                        <version>${jfreechart.version}</version>
-                </dependency>
-
-		<dependency>	
-               		<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-  			<version>${commons-dbcp.version}</version>
-		</dependency>
-
-		<dependency>	
-               		<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-  			<version>${log4j.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-connector.version}</version>
-		</dependency>
-                
-                <dependency>
-			<groupId>org.hyperic</groupId>
-			<artifactId>sigar</artifactId>
-			<version>${sigar.version}</version>
-		</dependency>
-		            
-	</dependencies>
+	<modules>
+          <module>core</module>
+	  <module>power</module>
+          <module>ui</module>
+	  <module>gpi</module>
+	</modules>
 
 	<build>
 		<defaultGoal>package</defaultGoal>
@@ -168,6 +133,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.5</version>
+				<inherited>true</inherited>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
@@ -176,32 +142,30 @@
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
+				<inherited>true</inherited>
 				<configuration>
-					<header>License.txt</header>
+					<header>${license-header-file}</header>
 				</configuration>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>format</goal>
+						    <goal>format</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
+			        <artifactId>maven-jar-plugin</artifactId>
+			        <version>2.4</version>
+			        <inherited>true</inherited>
 				<configuration>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<addDefaultSpecificationEntries>
-								true
-							</addDefaultSpecificationEntries>
-							<addDefaultImplementationEntries>
-								true
-							</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 					</archive>
 				</configuration>
@@ -218,15 +182,20 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0</version>
+				<inherited>true</inherited>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>${source.version}</source>
 					<target>${source.version}</target>
+					<showDeprecation>true</showDeprecation>
+					<compilerArgument>-Xlint:all</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.8</version>
+				<groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-eclipse-plugin</artifactId>
+          			<version>2.9</version>
+				<inherited>true</inherited>
 				<configuration>
 					<additionalProjectnatures>
 						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
@@ -242,27 +211,30 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<projectNameTemplate>[artifactId]-[version]</projectNameTemplate>
+					<projectNameTemplate>[groupId]-[artifactId]-[version]</projectNameTemplate>
 					<ajdtVersion>${ajdt.version}</ajdtVersion>
-					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
+				<groupId>org.apache.maven.plugins</groupId>
+        			<artifactId>maven-source-plugin</artifactId>
+        			<version>2.2.1</version>
+				<inherited>true</inherited>
 				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
+			            <execution>
+            				  <id>attach-sources</id>
+            				  <phase>verify</phase>
+            				  <goals>
+				              <goal>jar-no-fork</goal>
+				          </goals>
+			            </execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.2</version>
+				<version>1.4</version>
+				<inherited>true</inherited>
 				<dependencies>
 					<dependency>
 						<groupId>org.aspectj</groupId>
@@ -283,8 +255,10 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<outxml>true</outxml>
+				<configuration>					
+ 					<complianceLevel>${source.version}</complianceLevel>
+                			<encoding>${project.build.sourceEncoding}</encoding>
+                			<outxml>true</outxml>
 					<source>${source.version}</source>
 					<target>${source.version}</target>
 				</configuration>
@@ -294,16 +268,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<source.version>1.7</source.version>
-		<junit.version>4.10</junit.version>
-		<jcommander.version>1.17</jcommander.version>
-		<guava.version>12.0</guava.version>
-		<ajdt.version>1.5</ajdt.version>
-		<aspectj.version>1.6.11</aspectj.version>
-		<jfreechart.version>1.0.14</jfreechart.version>
-		<commons-dbcp.version>1.4</commons-dbcp.version>
-		<log4j.version>1.2.17</log4j.version>
-		<mysql-connector.version>5.1.23</mysql-connector.version>
-		<sigar.version>1.6.5.132</sigar.version>
+		<internal.snapshots.repo.path>file://${project.basedir}/maven-repo/snapshots</internal.snapshots.repo.path>
+		<internal.release.repo.path>file://${project.basedir}/maven-repo/releases</internal.release.repo.path>
+		<source.version>1.7</source.version>		
+		<ajdt.version>1.7.2</ajdt.version>
+		<aspectj.version>1.7.0</aspectj.version>
+		<license-header-file>${project.basedir}/License.txt</license-header-file>
 	</properties>
 </project>
