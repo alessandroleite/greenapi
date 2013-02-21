@@ -20,20 +20,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.panels;
 
-import java.util.Collection;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
-import monitorapi.core.model.Data;
+import monitorapi.core.model.Machine;
 
-public interface Subject {
-
-	void add(Observer obs);
-
-	void remove(Observer obs);
-
-	Collection<Observer> getObservers();
-
-	@SuppressWarnings("rawtypes")
-	Data getData();
+public class IOStatPanel extends JPanel {
+	
+	/**
+	 * Serial code version <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -2391092710222885802L;
+	private final Machine machine;
+	
+	public IOStatPanel(Machine machine){
+		this.machine = machine;
+		setLayout(new BoxLayout(this, 1));
+		this.createStatPanels();
+	}
+	
+	
+	private void createStatPanels() {
+		/*int i = 0;
+		for (IOStat stat: this.machine.ioStats()) {
+			if (++i > 10)
+				this.add(createPainelContainer(stat.device(), new IOMultiLineChart(stat)));
+			
+		}*/		
+	}
 }

@@ -3,17 +3,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-     	<parent>
-	    <groupId>system-monitor</groupId>
-	    <artifactId>super-pom</artifactId>	   
-            <version>1.0.0-SNAPSHOT</version>
-	    <relativePath>../pom.xml</relativePath>
+	<parent>
+		<groupId>system-monitor</groupId>
+		<artifactId>super-pom</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<groupId>system-monitor</groupId>
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
-        
+
 
 	<dependencies>
 		<!-- Test Scope -->
@@ -30,7 +30,7 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.beust</groupId>
 			<artifactId>jcommander</artifactId>
@@ -48,23 +48,18 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
+		
 
-                <dependency>
-			<groupId>org.jfree</groupId> 
-                        <artifactId>jfreechart</artifactId>    
-                        <version>${jfreechart.version}</version>
-                </dependency>
-
-		<dependency>	
-               		<groupId>commons-dbcp</groupId>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
-  			<version>${commons-dbcp.version}</version>
+			<version>${commons-dbcp.version}</version>
 		</dependency>
 
-		<dependency>	
-               		<groupId>log4j</groupId>
+		<dependency>
+			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-  			<version>${log4j.version}</version>
+			<version>${log4j.version}</version>
 		</dependency>
 
 		<dependency>
@@ -72,17 +67,15 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql-connector.version}</version>
 		</dependency>
-                
-                <dependency>
+
+		<dependency>
 			<groupId>org.hyperic</groupId>
 			<artifactId>sigar</artifactId>
 			<version>${sigar.version}</version>
 		</dependency>
-		            
+
 	</dependencies>
 
-
-	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -93,7 +86,6 @@
 		<junit.version>4.10</junit.version>
 		<jcommander.version>1.17</jcommander.version>
 		<guava.version>13.0.1</guava.version>		
-		<jfreechart.version>1.0.14</jfreechart.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<log4j.version>1.2.17</log4j.version>
 		<mysql-connector.version>5.1.23</mysql-connector.version>

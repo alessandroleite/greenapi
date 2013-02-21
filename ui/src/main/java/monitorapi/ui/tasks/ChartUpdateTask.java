@@ -20,20 +20,21 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.tasks;
 
-import java.util.Collection;
+import monitorapi.core.model.Resource;
+import monitorapi.ui.charts.ChartPanelSupport;
 
-import monitorapi.core.model.Data;
+public class ChartUpdateTask<T extends Resource> implements Runnable {
 
-public interface Subject {
+	private final ChartPanelSupport<T> panel;
 
-	void add(Observer obs);
+	public ChartUpdateTask(ChartPanelSupport<T> panel) {
+		this.panel = panel;
+	}
 
-	void remove(Observer obs);
-
-	Collection<Observer> getObservers();
-
-	@SuppressWarnings("rawtypes")
-	Data getData();
+	@Override
+	public void run() {
+		this.panel.update();
+	}	
 }

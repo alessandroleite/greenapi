@@ -20,20 +20,47 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.charts.line;
 
-import java.util.Collection;
+import monitorapi.core.model.Cpu;
+import monitorapi.ui.charts.ChartPanelSupport;
+import monitorapi.ui.charts.LineChartPanelSupport;
+import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
 
-import monitorapi.core.model.Data;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
 
-public interface Subject {
+public class CoreLineChart extends LineChartPanelSupport<Cpu> {
 
-	void add(Observer obs);
+	/**
+	 * Serial code version <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 6519924654258093340L;
 
-	void remove(Observer obs);
+	public CoreLineChart(Cpu cpu) {
+		super("", "", cpu, ChartPanelSupport.DEFAULT_DELAY);
+	}
 
-	Collection<Observer> getObservers();
+	@Override
+	protected void createSeries() {
+		if (this.getSeries().size() < 1) {
+			this.getTimeSeries().addSeries(
+					new TimeSeries("CPU " + getResource().getName() + " "
+							+ this.getResource().getCpuSocket().vendor() + " "
+							+ this.getResource().getCpuSocket().model()));
+			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
+		}
+	}
 
-	@SuppressWarnings("rawtypes")
-	Data getData();
+	@Override
+	public void update() {
+
+		if (this.getSeries().size() < 1) {
+			this.createSeries();
+			return;
+		}
+
+		((TimeSeries) getSeries().get(0)).add(new Millisecond(),
+				this.getResource().getLoad());
+	}
 }

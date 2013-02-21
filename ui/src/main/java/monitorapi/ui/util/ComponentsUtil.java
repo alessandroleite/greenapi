@@ -20,20 +20,36 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.util;
 
-import java.util.Collection;
+import java.awt.Component;
+import java.awt.LayoutManager;
 
-import monitorapi.core.model.Data;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
-public interface Subject {
+public class ComponentsUtil {
+	
+	public static JPanel createPainelContainer(String title, Component... components) {
+		JPanel panel =  createPainelContainer(title, null, components);
+		panel.setLayout(new BoxLayout(panel, 0));
+		
+		return panel;
+	}
+	
+	public static JPanel createPainelContainer(String title, LayoutManager layout, Component... components) {
+		final JPanel container = new JPanel();
+		container.setBorder(BorderFactory.createTitledBorder(title));
+		
+		if (layout != null)
+			container.setLayout(layout);
 
-	void add(Observer obs);
+		for (Component c : components) {
+			container.add(c);
+		}
 
-	void remove(Observer obs);
-
-	Collection<Observer> getObservers();
-
-	@SuppressWarnings("rawtypes")
-	Data getData();
+		return container;
+		
+	}
 }

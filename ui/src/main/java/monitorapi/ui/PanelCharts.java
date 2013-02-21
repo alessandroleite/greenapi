@@ -1,4 +1,26 @@
-package monitor.ui;
+/**
+ * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package monitorapi.ui;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -9,12 +31,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import monitor.model.Machine;
-import monitor.ui.charts.line.CpuFrequencyLineChart;
-import monitor.ui.charts.line.CpuLoadMultiCoreLineChart;
-import monitor.ui.charts.line.SystemMemoryLineChart;
-import monitor.ui.charts.line.TemperatureMultiCoreLineChart;
-import monitor.ui.panels.CpuFrequencyPanel;
+import monitorapi.core.model.Machine;
+import monitorapi.ui.charts.line.CpuFrequencyLineChart;
+import monitorapi.ui.charts.line.CpuLoadMultiCoreLineChart;
+import monitorapi.ui.charts.line.SystemMemoryLineChart;
+import monitorapi.ui.charts.line.TemperatureMultiCoreLineChart;
+import monitorapi.ui.panels.CpuFrequencyPanel;
 
 import com.google.common.base.Preconditions;
 
@@ -42,7 +64,7 @@ public class PanelCharts extends JFrame {
 		this.addPanel(new CpuLoadMultiCoreLineChart(machine.cpus()[0]));
 		this.addPanel(new TemperatureMultiCoreLineChart(machine.cpus()[0]));
 		this.addPanel(new CpuFrequencyLineChart(machine.cpus()[0]));
-		this.addPanel(new SystemMemoryLineChart(machine.memory()));
+		this.addPanel(new SystemMemoryLineChart(machine.ram()));
 		this.addPanel(new CpuFrequencyPanel(machine.cpus()[0]));
 		//this.addPanel(new IOStatPanel(machine));
 		//this.addPanel(new SystemLoadPanel(machine));

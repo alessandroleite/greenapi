@@ -20,20 +20,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.panels;
 
-import java.util.Collection;
+import java.awt.Dimension;
 
-import monitorapi.core.model.Data;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
-public interface Subject {
+import monitorapi.core.model.Memory;
+import monitorapi.ui.charts.line.SystemMemoryLineChart;
 
-	void add(Observer obs);
+public class MemoryPanel extends JPanel {
 
-	void remove(Observer obs);
+	/**
+	 * Serial code version <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = -6616785096856962739L;
 
-	Collection<Observer> getObservers();
-
-	@SuppressWarnings("rawtypes")
-	Data getData();
+	public MemoryPanel(Memory memory){
+		setLayout(new BoxLayout(this, 1));
+		SystemMemoryLineChart memoryLineChart = new SystemMemoryLineChart(memory);
+		memoryLineChart.setSize(new Dimension(500,100));
+		this.add(memoryLineChart);
+	}
 }

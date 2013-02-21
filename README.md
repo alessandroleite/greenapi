@@ -1,4 +1,4 @@
-System Monitor [![Build Status](https://secure.travis-ci.org/alessandroleite/system-monitor.png)](http://travis-ci.org/alessandroleite/system-monitor)
+System Monitor [![Build Status](https://travis-ci.org/alessandroleite/system-monitor.png)](https://travis-ci.org/alessandroleite/system-monitor)	       
 ===================
 
 What is it ?

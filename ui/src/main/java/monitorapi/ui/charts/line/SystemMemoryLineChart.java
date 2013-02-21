@@ -20,20 +20,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.util;
+package monitorapi.ui.charts.line;
 
-import java.util.Collection;
+import monitorapi.core.model.Memory;
+import monitorapi.core.model.MemoryType;
+import monitorapi.ui.charts.ChartPanelSupport;
+import monitorapi.ui.charts.LineChartPanelSupport;
+import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
 
-import monitorapi.core.model.Data;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
 
-public interface Subject {
+public class SystemMemoryLineChart extends LineChartPanelSupport<Memory> {
 
-	void add(Observer obs);
+	/**
+	 * Serial code version <code>serialVersionUID<code>
+	 */
+	private static final long serialVersionUID = -7448536632871042915L;
 
-	void remove(Observer obs);
+	public SystemMemoryLineChart(Memory memory) {
+		super(memory.description(),				
+				"Memory Usage (%)", memory, ChartPanelSupport.DEFAULT_DELAY);
+		getPlot().getRangeAxis().setRange(0.0d, 100d);
+	}
 
-	Collection<Observer> getObservers();
+	@Override
+	protected void createSeries() {
+		if (this.getSeries().size() < 1) {
+			this.getTimeSeries().addSeries(new TimeSeries(MemoryType.RAM));
+			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
+		}
+	}
 
-	@SuppressWarnings("rawtypes")
-	Data getData();
+	@Override
+	public void update() {
+
+		if (this.getSeries().size() < 1) {
+			return;
+		}
+
+		((TimeSeries) this.getSeries().get(0)).add(new Millisecond(),
+				getResource().state().value());
+	}
 }
