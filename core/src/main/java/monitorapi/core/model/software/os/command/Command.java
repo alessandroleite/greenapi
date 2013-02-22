@@ -20,24 +20,33 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.core.model.software.os.command;
 
-public class MonitoringException extends RuntimeException{
+public interface Command<T> {
 
 	/**
-	 * Serial code version <code>serialVersionUID</code>
+	 * Returns <code>true</code> is administrator permission is required,
+	 * otherwise <code>false</code>.
+	 * 
+	 * @return <code>true</code> is administrator permission is required,
+	 *         otherwise <code>false</code>.
 	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+	boolean isRootRequired();
 
-	public MonitoringException(Throwable root) {
-		super(root);
-	}
-	
-	public MonitoringException(String message) {
-		super(message);
-	}
-	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
-	}
+	/**
+	 * Returns the result of the execution of a command.
+	 * 
+	 * @return the result of the execution of a command.
+	 */
+	T output();
+
+	/**
+	 * Execute a command with its arguments. The result of execution is
+	 * available calling the method {@link #output()}. If the execution requires
+	 * root permission the command will not be executed.
+	 * 
+	 * @param args
+	 *            The arguments to execute a command.
+	 */
+	void execute(Argument... args);
 }

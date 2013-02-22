@@ -20,24 +20,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.core.model.software.os.command.linux;
 
-public class MonitoringException extends RuntimeException{
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+import monitorapi.core.model.Frequency;
 
-	public MonitoringException(Throwable root) {
-		super(root);
+public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency> {
+
+	public CurrentCpuFrequency() {
+		super(true, true);
 	}
-	
-	public MonitoringException(String message) {
-		super(message);
+
+	@Override
+	protected Frequency parser(String result, InputStream source)
+			throws IOException {
+		return new Frequency(Long.parseLong(result.trim()));
 	}
-	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
+
+	@Override
+	public String commandLine() {
+		return "cat /sys/devices/system/cpu/cpu%s/cpufreq/cpuinfo_cur_freq";
 	}
 }

@@ -20,24 +20,36 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.util;
 
-public class MonitoringException extends RuntimeException{
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+public final class CopyInputStream {
+	private final InputStream source;
 
-	public MonitoringException(Throwable root) {
-		super(root);
+	public CopyInputStream(InputStream source) {
+		this.source = source;
 	}
-	
-	public MonitoringException(String message) {
-		super(message);
+
+	private int copyIn(ByteArrayOutputStream copy) throws IOException {
+		int read = 0;
+		int chunk = 0;
+		byte[] data = new byte[256];
+
+		while (-1 != (chunk = source.read(data))) {
+			read += data.length;
+			copy.write(data, 0, chunk);
+		}
+		return read;
 	}
-	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
+
+	public InputStream copy() throws IOException {
+		try (ByteArrayOutputStream copy = new ByteArrayOutputStream()) {
+			copyIn(copy);
+			return (InputStream) new ByteArrayInputStream(copy.toByteArray());
+		}
 	}
 }

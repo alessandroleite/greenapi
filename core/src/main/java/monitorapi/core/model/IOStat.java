@@ -46,10 +46,6 @@ public class IOStat implements Data<IOStat> {
 	 */
 	private final String device;
 
-	/**
-	 * 
-	 */
-	private final Machine machine;
 
 	/**
 	 * Properties of the {@link IOStat};
@@ -58,11 +54,9 @@ public class IOStat implements Data<IOStat> {
 
 	/**
 	 * 
-	 * @param machine
 	 * @param device
 	 */
-	public IOStat(Machine machine, String device) {
-		this.machine = machine;
+	public IOStat(String device) {
 		this.device = device;
 	}
 
@@ -76,13 +70,6 @@ public class IOStat implements Data<IOStat> {
 	 */
 	public String device() {
 		return device;
-	}
-
-	/**
-	 * @return the machine
-	 */
-	public Machine machine() {
-		return machine;
 	}
 
 	/**

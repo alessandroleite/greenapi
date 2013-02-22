@@ -20,24 +20,39 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.core.model.software.os.command.linux;
 
-public class MonitoringException extends RuntimeException{
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.StringTokenizer;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+import monitorapi.core.model.Frequency;
+import monitorapi.util.StringTokenizer2;
 
-	public MonitoringException(Throwable root) {
-		super(root);
-	}
+public class CpuScalingAvailableFrequencies extends LinuxCommandSupport<Frequency[]> {
 	
-	public MonitoringException(String message) {
-		super(message);
-	}
+	private static final String INSTRUCTION_LINE = "cat /sys/devices/system/cpu/cpu%S/cpufreq/scaling_available_frequencies";
 	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
+	public CpuScalingAvailableFrequencies() {
+		super(true, true);
+	}
+
+	@Override
+	protected Frequency[] parser(String result, InputStream source)
+			throws IOException {
+		
+		StringTokenizer tokens = new StringTokenizer2(result.trim(), " ");
+		Frequency[] frequencies = new Frequency[tokens.countTokens()];
+
+		int i = 0;
+		while (tokens.hasMoreElements()) {
+			frequencies[i++] = new Frequency(Long.parseLong(tokens.nextToken()));
+		}
+		return frequencies;
+	}
+
+	@Override
+	public String commandLine() {
+		return INSTRUCTION_LINE;
 	}
 }

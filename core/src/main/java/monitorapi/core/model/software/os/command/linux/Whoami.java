@@ -20,24 +20,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.core.model.software.os.command.linux;
 
-public class MonitoringException extends RuntimeException{
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+import monitorapi.core.model.software.os.command.AbstractRuntimeCommand;
+import monitorapi.util.IOUtils;
 
-	public MonitoringException(Throwable root) {
-		super(root);
+public class Whoami extends AbstractRuntimeCommand<Boolean> {
+
+	static final String ROOT = "root";
+
+	public Whoami() {
+		super("whoami");
 	}
-	
-	public MonitoringException(String message) {
-		super(message);
+
+	@Override
+	public boolean isRootRequired() {
+		return false;
 	}
-	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
+
+	@Override
+	protected boolean isRoot() {
+		return false;
+	}
+
+	@Override
+	protected Boolean parser(InputStream input) throws IOException {
+		return ROOT.equalsIgnoreCase(IOUtils.asString(input));
 	}
 }

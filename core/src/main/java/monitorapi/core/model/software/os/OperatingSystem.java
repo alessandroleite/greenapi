@@ -22,24 +22,57 @@
  */
 package monitorapi.core.model.software.os;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.Serializable;
+import java.util.Map;
+
+import monitorapi.core.model.Frequency;
 import monitorapi.core.model.IOStats;
+import monitorapi.core.model.Temperature;
+import monitorapi.core.model.software.os.command.Command;
 
-public abstract class OperatingSystem {
-
-	private final String name;
+public abstract class OperatingSystem implements Serializable,
+		Comparable<OperatingSystem> {
 
 	/**
-	 * Returns the I/O states of the machine.
-	 * 
-	 * @return the I/O states of the machine.
+	 * Serial code version <code>serialVersionUID</code> 
 	 */
-	public abstract IOStats iostats();
+	private static final long serialVersionUID = -63543969636463188L;
+	
+	private final String name;
 
 	public OperatingSystem(String name) {
-		this.name = name;
+		this.name = requireNonNull(name);
 	}
 
 	public String name() {
 		return name;
+	}
+
+	/**
+	 * Returns the command to get the I/O states of a machine. This method does
+	 * not execute the command.
+	 * 
+	 * @return the command to get the I/O states of a machine.
+	 */
+	public abstract Command<IOStats> iostats();
+
+	/**
+	 * Returns the command to get the CPU frequencies. This method does not
+	 * execute the command.
+	 * 
+	 * @return Returns the command to get the CPU frequencies.
+	 */
+	public abstract Command<Frequency[]> cpuAvailableFrequencies();
+	
+	public abstract Command<Frequency> currentCpuFrequency();
+	
+	public abstract Command<Map<String, Temperature>> cpuTemperature();
+
+	
+	@Override
+	public int compareTo(OperatingSystem other) {
+		return this.name.compareTo(other.name());
 	}
 }

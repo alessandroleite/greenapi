@@ -20,24 +20,50 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package monitorapi.model.exception;
+package monitorapi.core.model.software.os.linux;
 
-public class MonitoringException extends RuntimeException{
+import java.util.Map;
 
+import monitorapi.core.model.Frequency;
+import monitorapi.core.model.IOStats;
+import monitorapi.core.model.Temperature;
+import monitorapi.core.model.software.os.OperatingSystem;
+import monitorapi.core.model.software.os.command.Command;
+import monitorapi.core.model.software.os.command.linux.CpuScalingAvailableFrequencies;
+import monitorapi.core.model.software.os.command.linux.CpuTemperature;
+import monitorapi.core.model.software.os.command.linux.CurrentCpuFrequency;
+import monitorapi.core.model.software.os.command.linux.IOStat;
+
+
+public class LinuxOperatingSystem extends OperatingSystem {
+	
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+	private static final long serialVersionUID = -4413996798883823614L;
 
-	public MonitoringException(Throwable root) {
-		super(root);
+	public LinuxOperatingSystem(String name) {
+		super(name);
 	}
-	
-	public MonitoringException(String message) {
-		super(message);
+
+
+	@Override
+	public Command<IOStats> iostats() {
+		return new IOStat();
 	}
-	
-	public MonitoringException(String message, Throwable root) {
-		super(message, root);
+
+	@Override
+	public Command<Frequency[]> cpuAvailableFrequencies() {
+		return new CpuScalingAvailableFrequencies();
+	}
+
+	@Override
+	public Command<Frequency> currentCpuFrequency() {
+		return new CurrentCpuFrequency();
+	}
+
+	@Override
+	public Command<Map<String, Temperature>> cpuTemperature() {
+		return new CpuTemperature();
 	}
 }
