@@ -22,7 +22,7 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Machine;
+import monitorapi.core.model.resource.Machine;
 import monitorapi.ui.charts.ChartPanelSupport;
 import monitorapi.ui.charts.LineChartPanelSupport;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;

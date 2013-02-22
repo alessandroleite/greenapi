@@ -31,7 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import monitorapi.core.model.Machine;
+import monitorapi.core.model.resource.Machine;
 import monitorapi.ui.charts.line.CpuFrequencyLineChart;
 import monitorapi.ui.charts.line.CpuLoadMultiCoreLineChart;
 import monitorapi.ui.charts.line.SystemMemoryLineChart;

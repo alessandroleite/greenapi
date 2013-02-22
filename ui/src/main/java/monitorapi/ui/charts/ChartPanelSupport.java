@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import monitorapi.core.model.Resource;
+import monitorapi.core.model.resource.Resource;
 import monitorapi.ui.tasks.ChartUpdateTask;
 
 import org.jfree.chart.JFreeChart;

@@ -28,8 +28,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import monitorapi.core.model.Cpu;
-import monitorapi.core.model.Machine;
+import monitorapi.core.model.resource.Cpu;
+import monitorapi.core.model.resource.Machine;
 import monitorapi.ui.charts.line.CoreLineChart;
 import monitorapi.ui.charts.line.CpuLoadMultiCoreLineChart;
 import monitorapi.ui.charts.line.SystemLoadLineChart;
@@ -104,7 +104,7 @@ public class SystemLoadPanel extends JPanel {
 			coreChart.setSeriesPaint(i, CORE_COLORS[i++]);
 			coreChart.setMaximumItemAge(MAXIMUM_ITEM_AGE, true);
 
-			corePanel.add(this.createPainelContainer("Core " + i + " (" + cpu.getName() + ")", coreChart));
+			corePanel.add(this.createPainelContainer("Core " + i + " (" + cpu.name() + ")", coreChart));
 		}		
 		add(corePanel);
 	}

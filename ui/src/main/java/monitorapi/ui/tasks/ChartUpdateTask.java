@@ -22,7 +22,7 @@
  */
 package monitorapi.ui.tasks;
 
-import monitorapi.core.model.Resource;
+import monitorapi.core.model.resource.Resource;
 import monitorapi.ui.charts.ChartPanelSupport;
 
 public class ChartUpdateTask<T extends Resource> implements Runnable {

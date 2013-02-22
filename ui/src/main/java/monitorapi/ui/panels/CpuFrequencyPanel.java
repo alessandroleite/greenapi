@@ -35,8 +35,8 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import monitorapi.core.model.CpuSocket;
-import monitorapi.core.model.Frequency;
+import monitorapi.core.model.data.Frequency;
+import monitorapi.core.model.resource.CpuSocket;
 import monitorapi.ui.charts.line.CpuFrequencyLineChart;
 import monitorapi.ui.charts.line.TemperatureMultiCoreLineChart;
 

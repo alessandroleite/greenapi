@@ -22,8 +22,8 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Memory;
-import monitorapi.core.model.MemoryType;
+import monitorapi.core.model.resource.Memory;
+import monitorapi.core.model.resource.MemoryType;
 import monitorapi.ui.charts.ChartPanelSupport;
 import monitorapi.ui.charts.LineChartPanelSupport;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;

@@ -24,15 +24,15 @@ package monitorapi.core.model.software.os.linux;
 
 import java.util.Map;
 
-import monitorapi.core.model.Frequency;
-import monitorapi.core.model.IOStats;
-import monitorapi.core.model.Temperature;
+import monitorapi.core.model.data.Frequency;
+import monitorapi.core.model.data.IOStats;
+import monitorapi.core.model.data.Temperature;
 import monitorapi.core.model.software.os.OperatingSystem;
 import monitorapi.core.model.software.os.command.Command;
-import monitorapi.core.model.software.os.command.linux.CpuScalingAvailableFrequencies;
-import monitorapi.core.model.software.os.command.linux.CpuTemperature;
-import monitorapi.core.model.software.os.command.linux.CurrentCpuFrequency;
-import monitorapi.core.model.software.os.command.linux.IOStat;
+import monitorapi.core.model.software.os.command.impl.linux.CpuScalingAvailableFrequencies;
+import monitorapi.core.model.software.os.command.impl.linux.CpuTemperature;
+import monitorapi.core.model.software.os.command.impl.linux.CurrentCpuFrequency;
+import monitorapi.core.model.software.os.command.impl.linux.IOStat;
 
 
 public class LinuxOperatingSystem extends OperatingSystem {

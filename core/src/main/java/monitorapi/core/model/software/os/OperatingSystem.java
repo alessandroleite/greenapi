@@ -27,9 +27,9 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Map;
 
-import monitorapi.core.model.Frequency;
-import monitorapi.core.model.IOStats;
-import monitorapi.core.model.Temperature;
+import monitorapi.core.model.data.Frequency;
+import monitorapi.core.model.data.IOStats;
+import monitorapi.core.model.data.Temperature;
 import monitorapi.core.model.software.os.command.Command;
 
 public abstract class OperatingSystem implements Serializable,

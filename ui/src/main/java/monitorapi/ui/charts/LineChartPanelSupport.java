@@ -27,7 +27,7 @@ import java.awt.Color;
 import java.util.Date;
 import java.util.List;
 
-import monitorapi.core.model.Resource;
+import monitorapi.core.model.resource.Resource;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
 
 import org.jfree.chart.ChartFactory;

@@ -22,7 +22,7 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Cpu;
+import monitorapi.core.model.resource.Cpu;
 import monitorapi.ui.charts.ChartPanelSupport;
 import monitorapi.ui.charts.LineChartPanelSupport;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
@@ -45,9 +45,9 @@ public class CoreLineChart extends LineChartPanelSupport<Cpu> {
 	protected void createSeries() {
 		if (this.getSeries().size() < 1) {
 			this.getTimeSeries().addSeries(
-					new TimeSeries("CPU " + getResource().getName() + " "
-							+ this.getResource().getCpuSocket().vendor() + " "
-							+ this.getResource().getCpuSocket().model()));
+					new TimeSeries("CPU " + getResource().name() + " "
+							+ this.getResource().cpuSocket().vendor() + " "
+							+ this.getResource().cpuSocket().model()));
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
 		}
 	}
@@ -61,6 +61,6 @@ public class CoreLineChart extends LineChartPanelSupport<Cpu> {
 		}
 
 		((TimeSeries) getSeries().get(0)).add(new Millisecond(),
-				this.getResource().getLoad());
+				this.getResource().load());
 	}
 }

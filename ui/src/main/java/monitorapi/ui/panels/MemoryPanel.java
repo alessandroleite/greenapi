@@ -27,7 +27,7 @@ import java.awt.Dimension;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import monitorapi.core.model.Memory;
+import monitorapi.core.model.resource.Memory;
 import monitorapi.ui.charts.line.SystemMemoryLineChart;
 
 public class MemoryPanel extends JPanel {

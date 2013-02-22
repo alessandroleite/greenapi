@@ -22,8 +22,8 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Cpu;
-import monitorapi.core.model.CpuSocket;
+import monitorapi.core.model.resource.Cpu;
+import monitorapi.core.model.resource.CpuSocket;
 import monitorapi.ui.charts.LineChartPanelSupport;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
 
@@ -59,7 +59,7 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 		if (this.getSeries().size() < this.getResource().cores().size()) {
 			
 			for (Cpu cpu : this.getResource().cores()) {
-				this.getTimeSeries().addSeries(new TimeSeries(String.format("CPU %s", cpu.getName())));
+				this.getTimeSeries().addSeries(new TimeSeries(String.format("CPU %s", cpu.name())));
 			}
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
 		}
@@ -74,7 +74,7 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 
 		int i = 0;
 		for (Cpu cpu : this.getResource().cores()) {
-			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu.getState().getFrequency().inMhz());
+			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu.state().getFrequency().inMhz());
 		}
 	}
 }

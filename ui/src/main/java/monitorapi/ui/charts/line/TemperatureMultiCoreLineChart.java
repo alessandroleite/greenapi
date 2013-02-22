@@ -22,8 +22,8 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Cpu;
-import monitorapi.core.model.CpuSocket;
+import monitorapi.core.model.resource.Cpu;
+import monitorapi.core.model.resource.CpuSocket;
 import monitorapi.ui.charts.LineChartPanelSupport;
 import monitorapi.ui.charts.data.xy.TranslatingXYDataset;
 
@@ -37,7 +37,7 @@ public class TemperatureMultiCoreLineChart extends
 	 * Serial code version <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 4816098286311764566L;
-	
+
 	public TemperatureMultiCoreLineChart(CpuSocket cpuSocket) {
 		this(cpuSocket.description(), "CPU/Core Temperature (°C)", cpuSocket);
 	}
@@ -60,10 +60,10 @@ public class TemperatureMultiCoreLineChart extends
 		if (this.getSeries().size() < getResource().cores().size()) {
 			for (Cpu cpu : getResource().cores()) {
 				this.getTimeSeries().addSeries(
-						new TimeSeries(String.format("CPU %s", cpu.getName())));
+						new TimeSeries(String.format("CPU %s", cpu.name())));
 			}
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
-		}		
+		}
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class TemperatureMultiCoreLineChart extends
 		int i = 0;
 		for (Cpu cpu : getResource().cores()) {
 			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu
-					.getTemperature().value());
+					.temperature().value());
 		}
 	}
 }

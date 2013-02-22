@@ -25,7 +25,7 @@ package monitorapi.ui.panels;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import monitorapi.core.model.Machine;
+import monitorapi.core.model.resource.Machine;
 
 public class IOStatPanel extends JPanel {
 	

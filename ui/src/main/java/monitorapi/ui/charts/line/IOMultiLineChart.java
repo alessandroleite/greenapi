@@ -22,7 +22,7 @@
  */
 package monitorapi.ui.charts.line;
 
-import monitorapi.core.model.Machine;
+import monitorapi.core.model.resource.Machine;
 import monitorapi.ui.charts.LineChartPanelSupport;
 
 public class IOMultiLineChart extends LineChartPanelSupport<Machine> {
