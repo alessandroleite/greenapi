@@ -5,3 +5,5 @@ bin
 .project
 .settings
 .DS_Store
+src.tar.gz
+commands.txt

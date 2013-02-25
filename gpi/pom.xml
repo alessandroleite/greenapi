@@ -3,17 +3,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-     	<parent>
-	    <groupId>system-monitor</groupId>
-	    <artifactId>super-pom</artifactId>	   
-            <version>1.0.0-SNAPSHOT</version>
-	    <relativePath>../pom.xml</relativePath>
+	<parent>
+		<groupId>greenapi</groupId>
+		<artifactId>super-pom</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>system-monitor</groupId>
 	<artifactId>gpi</artifactId>
 	<packaging>jar</packaging>
-	
+
 	<properties>
 		<internal.snapshots.repo.path>file://${basedir}/../maven-repo/snapshots</internal.snapshots.repo.path>
 		<internal.release.repo.path>file://${basedir}/../maven-repo/releases</internal.release.repo.path>

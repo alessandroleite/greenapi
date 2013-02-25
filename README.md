@@ -1,4 +1,4 @@
-System Monitor [![Build Status](https://travis-ci.org/alessandroleite/system-monitor.png)](https://travis-ci.org/alessandroleite/system-monitor)	       
+GreenAPI [![Build Status](https://travis-ci.org/alessandroleite/greenapi.png)](https://travis-ci.org/alessandroleite/greenapi)	       
 ===================
 
 What is it ?
