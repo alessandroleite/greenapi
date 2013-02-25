@@ -43,19 +43,15 @@ public class SigarResourceBuilder extends ResourceBuilder<Machine> {
 	@Override
 	public Machine build() throws ResourceException {
 		final OperatingSystem os = OperatingSystemFactory.getSystemOS();
-		
-		try{
-		return new MachineBuilderImpl()
-				.withId(physicalMachineId())
-				.withName(physicalMachineId())
-				.withNetInterfaces(netInterfaces())
-				.withCpus(cpus(os))
-				.withMemory(memories())
-				.withStorages(new StorageBuilderImpl().os(os).build())
-				.withOs(os).build();
-		}catch(SigarException exception){
-			throw new ResourceException(exception);
-		}
+			return new MachineBuilderImpl()
+					.withId(physicalMachineId())
+					.withName(physicalMachineId())
+					.withNetInterfaces(netInterfaces())
+					.withCpus(cpus(os))
+					.withMemory(memories())
+					.withStorages(new StorageBuilderImpl().os(os).build())
+					.withOs(os)
+					.build();
 	}
 
 	private String physicalMachineId() throws SigarException {

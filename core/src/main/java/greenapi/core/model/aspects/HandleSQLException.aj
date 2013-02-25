@@ -22,22 +22,21 @@
  */
 package greenapi.core.model.aspects;
 
+import greenapi.core.model.exception.GreenApiException;
+
 import java.sql.SQLException;
 
 public aspect HandleSQLException {
 
-	declare soft: SQLException: throwsMonitoringException();
+	declare soft: SQLException: throwsGreenApiException();
 
-	pointcut throwsMonitoringException(): (within(monitor.model.dao..*) && execution(* persist(..)));
+	pointcut throwsGreenApiException(): (within(monitor.model.dao..*) && execution(* persist(..)));
 
-	Object around(): throwsMonitoringException() {
+	Object around(): throwsGreenApiException() {
 		try {
 			return proceed();
 		} catch (SQLException exception) {
-			// throw new MonitoringException();
-			exception.printStackTrace();
-			System.exit(1);
-			return thisJoinPoint.getTarget();
+			throw new GreenApiException(exception);
 		}
 	}
 }

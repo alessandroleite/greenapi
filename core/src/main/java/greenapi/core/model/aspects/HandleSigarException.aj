@@ -41,7 +41,7 @@ public aspect HandleSigarException {
 	 * method declared to throw {@link SigarException} in our project.
 	 */
 	pointcut throwsResourceException(): ( 
-			(within(greenapi.core.model.resources.builders.impl..*) || within(greenapi.core.model.sensors ..*) ) && 
+			(within(greenapi.core.model.resources.builders..*) || within(greenapi.core.model.sensors ..*) ) && 
 			( execution (* build(..)) || execution (* collect(..) )  ) );
 
 	/**

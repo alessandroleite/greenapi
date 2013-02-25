@@ -22,22 +22,22 @@
  */
 package greenapi.core.model.exception;
 
-public class MonitoringException extends RuntimeException{
+public class GreenApiException extends RuntimeException{
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = -1653041892643887935L;
 
-	public MonitoringException(Throwable root) {
+	public GreenApiException(Throwable root) {
 		super(root);
 	}
 	
-	public MonitoringException(String message) {
+	public GreenApiException(String message) {
 		super(message);
 	}
 	
-	public MonitoringException(String message, Throwable root) {
+	public GreenApiException(String message, Throwable root) {
 		super(message, root);
 	}
 }

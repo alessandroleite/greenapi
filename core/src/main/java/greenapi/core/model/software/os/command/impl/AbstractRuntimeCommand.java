@@ -22,7 +22,7 @@
  */
 package greenapi.core.model.software.os.command.impl;
 
-import greenapi.core.model.exception.MonitoringException;
+import greenapi.core.model.exception.GreenApiException;
 import greenapi.core.model.software.os.command.Argument;
 import greenapi.core.model.software.os.command.Command;
 
@@ -85,7 +85,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	public void execute(Argument... args) {
 
 		if (this.isRootRequired() && !isRoot()) {
-			MonitoringException exception = new MonitoringException(
+			GreenApiException exception = new GreenApiException(
 					"Please, execute this command as a root user!");
 			errors.put(exception.getMessage(), exception);
 			return;

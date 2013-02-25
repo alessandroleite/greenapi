@@ -239,12 +239,12 @@
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjrt</artifactId>
-						<version>${aspectj.version}</version>
+						<version>${aspectjrt.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.aspectj</groupId>
 						<artifactId>aspectjtools</artifactId>
-						<version>${aspectj.version}</version>
+						<version>${aspectjtools.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -273,7 +273,9 @@
 		<internal.release.repo.path>file://${project.basedir}/maven-repo/releases</internal.release.repo.path>
 		<source.version>1.7</source.version>		
 		<ajdt.version>1.7.2</ajdt.version>
-		<aspectj.version>1.7.0</aspectj.version>
+		<aspectjrt.version>1.7.1</aspectjrt.version>
+		<aspectjweaver.version>1.7.1</aspectjweaver.version>
+		<aspectjtools.version>1.7.1</aspectjtools.version>
 		<license-header-file>${project.basedir}/License.txt</license-header-file>
 	</properties>
 </project>

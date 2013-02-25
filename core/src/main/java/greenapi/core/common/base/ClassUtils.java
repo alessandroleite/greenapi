@@ -24,7 +24,7 @@ package greenapi.core.common.base;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import greenapi.core.model.exception.MonitoringException;
+import greenapi.core.model.exception.GreenApiException;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -53,7 +53,7 @@ public final class ClassUtils {
 	 * @param fullClassName
 	 *            The name of the class to be instantiate.
 	 * @return An instance of the given class.
-	 * @throws MonitoringException
+	 * @throws GreenApiException
 	 *             If the given class doesn't exist or if it is impossible to
 	 *             instantiate its.
 	 */
@@ -62,7 +62,7 @@ public final class ClassUtils {
 			return Class.forName(checkNotNull(fullClassName)).newInstance();
 		} catch (InstantiationException | IllegalAccessException
 				| ClassNotFoundException exception) {
-			throw new MonitoringException(exception);
+			throw new GreenApiException(exception);
 		}
 	}
 
@@ -84,7 +84,7 @@ public final class ClassUtils {
 			} catch (ClassNotFoundException | NoSuchMethodException
 					| InvocationTargetException | IllegalAccessException
 					| InstantiationException exception) {
-				throw new MonitoringException(exception);
+				throw new GreenApiException(exception);
 			}
 		}
 	}
