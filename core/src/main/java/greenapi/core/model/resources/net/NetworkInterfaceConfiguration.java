@@ -22,7 +22,14 @@
  */
 package greenapi.core.model.resources.net;
 
-public final class NetworkConfiguration {
+import java.io.Serializable;
+
+public final class NetworkInterfaceConfiguration implements Serializable {
+
+	/**
+	 * Serial code version <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 1946779749348162293L;
 
 	private final boolean autonegotiation;
 	private final boolean broadcast;
@@ -37,11 +44,11 @@ public final class NetworkConfiguration {
 	private final String port;
 	private final String pair;
 
-	public NetworkConfiguration(boolean autonegotiation, boolean broadcast,
-			String driver, String driverVersion, String duplex,
-			String firmware, String ip, double latency, boolean link,
-			boolean multicast, String port, String pair) {
-		
+	public NetworkInterfaceConfiguration(boolean autonegotiation,
+			boolean broadcast, String driver, String driverVersion,
+			String duplex, String firmware, String ip, double latency,
+			boolean link, boolean multicast, String port, String pair) {
+
 		this.autonegotiation = autonegotiation;
 		this.broadcast = broadcast;
 		this.driver = driver;

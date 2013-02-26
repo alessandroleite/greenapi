@@ -82,13 +82,13 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(Argument... args) {
+	public T execute(Argument... args) {
 
 		if (this.isRootRequired() && !isRoot()) {
 			GreenApiException exception = new GreenApiException(
 					"Please, execute this command as a root user!");
 			errors.put(exception.getMessage(), exception);
-			return;
+			return null;
 		}
 
 		String[][] commands = commands(args);
@@ -100,6 +100,8 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 		} catch (IOException exception) {
 			this.errors.put(exception.getMessage(), exception);
 		}
+		
+		return this.output();
 	}
 
 	/**

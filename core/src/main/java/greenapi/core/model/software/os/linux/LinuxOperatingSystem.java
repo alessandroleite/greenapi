@@ -25,6 +25,7 @@ package greenapi.core.model.software.os.linux;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
+import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.software.os.OperatingSystem;
 import greenapi.core.model.software.os.command.Command;
 import greenapi.core.model.software.os.command.Who;
@@ -73,5 +74,10 @@ public class LinuxOperatingSystem extends OperatingSystem {
 	@Override
 	public Who who() {
 		return new Whoami();
+	}
+
+	@Override
+	public Command<NetworkInterface> networkHardwareDescription() {
+		return null;
 	}
 }

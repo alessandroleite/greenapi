@@ -23,7 +23,7 @@
 package greenapi.core.model.software.os.command.impl.linux;
 
 import greenapi.core.common.base.Booleans;
-import greenapi.core.model.resources.net.NetworkConfiguration;
+import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterface;
 
 import java.io.IOException;
@@ -76,14 +76,14 @@ public class NetworkInterfaceDescription extends
 		return "lshw -class network";
 	}
 
-	private NetworkConfiguration getConfiguration(String configuration) {
+	private NetworkInterfaceConfiguration getConfiguration(String configuration) {
 
-		NetworkConfiguration nc = null;
+		NetworkInterfaceConfiguration nc = null;
 		if (!Strings.isNullOrEmpty(configuration)) {
 			String[] attributes = configuration.substring(
 					configuration.indexOf(":") + 1).split(" ");
 			int i = 0;
-			nc = new NetworkConfiguration(
+			nc = new NetworkInterfaceConfiguration(
 					Booleans.valueOf(split(attributes[i++])[1]),
 					Booleans.valueOf(split(attributes[i++])[1]),
 					split(attributes[i++])[1], split(attributes[i++])[1],

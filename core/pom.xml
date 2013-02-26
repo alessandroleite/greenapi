@@ -47,7 +47,6 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectjweaver.version}</version>
 		</dependency>
-		
 
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -73,6 +72,11 @@
 			<version>${sigar.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>lshw</groupId>
+			<artifactId>xml-parser</artifactId>
+			<version>${lshw.version}</version>
+		</dependency>
 	</dependencies>
 
 	<properties>
@@ -83,10 +87,11 @@
 		<license-header-file>${basedir}/../License.txt</license-header-file>
 		<junit.version>4.10</junit.version>
 		<jcommander.version>1.17</jcommander.version>
-		<guava.version>13.0.1</guava.version>		
+		<guava.version>13.0.1</guava.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<log4j.version>1.2.17</log4j.version>
 		<mysql-connector.version>5.1.23</mysql-connector.version>
 		<sigar.version>1.6.4</sigar.version>
+		<lshw.version>0.2</lshw.version>
 	</properties>
 </project>

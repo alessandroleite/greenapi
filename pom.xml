@@ -49,6 +49,21 @@
 			</releases>
 		</repository>
 		<repository>
+			<id>github-snapshot-repo</id>
+			<url>https://github.com/alessandroleite/maven-repository/raw/master/snapshots</url>
+			<snapshots>
+			    <enabled>true</enabled>
+			</snapshots>
+		 </repository>
+
+		 <repository>
+			<id>github-release-repo</id>
+			<url>https://github.com/alessandroleite/maven-repository/raw/master/releases</url>
+			<snapshots>
+			    <enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>internal-snapshots-repo</id>
 			<name>Internal Maven repository of snapshots artifats</name>
 			<url>${internal.snapshots.repo.path}</url>

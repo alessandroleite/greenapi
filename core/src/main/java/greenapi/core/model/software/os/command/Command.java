@@ -47,6 +47,7 @@ public interface Command<T> {
 	 * 
 	 * @param args
 	 *            The arguments to execute a command.
+	 * @return The result of the execution. The same value as {@link #output()}.
 	 */
-	void execute(Argument... args);
+	T execute(Argument... args);
 }

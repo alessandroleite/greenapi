@@ -27,6 +27,7 @@ import static java.util.Objects.requireNonNull;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
+import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.software.os.command.Command;
 import greenapi.core.model.software.os.command.CpuScalingAvailableFrequencies;
 import greenapi.core.model.software.os.command.Who;
@@ -72,6 +73,8 @@ public abstract class OperatingSystem implements Serializable,
 	public abstract Command<Frequency> currentCpuFrequency();
 	
 	public abstract Command<Map<String, Temperature>> cpuTemperature();
+	
+	public abstract Command<NetworkInterface> networkHardwareDescription();
 	
 	/**
 	 * 

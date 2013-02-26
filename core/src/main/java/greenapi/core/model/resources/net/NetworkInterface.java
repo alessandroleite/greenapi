@@ -23,6 +23,7 @@
 package greenapi.core.model.resources.net;
 
 import greenapi.core.model.data.Data;
+import greenapi.core.model.data.NetworkInterfaceStat;
 import greenapi.core.model.resources.Resource;
 import greenapi.core.model.sensors.Sensor;
 
@@ -31,7 +32,7 @@ public final class NetworkInterface implements Resource {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -8169725322485852032L;
+	private static final long serialVersionUID = 3391239285333782698L;
 	
 	/**
 	 * The physical id.
@@ -49,14 +50,19 @@ public final class NetworkInterface implements Resource {
 	private final String width;
 	private final String clock;
 	private final String capabilities;
-	private final NetworkConfiguration configuration;
+	private final NetworkInterfaceConfiguration configuration;
 	private String resources;
+	
+	private NetworkInterfaceStat state;
+	
+	private NetworkInterfaceInfo networkInfo;
 
 	public NetworkInterface(Integer id, String description, String product,
 			String vendor, String busInfo, String logicalName, String version,
 			String serial, String size, String capacity, String width, String clock,
-			String capabilities, NetworkConfiguration configuration,
+			String capabilities, NetworkInterfaceConfiguration configuration,
 			String resources) {
+		
 		this(id, description, product, vendor, busInfo, logicalName, version,
 				serial, size, capacity, width, clock, capabilities, configuration);
 		this.resources = resources;
@@ -65,7 +71,7 @@ public final class NetworkInterface implements Resource {
 	public NetworkInterface(Integer id, String description, String product,
 			String vendor, String busInfo, String logicalName, String version,
 			String serial, String size, String capacity, String width, String clock,
-			String capabilities, NetworkConfiguration configuration) {
+			String capabilities, NetworkInterfaceConfiguration configuration) {
 
 		this.id = id;
 		this.description = description;
@@ -85,8 +91,11 @@ public final class NetworkInterface implements Resource {
 
 	@Override
 	public Sensor<?, Data<?>>[] sensors() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String hardwareAddress(){
+		return this.serial();
 	}
 
 	/**
@@ -197,7 +206,39 @@ public final class NetworkInterface implements Resource {
 	/**
 	 * @return the configuration
 	 */
-	public NetworkConfiguration configuration() {
+	public NetworkInterfaceConfiguration configuration() {
 		return configuration;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public NetworkInterfaceStat state() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public NetworkInterfaceStat setState(NetworkInterfaceStat state) {
+		synchronized(this) {
+			NetworkInterfaceStat previousState = this.state;
+			this.state = state;	
+			return previousState;
+		}
+	}
+
+	/**
+	 * @return the info
+	 */
+	public NetworkInterfaceInfo networkInfo() {
+		return networkInfo;
+	}
+
+	/**
+	 * @param networkInfo the info to set
+	 */
+	public void setNetworkInfo(NetworkInterfaceInfo networkInfo) {
+		this.networkInfo = networkInfo;
 	}
 }
