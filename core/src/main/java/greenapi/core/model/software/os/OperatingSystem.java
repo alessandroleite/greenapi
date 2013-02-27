@@ -74,7 +74,7 @@ public abstract class OperatingSystem implements Serializable,
 	
 	public abstract Command<Map<String, Temperature>> cpuTemperature();
 	
-	public abstract Command<NetworkInterface> networkHardwareDescription();
+	public abstract NetworkInterface networkInterfaceDescription(String id);
 	
 	/**
 	 * 

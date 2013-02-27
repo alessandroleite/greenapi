@@ -1,5 +1,9 @@
 package greenapi.core.model.resources.builders;
 
+import java.math.BigDecimal;
+
+import lshw.types.Capabilities;
+
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
@@ -12,7 +16,7 @@ public interface NetInterfaceBuilder extends Builder<NetworkInterface> {
 	NetInterfaceBuilder withNetworkInfo(
 			NetworkInterfaceInfo networkInterfaceInfo);
 
-	NetInterfaceBuilder withId(Integer id);
+	NetInterfaceBuilder withId(String id);
 
 	NetInterfaceBuilder withDescription(String description);
 
@@ -28,15 +32,15 @@ public interface NetInterfaceBuilder extends Builder<NetworkInterface> {
 
 	NetInterfaceBuilder withHardwareId(String serial);
 
-	NetInterfaceBuilder withSize(String size);
+	NetInterfaceBuilder withSize(BigDecimal size);
 
-	NetInterfaceBuilder withCapacity(String capacity);
+	NetInterfaceBuilder withCapacity(BigDecimal capacity);
 
-	NetInterfaceBuilder withWidth(String width);
+	NetInterfaceBuilder withWidth(BigDecimal width);
 
-	NetInterfaceBuilder withClock(String clock);
+	NetInterfaceBuilder withClock(BigDecimal clock);
 
-	NetInterfaceBuilder withCapabilities(String capabilities);
+	NetInterfaceBuilder withCapabilities(Capabilities capabilities);
 
 	NetInterfaceBuilder withConfiguration(
 			NetworkInterfaceConfiguration configuration);

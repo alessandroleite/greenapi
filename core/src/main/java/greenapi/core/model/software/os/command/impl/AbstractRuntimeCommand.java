@@ -37,7 +37,7 @@ import com.google.common.base.Preconditions;
 
 public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 
-	private final Map<String, Throwable> errors = new ConcurrentHashMap<>();
+	protected final Map<String, Throwable> errors = new ConcurrentHashMap<>();
 
 	/**
 	 * Array containing the command to call and its arguments.
@@ -53,7 +53,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	/**
 	 * The result of the execution.
 	 */
-	private volatile T output;
+	protected volatile T output;
 
 	/**
 	 * @param commands

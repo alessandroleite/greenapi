@@ -120,8 +120,7 @@ public class HardwareBuilder extends ResourceBuilder<Machine> {
 		NetworkInterface[] networkInterfaces = new NetworkInterface[interfacesId.length];
 		
 		for(int i = 0; i < interfacesId.length; i++) {
-			NetInterfaceConfig interfaceConfig = hypervisor()
-					.getNetInterfaceConfig(interfacesId[i]);
+			NetInterfaceConfig interfaceConfig = hypervisor().getNetInterfaceConfig(interfacesId[i]);
 			
 			NetInfo netInfo = hypervisor().getNetInfo();
 			

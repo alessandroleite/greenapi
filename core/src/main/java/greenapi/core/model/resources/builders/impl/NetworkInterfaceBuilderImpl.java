@@ -1,16 +1,20 @@
 package greenapi.core.model.resources.builders.impl;
 
+import java.math.BigDecimal;
+
 import greenapi.core.model.resources.builders.NetInterfaceBuilder;
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
 import greenapi.core.model.software.os.OperatingSystem;
+import lshw.types.Capabilities;
+import lshw.types.Measured;
 
 public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 
 	private OperatingSystem os;
 	private NetworkInterfaceInfo networkInterfaceInfo;
-	private Integer id;
+	private String id;
 	private String description;
 	private String product;
 	private String vendor;
@@ -18,11 +22,11 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	private String logicalName;
 	private String version;
 	private String serial;
-	private String size;
-	private String capacity;
-	private String width;
-	private String clock;
-	private String capabilities;
+	private BigDecimal size;
+	private BigDecimal capacity;
+	private BigDecimal width;
+	private BigDecimal clock;
+	private Capabilities capabilities;
 	private NetworkInterfaceConfiguration configuration;
 
 	@Override
@@ -31,13 +35,13 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 		NetworkInterface networkInterface;
 
 		if (os != null) {
-			networkInterface = os.networkHardwareDescription().execute();
+			networkInterface = os.networkInterfaceDescription(id);
 		} else {
 			networkInterface = new NetworkInterface(this.id, this.description,
 					this.product, this.vendor, this.busInfo, this.logicalName,
-					this.version, this.serial, this.size, this.capacity,
-					this.width, this.clock, this.capabilities,
-					this.configuration);
+					this.version, this.serial, new Measured(this.size),
+					new Measured(this.capacity), new Measured(this.width),
+					new Measured(this.clock), this.capabilities, this.configuration);
 		}
 
 		if (this.networkInterfaceInfo != null) {
@@ -61,7 +65,7 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	}
 
 	@Override
-	public NetInterfaceBuilder withId(Integer id) {
+	public NetInterfaceBuilder withId(String id) {
 		this.id = id;
 		return this;
 	}
@@ -109,31 +113,31 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	}
 
 	@Override
-	public NetInterfaceBuilder withSize(String size) {
+	public NetInterfaceBuilder withSize(BigDecimal size) {
 		this.size = size;
 		return this;
 	}
 
 	@Override
-	public NetInterfaceBuilder withCapacity(String capacity) {
+	public NetInterfaceBuilder withCapacity(BigDecimal capacity) {
 		this.capacity = capacity;
 		return this;
 	}
 
 	@Override
-	public NetInterfaceBuilder withWidth(String width) {
+	public NetInterfaceBuilder withWidth(BigDecimal width) {
 		this.width = width;
 		return this;
 	}
 
 	@Override
-	public NetInterfaceBuilder withClock(String clock) {
+	public NetInterfaceBuilder withClock(BigDecimal clock) {
 		this.clock = clock;
 		return this;
 	}
 
 	@Override
-	public NetInterfaceBuilder withCapabilities(String capabilities) {
+	public NetInterfaceBuilder withCapabilities(Capabilities capabilities) {
 		this.capabilities = capabilities;
 		return this;
 	}

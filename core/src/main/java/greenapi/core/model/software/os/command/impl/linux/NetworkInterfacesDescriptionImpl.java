@@ -20,25 +20,39 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.common.base;
+package greenapi.core.model.software.os.command.impl.linux;
 
-public final class Booleans {
-	
-	private Booleans(){
-		throw new UnsupportedOperationException();
+import greenapi.core.model.resources.net.NetworkInterface;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+
+import lshw.parser.xml.Lshw;
+import lshw.types.NodeInfo;
+
+
+public class NetworkInterfacesDescriptionImpl extends
+		LinuxCommandSupport<NetworkInterface[]> {
+
+	public NetworkInterfacesDescriptionImpl() {
+		super(true, true);
 	}
 
-	public static boolean valueOf(String value) {
-		switch (value) {
-		case "on":
-		case "yes":
-		case "1":
-			return true;
-		case "off":
-		case "no":
-		case "0":
-			return false;
+	@Override
+	protected NetworkInterface[] parser(String result, InputStream source) throws IOException {
+		List<NetworkInterface> cards = new LinkedList<>();
+		
+		for(NodeInfo node: Lshw.unmarshall(result)) {
+			cards.add(NetworkInterface.valueOf(node));
 		}
-		return false;
+		
+		return cards.toArray(new NetworkInterface[cards.size()]);
+	}
+
+	@Override
+	public String commandLine() {
+		return "lshw -class network -xml";
 	}
 }

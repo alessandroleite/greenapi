@@ -33,6 +33,7 @@ import greenapi.core.model.software.os.command.impl.linux.CpuScalingAvailableFre
 import greenapi.core.model.software.os.command.impl.linux.CpuTemperature;
 import greenapi.core.model.software.os.command.impl.linux.CurrentCpuFrequency;
 import greenapi.core.model.software.os.command.impl.linux.IOStat;
+import greenapi.core.model.software.os.command.impl.linux.NetworkInterfaceDescriptionImpl;
 import greenapi.core.model.software.os.command.impl.linux.Whoami;
 
 import java.util.Map;
@@ -76,8 +77,9 @@ public class LinuxOperatingSystem extends OperatingSystem {
 		return new Whoami();
 	}
 
+
 	@Override
-	public Command<NetworkInterface> networkHardwareDescription() {
-		return null;
+	public NetworkInterface networkInterfaceDescription(String id) {
+		return new NetworkInterfaceDescriptionImpl(id).execute();
 	}
 }

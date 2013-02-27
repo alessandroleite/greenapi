@@ -53,4 +53,57 @@ public final class NetworkInterfaceStat implements Data<NetworkInterfaceStat> {
 		return rxData;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((networkInterface == null) ? 0 : networkInterface.hashCode());
+		result = prime * result + ((rxData == null) ? 0 : rxData.hashCode());
+		result = prime * result + ((txData == null) ? 0 : txData.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null) {
+			return false;
+		}
+		
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		
+		NetworkInterfaceStat other = (NetworkInterfaceStat) obj;
+		if (networkInterface == null) {
+			if (other.networkInterface != null) {
+				return false;
+			}
+		} else if (!networkInterface.equals(other.networkInterface)) {
+			return false;
+		}
+		
+		if (rxData == null) {
+			if (other.rxData != null) {
+				return false;
+			}
+		} else if (!rxData.equals(other.rxData)) {
+			return false;
+		}
+		
+		if (txData == null) {
+			if (other.txData != null) {
+				return false;
+			}
+		} else if (!txData.equals(other.txData)) {
+			return false;
+		}
+		
+		return true;
+	}
 }

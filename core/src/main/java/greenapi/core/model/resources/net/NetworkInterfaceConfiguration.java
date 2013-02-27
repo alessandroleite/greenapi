@@ -22,7 +22,13 @@
  */
 package greenapi.core.model.resources.net;
 
+import greenapi.core.common.primitives.Booleans;
+import greenapi.core.common.primitives.Doubles;
+
 import java.io.Serializable;
+import java.util.Map;
+
+import lshw.types.Configurations;
 
 public final class NetworkInterfaceConfiguration implements Serializable {
 
@@ -31,7 +37,7 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 	 */
 	private static final long serialVersionUID = 1946779749348162293L;
 
-	private final boolean autonegotiation;
+	private final boolean autoNegotiation;
 	private final boolean broadcast;
 	private final String driver;
 	private final String driverVersion;
@@ -42,14 +48,14 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 	private final boolean link;
 	private final boolean multicast;
 	private final String port;
-	private final String pair;
+	private final String speed;
 
-	public NetworkInterfaceConfiguration(boolean autonegotiation,
+	public NetworkInterfaceConfiguration(boolean autoNegotiation,
 			boolean broadcast, String driver, String driverVersion,
 			String duplex, String firmware, String ip, double latency,
-			boolean link, boolean multicast, String port, String pair) {
+			boolean link, boolean multicast, String port, String speed) {
 
-		this.autonegotiation = autonegotiation;
+		this.autoNegotiation = autoNegotiation;
 		this.broadcast = broadcast;
 		this.driver = driver;
 		this.driverVersion = driverVersion;
@@ -60,14 +66,29 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 		this.link = link;
 		this.multicast = multicast;
 		this.port = port;
-		this.pair = pair;
+		this.speed = speed;
+	}
+	
+	public static NetworkInterfaceConfiguration valueOf(Configurations configurations) {
+		Map<String, String> configurationsMap = configurations.getConfigurationsMap();
+		return new NetworkInterfaceConfiguration(
+				Booleans.valueOf(configurationsMap.get("autonegotiation")),
+				Booleans.valueOf(configurationsMap.get("broadcast")),
+				configurationsMap.get("driver"),
+				configurationsMap.get("driverversion"),
+				configurationsMap.get("duplex"),
+				configurationsMap.get("firmware"), configurationsMap.get("ip"),
+				Doubles.valueOf(configurationsMap.get("latency")),
+				Booleans.valueOf(configurationsMap.get("link")),
+				Booleans.valueOf(configurationsMap.get("multicast")),
+				configurationsMap.get("port"), configurationsMap.get("speed"));
 	}
 
 	/**
-	 * @return the autonegotiation
+	 * @return the autoNegotiation
 	 */
-	public boolean autonegotiation() {
-		return autonegotiation;
+	public boolean autoNegotiation() {
+		return autoNegotiation;
 	}
 
 	/**
@@ -143,7 +164,7 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 	/**
 	 * @return the pair
 	 */
-	public String pair() {
-		return pair;
+	public String speed() {
+		return speed;
 	}
 }

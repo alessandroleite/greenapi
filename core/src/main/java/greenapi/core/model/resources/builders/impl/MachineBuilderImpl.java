@@ -106,6 +106,4 @@ public class MachineBuilderImpl implements MachineBuilder {
 		this.sensors = sensors;
 		return this;
 	}
-
-	
 }

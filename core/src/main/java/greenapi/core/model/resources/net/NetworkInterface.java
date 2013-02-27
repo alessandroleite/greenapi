@@ -26,18 +26,26 @@ import greenapi.core.model.data.Data;
 import greenapi.core.model.data.NetworkInterfaceStat;
 import greenapi.core.model.resources.Resource;
 import greenapi.core.model.sensors.Sensor;
+import lshw.types.Capabilities;
+import lshw.types.Measured;
+import lshw.types.NodeInfo;
+import lshw.types.Resources;
 
-public final class NetworkInterface implements Resource {
+public final class NetworkInterface implements Resource, Cloneable {
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 3391239285333782698L;
+	private static final long serialVersionUID = 5326203263155185690L;
+
+	private static final NetworkInterface NULL_NETWORK_INTERFACE = new NetworkInterface(
+			null, null, null, null, null, null, null, null, null, null, null,
+			null, new Capabilities(), null, new Resources());
 	
 	/**
 	 * The physical id.
 	 */
-	private final Integer id;
+	private final String id;
 	private final String description;
 	private final String product;
 	private final String vendor;
@@ -45,33 +53,33 @@ public final class NetworkInterface implements Resource {
 	private final String logicalName;
 	private final String version;
 	private final String serial;
-	private final String size;
-	private final String capacity;
-	private final String width;
-	private final String clock;
-	private final String capabilities;
+	private final Measured size;
+	private final Measured capacity;
+	private final Measured width;
+	private final Measured clock;
+	private final Capabilities capabilities;
 	private final NetworkInterfaceConfiguration configuration;
-	private String resources;
+	private Resources resources;
 	
 	private NetworkInterfaceStat state;
 	
 	private NetworkInterfaceInfo networkInfo;
 
-	public NetworkInterface(Integer id, String description, String product,
+	public NetworkInterface(String id, String description, String product,
 			String vendor, String busInfo, String logicalName, String version,
-			String serial, String size, String capacity, String width, String clock,
-			String capabilities, NetworkInterfaceConfiguration configuration,
-			String resources) {
+			String serial, Measured size, Measured capacity, Measured width, Measured clock,
+			Capabilities capabilities, NetworkInterfaceConfiguration configuration,
+			Resources resources) {
 		
 		this(id, description, product, vendor, busInfo, logicalName, version,
 				serial, size, capacity, width, clock, capabilities, configuration);
 		this.resources = resources;
 	}
 
-	public NetworkInterface(Integer id, String description, String product,
+	public NetworkInterface(String id, String description, String product,
 			String vendor, String busInfo, String logicalName, String version,
-			String serial, String size, String capacity, String width, String clock,
-			String capabilities, NetworkInterfaceConfiguration configuration) {
+			String serial, Measured size, Measured capacity, Measured width, Measured clock,
+			Capabilities capabilities, NetworkInterfaceConfiguration configuration) {
 
 		this.id = id;
 		this.description = description;
@@ -88,6 +96,34 @@ public final class NetworkInterface implements Resource {
 		this.capabilities = capabilities;
 		this.configuration = configuration;
 	}
+	
+	public NetworkInterface(NetworkInterface other) {
+		this(other.id(), other.description(), other.product(), other.vendor(),
+				other.busInfo(), other.logicalName(), other.version(), 
+				other.serial(), other.size(), other.capacity, other.width(),
+				other.clock(), other.capabilities(), other.configuration(),
+				other.resources());
+	}
+
+	public static NetworkInterface valueOf(NodeInfo node) {
+		
+		if (node == null) {
+			return NULL_NETWORK_INTERFACE.clone();
+		}
+		
+		return new NetworkInterface(node.getId(), node.getDescription(),
+				node.getProduct(), node.getVendor(), node.getBusInfo(),
+				node.getLogicalName(), node.getVersion(), node.getSerial(),
+				node.getSize(), node.getCapacity(), node.getWidth(),
+				node.getClock(), node.getCapabilities(),
+				NetworkInterfaceConfiguration.valueOf(node.getConfiguration()),
+				node.getResources());
+	}
+	
+	@Override
+	public NetworkInterface clone() {
+		return new NetworkInterface(this);
+	}
 
 	@Override
 	public Sensor<?, Data<?>>[] sensors() {
@@ -101,21 +137,21 @@ public final class NetworkInterface implements Resource {
 	/**
 	 * @return the resources
 	 */
-	public String resources() {
+	public Resources resources() {
 		return resources;
 	}
 
 	/**
 	 * @param resources the resources to set
 	 */
-	public void setResources(String resources) {
+	public void setResources(Resources resources) {
 		this.resources = resources;
 	}
 
 	/**
 	 * @return the id
 	 */
-	public Integer id() {
+	public String id() {
 		return id;
 	}
 
@@ -171,35 +207,35 @@ public final class NetworkInterface implements Resource {
 	/**
 	 * @return the size
 	 */
-	public String size() {
+	public Measured size() {
 		return size;
 	}
 	
 	/**
 	 * @return the capacity
 	 */
-	public String capacity(){
+	public Measured capacity(){
 		return capacity;
 	}
 
 	/**
 	 * @return the width
 	 */
-	public String width() {
+	public Measured width() {
 		return width;
 	}
 
 	/**
 	 * @return the clock
 	 */
-	public String clock() {
+	public Measured clock() {
 		return clock;
 	}
 
 	/**
 	 * @return the capabilities
 	 */
-	public String capabilities() {
+	public Capabilities capabilities() {
 		return capabilities;
 	}
 
