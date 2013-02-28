@@ -30,7 +30,8 @@ import java.util.Map;
 
 import lshw.types.Configurations;
 
-public final class NetworkInterfaceConfiguration implements Serializable {
+public final class NetworkInterfaceConfiguration implements Serializable,
+		Cloneable {
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>
@@ -68,9 +69,11 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 		this.port = port;
 		this.speed = speed;
 	}
-	
-	public static NetworkInterfaceConfiguration valueOf(Configurations configurations) {
-		Map<String, String> configurationsMap = configurations.getConfigurationsMap();
+
+	public static NetworkInterfaceConfiguration valueOf(
+			Configurations configurations) {
+		Map<String, String> configurationsMap = configurations
+				.getConfigurationsMap();
 		return new NetworkInterfaceConfiguration(
 				Booleans.valueOf(configurationsMap.get("autonegotiation")),
 				Booleans.valueOf(configurationsMap.get("broadcast")),
@@ -82,6 +85,13 @@ public final class NetworkInterfaceConfiguration implements Serializable {
 				Booleans.valueOf(configurationsMap.get("link")),
 				Booleans.valueOf(configurationsMap.get("multicast")),
 				configurationsMap.get("port"), configurationsMap.get("speed"));
+	}
+
+	@Override
+	public NetworkInterfaceConfiguration clone() {
+		return new NetworkInterfaceConfiguration(this.autoNegotiation,
+				broadcast, driver, driverVersion, duplex, firmware, ip,
+				latency, link, multicast, port, speed);
 	}
 
 	/**

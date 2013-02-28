@@ -20,43 +20,42 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands.impl.linux;
 
-import greenapi.core.common.base.StringTokenizer2;
-import greenapi.core.model.data.Frequency;
+import greenapi.core.common.base.IOUtils;
+import greenapi.core.model.data.User;
+import greenapi.core.model.software.os.commands.Who;
+import greenapi.core.model.software.os.commands.impl.AbstractRuntimeCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.StringTokenizer;
 
 
-public class CpuScalingAvailableFrequencies extends
-		LinuxCommandSupport<Frequency[]>
-		implements
-		greenapi.core.model.software.os.command.CpuScalingAvailableFrequencies {
+public class Whoami extends AbstractRuntimeCommand<User> implements Who {
 
-	private static final String INSTRUCTION_LINE = "cat /sys/devices/system/cpu/cpu%S/cpufreq/scaling_available_frequencies";
+	static final User ROOT = new User("root");
 
-	public CpuScalingAvailableFrequencies() {
-		super(true, true);
+	public Whoami() {
+		super("whoami");
 	}
 
 	@Override
-	protected Frequency[] parser(String result, InputStream source)
-			throws IOException {
-
-		StringTokenizer tokens = new StringTokenizer2(result.trim(), " ");
-		Frequency[] frequencies = new Frequency[tokens.countTokens()];
-
-		int i = 0;
-		while (tokens.hasMoreElements()) {
-			frequencies[i++] = new Frequency(Long.parseLong(tokens.nextToken()));
-		}
-		return frequencies;
+	public boolean isRootRequired() {
+		return false;
 	}
 
 	@Override
-	public String commandLine() {
-		return INSTRUCTION_LINE;
+	protected boolean isRoot() {
+		return ROOT.equals(this.result().getValue());
+	}
+
+	@Override
+	protected User parser(InputStream input) throws IOException {
+		return new User(IOUtils.asString(input).trim());
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return isRoot();
 	}
 }

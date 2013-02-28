@@ -28,9 +28,10 @@ import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
 import greenapi.core.model.resources.net.NetworkInterface;
-import greenapi.core.model.software.os.command.Command;
-import greenapi.core.model.software.os.command.CpuScalingAvailableFrequencies;
-import greenapi.core.model.software.os.command.Who;
+import greenapi.core.model.resources.net.NetworkInterfaces;
+import greenapi.core.model.software.os.commands.Command;
+import greenapi.core.model.software.os.commands.CpuScalingAvailableFrequencies;
+import greenapi.core.model.software.os.commands.Who;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -70,16 +71,14 @@ public abstract class OperatingSystem implements Serializable,
 	 */
 	public abstract CpuScalingAvailableFrequencies cpuAvailableFrequencies();
 	
-	public abstract Command<Frequency> currentCpuFrequency();
+	public abstract Frequency currentCpuFrequency();
 	
-	public abstract Command<Map<String, Temperature>> cpuTemperature();
+	public abstract Map<String, Temperature> cpuTemperature();
 	
 	public abstract NetworkInterface networkInterfaceDescription(String id);
 	
-	/**
-	 * 
-	 * @return
-	 */
+	public abstract NetworkInterfaces networkInterfaces();
+	
 	public abstract Who who();
 
 	

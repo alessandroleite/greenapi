@@ -20,11 +20,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands.impl.linux;
 
 import greenapi.core.common.base.Strings;
 import greenapi.core.model.data.IOStatProperty;
 import greenapi.core.model.data.IOStats;
+import greenapi.core.model.software.os.commands.Argument;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +83,7 @@ public class IOStat extends LinuxCommandSupport<IOStats> {
 	}
 
 	@Override
-	public String commandLine() {
-		return "iostat ALL -x";
+	public String[] commandLine(Argument... args) {
+		return new String[] { "iostat", "ALL", "-x" };
 	}
 }

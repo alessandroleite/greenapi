@@ -23,15 +23,16 @@
 package greenapi.core.model.resources;
 
 import static java.util.Objects.requireNonNull;
-
 import greenapi.core.model.data.Data;
 import greenapi.core.model.resource.io.Storages;
-import greenapi.core.model.resources.net.NetworkInterface;
+import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.sensors.Sensor;
 import greenapi.core.model.software.os.OperatingSystem;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -42,7 +43,7 @@ public class Machine implements Resource {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -2707503612123610695L;
+	private static final long serialVersionUID = -487638552804046665L;
 
 	/**
 	 * MAC address of the primary interface.
@@ -61,7 +62,7 @@ public class Machine implements Resource {
 	/**
 	 * Network interfaces.
 	 */
-	private final NetworkInterface[] networkInterfaces;
+	private final NetworkInterfaces networkInterfaces;
 
 	/**
 	 * The disks of that {@link Machine}.
@@ -74,7 +75,7 @@ public class Machine implements Resource {
 	private final OperatingSystem os;
 
 	public Machine(String id, String name, Memory[] memories,
-			Storages storages, NetworkInterface[] networkInterfaces,
+			Storages storages, NetworkInterfaces networkInterfaces,
 			CpuSocket[] cpuSockets, OperatingSystem os) {
 
 		this.id = requireNonNull(id);
@@ -169,7 +170,7 @@ public class Machine implements Resource {
 	/**
 	 * @return the networkInterfaces
 	 */
-	public NetworkInterface[] getNetworkInterfaces() {
+	public NetworkInterfaces getNetworkInterfaces() {
 		return networkInterfaces;
 	}
 
@@ -197,5 +198,36 @@ public class Machine implements Resource {
 				});
 
 		return filtered.toArray(new Memory[filtered.size()]);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Machine other = (Machine) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.MULTI_LINE_STYLE);
 	}
 }

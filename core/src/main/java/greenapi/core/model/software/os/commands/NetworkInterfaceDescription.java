@@ -1,4 +1,4 @@
-package greenapi.core.model.software.os.command;
+package greenapi.core.model.software.os.commands;
 
 import greenapi.core.model.resources.net.NetworkInterface;
 

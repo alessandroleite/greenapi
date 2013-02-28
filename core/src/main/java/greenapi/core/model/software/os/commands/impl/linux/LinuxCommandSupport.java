@@ -20,17 +20,16 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands.impl.linux;
 
 import greenapi.core.common.base.CopyInputStream;
 import greenapi.core.common.base.IOUtils;
-import greenapi.core.model.software.os.command.Argument;
-import greenapi.core.model.software.os.command.impl.AbstractRuntimeCommand;
+import greenapi.core.model.data.User;
+import greenapi.core.model.software.os.commands.Argument;
+import greenapi.core.model.software.os.commands.impl.AbstractRuntimeCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
@@ -71,7 +70,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 
 	@Override
 	protected boolean isRoot() {
-		return new Whoami().isAdmin();
+		return new User("root").equals(new Whoami().execute().getValue());
 	}
 
 	@Override
@@ -95,25 +94,32 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 	 */
 	@Override
 	public String[][] commands(Argument... args) {
-		List<String> commands = new ArrayList<>();
+//		List<String> commands = new ArrayList<>();
+//
+//		if (isBashNeeded()) {
+//			commands.add("bash");
+//			commands.add("-c");
+//		}
 
-		if (isBashNeeded()) {
-			commands.add("bash");
-			commands.add("-c");
-		}
-
-		String commandLine = this.commandLine();
-
-		if (args != null) {
-			// FIXME Is there a choice better than that?
-			for (int i = 0; i < args.length; i++) {
-				commandLine = commandLine.replaceAll("\\$" + (i + 1), args[i].value().toString());
-			}
-		}
+		String[] instructions = this.commandLine(args);
 		
-		commands.add(commandLine);
+		String[] commands = new String[instructions.length + (isBashNeeded() ? 2 : 0)];
+		
+		if (isBashNeeded()) {
+			commands[0] = "bash";
+			commands[1] = "-c";
+		} 
+		
+		System.arraycopy(instructions, 0, commands, (isBashNeeded() ? 2 : 0), instructions.length);
+		
 
-		return new String[][] { commands.toArray(new String[commands.size()]), envp };
+//		if (args != null) {
+//			// FIXME Is there a choice better than that?
+//			for (int i = 0; i < args.length; i++) {
+//				//commandLine = commandLine.replaceAll("\\$" + (i + 1), args[i].value().toString());
+//			}
+//		}
+		return new String[][] { commands, envp };
 	}
 
 	/**
@@ -138,12 +144,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 	 * @return The type expected by the class.
 	 * @throws IOException
 	 */
-	protected abstract T parser(String result, InputStream source)
-			throws IOException;
+	protected abstract T parser(String result, InputStream source) throws IOException;
 
-	/**
-	 * 
-	 * @return
-	 */
-	public abstract String commandLine();
+	public abstract String[] commandLine(Argument... args);
 }

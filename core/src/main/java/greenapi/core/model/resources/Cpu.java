@@ -143,8 +143,10 @@ public class Cpu implements Resource, Comparable<Cpu> {
 
 	@Override
 	public String toString() {
-		return "CPU " + (this.name) + " .... " + this.state()
-				+ (this.temperature() != null ? this.temperature() : "");
+		return "CPU " + (this.name) + " .... state: "
+				+ (this.state() == null ? "UNKNOWN" : this.state())
+				+ " .... temperature: "
+				+ (this.temperature() == null ? "UNKNOWN" : this.temperature());
 	}
 
 	public CpuState setState(CpuState state) {

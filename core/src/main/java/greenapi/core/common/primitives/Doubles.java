@@ -2,7 +2,7 @@ package greenapi.core.common.primitives;
 
 public final class Doubles {
 	
-	private Doubles(){
+	private Doubles() {
 		throw new UnsupportedOperationException();
 	}
 

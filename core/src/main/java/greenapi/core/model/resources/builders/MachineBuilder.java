@@ -26,7 +26,7 @@ import greenapi.core.model.resource.io.Storage;
 import greenapi.core.model.resources.CpuSocket;
 import greenapi.core.model.resources.Machine;
 import greenapi.core.model.resources.Memory;
-import greenapi.core.model.resources.net.NetworkInterface;
+import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.sensors.Sensor;
 import greenapi.core.model.software.os.OperatingSystem;
 
@@ -44,7 +44,7 @@ public interface MachineBuilder extends Builder<Machine> {
 
 	MachineBuilder withOs(OperatingSystem os);
 
-	MachineBuilder withNetInterfaces(NetworkInterface... networkInterfaces);
+	MachineBuilder withNetInterfaces(NetworkInterfaces networkInterfaces);
 
 	MachineBuilder withSensors(Sensor<?, ?>... sensors);
 }

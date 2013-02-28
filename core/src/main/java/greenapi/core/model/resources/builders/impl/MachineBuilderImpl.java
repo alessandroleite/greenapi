@@ -29,7 +29,7 @@ import greenapi.core.model.resources.CpuSocket;
 import greenapi.core.model.resources.Machine;
 import greenapi.core.model.resources.Memory;
 import greenapi.core.model.resources.builders.MachineBuilder;
-import greenapi.core.model.resources.net.NetworkInterface;
+import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.sensors.Sensor;
 import greenapi.core.model.software.os.OperatingSystem;
 
@@ -41,7 +41,7 @@ public class MachineBuilderImpl implements MachineBuilder {
 	private OperatingSystem os;
 	private Memory[] memories;
 	private Sensor<?, ?>[] sensors;
-	private NetworkInterface[] networkInterfaces;
+	private NetworkInterfaces networkInterfaces;
 	private Storages storages = new Storages();
 
 	@Override
@@ -95,8 +95,7 @@ public class MachineBuilderImpl implements MachineBuilder {
 	}
 	
 	@Override
-	public MachineBuilder withNetInterfaces(
-			NetworkInterface... networkInterfaces) {
+	public MachineBuilder withNetInterfaces(NetworkInterfaces  networkInterfaces) {
 		this.networkInterfaces = networkInterfaces;
 		return this;
 	}

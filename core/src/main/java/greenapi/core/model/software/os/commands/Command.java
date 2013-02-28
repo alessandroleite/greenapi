@@ -20,11 +20,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command;
+package greenapi.core.model.software.os.commands;
 
-import greenapi.core.model.data.User;
+public interface Command<T> {
 
-public interface Who extends Command<User> {
+	/**
+	 * Returns <code>true</code> is administrator permission is required,
+	 * otherwise <code>false</code>.
+	 * 
+	 * @return <code>true</code> is administrator permission is required,
+	 *         otherwise <code>false</code>.
+	 */
+	boolean isRootRequired();
 
-	boolean isAdmin();
+	/**
+	 * Returns the result of the execution of a command.
+	 * 
+	 * @return the result of the execution of a command.
+	 */
+	Result<T> result();
+
+	/**
+	 * Execute a command with its arguments. The result of execution is
+	 * available calling the method {@link #output()}. If the execution requires
+	 * root permission the command will not be executed.
+	 * 
+	 * @param args
+	 *            The arguments to execute a command.
+	 * @return The result of the execution. The same value as {@link #output()}.
+	 */
+	Result<T> execute(Argument... args);
 }

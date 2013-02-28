@@ -20,11 +20,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl;
+package greenapi.core.model.software.os.commands.impl;
 
 import greenapi.core.model.exception.GreenApiException;
-import greenapi.core.model.software.os.command.Argument;
-import greenapi.core.model.software.os.command.Command;
+import greenapi.core.model.software.os.commands.Argument;
+import greenapi.core.model.software.os.commands.Command;
+import greenapi.core.model.software.os.commands.Result;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +54,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	/**
 	 * The result of the execution.
 	 */
-	protected volatile T output;
+	protected volatile Result<T> result;
 
 	/**
 	 * @param commands
@@ -82,11 +83,10 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T execute(Argument... args) {
+	public Result<T> execute(Argument... args) {
 
 		if (this.isRootRequired() && !isRoot()) {
-			GreenApiException exception = new GreenApiException(
-					"Please, execute this command as a root user!");
+			GreenApiException exception = new GreenApiException("Please, execute this command as a root user!");
 			errors.put(exception.getMessage(), exception);
 			return null;
 		}
@@ -94,22 +94,21 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 		String[][] commands = commands(args);
 
 		try {
-			Process process = Runtime.getRuntime().exec(commands[0],
-					commands[1]);
-			this.output = this.parser(process.getInputStream());
+			Process process = Runtime.getRuntime().exec(commands[0], commands[1]);
+			this.result = new Result<>(this.parser(process.getInputStream()));
 		} catch (IOException exception) {
 			this.errors.put(exception.getMessage(), exception);
 		}
-		
-		return this.output();
+		this.result().addAll(this.getErrors());
+		return result;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T output() {
-		return this.output;
+	public Result<T> result() {
+		return this.result;
 	}
 
 	/**

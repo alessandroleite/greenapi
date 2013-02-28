@@ -1,13 +1,13 @@
 package greenapi.core.model.resources.builders;
 
-import java.math.BigDecimal;
-
-import lshw.types.Capabilities;
-
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
 import greenapi.core.model.software.os.OperatingSystem;
+
+import java.math.BigDecimal;
+
+import lshw.types.Capabilities;
 
 public interface NetInterfaceBuilder extends Builder<NetworkInterface> {
 
@@ -44,4 +44,8 @@ public interface NetInterfaceBuilder extends Builder<NetworkInterface> {
 
 	NetInterfaceBuilder withConfiguration(
 			NetworkInterfaceConfiguration configuration);
+
+	NetInterfaceBuilder ofType(String type);
+
+	NetInterfaceBuilder isPrimary(boolean value);
 }

@@ -20,10 +20,11 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands.impl.linux;
 
 import greenapi.core.common.base.StringTokenizer2;
 import greenapi.core.model.data.Temperature;
+import greenapi.core.model.software.os.commands.Argument;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +76,7 @@ public class CpuTemperature extends
 	}
 
 	@Override
-	public String commandLine() {
-		return "sensors";
+	public String[] commandLine(Argument... args) {
+		return new String[] { "sensors" };
 	}
 }

@@ -8,6 +8,7 @@ import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
 import greenapi.core.model.software.os.OperatingSystem;
 import lshw.types.Capabilities;
+import lshw.types.Capability;
 import lshw.types.Measured;
 
 public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
@@ -28,24 +29,34 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	private BigDecimal clock;
 	private Capabilities capabilities;
 	private NetworkInterfaceConfiguration configuration;
+	private String type;
+	private boolean primary;
 
 	@Override
 	public NetworkInterface build() {
-
-		NetworkInterface networkInterface;
+		
+		NetworkInterface networkInterface = null;
 
 		if (os != null) {
 			networkInterface = os.networkInterfaceDescription(id);
-		} else {
+		} 
+		
+		if (networkInterface == null){
 			networkInterface = new NetworkInterface(this.id, this.description,
 					this.product, this.vendor, this.busInfo, this.logicalName,
 					this.version, this.serial, new Measured(this.size),
 					new Measured(this.capacity), new Measured(this.width),
 					new Measured(this.clock), this.capabilities, this.configuration);
 		}
-
+		
 		if (this.networkInterfaceInfo != null) {
 			networkInterface.setNetworkInfo(networkInterfaceInfo);
+		}
+		
+		networkInterface.setPrimary(this.primary);
+		
+		if (!networkInterface.capabilities().getCapabilitiesMap().containsKey(type)){
+			networkInterface.capabilities().add(new Capability(type, null));
 		}
 
 		return networkInterface;
@@ -58,8 +69,7 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	}
 
 	@Override
-	public NetInterfaceBuilder withNetworkInfo(
-			NetworkInterfaceInfo networkInterfaceInfo) {
+	public NetInterfaceBuilder withNetworkInfo(NetworkInterfaceInfo networkInterfaceInfo) {
 		this.networkInterfaceInfo = networkInterfaceInfo;
 		return this;
 	}
@@ -146,6 +156,18 @@ public class NetworkInterfaceBuilderImpl implements NetInterfaceBuilder {
 	public NetInterfaceBuilder withConfiguration(
 			NetworkInterfaceConfiguration configuration) {
 		this.configuration = configuration;
+		return this;
+	}
+
+	@Override
+	public NetworkInterfaceBuilderImpl isPrimary(boolean value) {
+		this.primary = value;
+		return this;
+	}
+
+	@Override
+	public NetworkInterfaceBuilderImpl ofType(String type) {
+		this.type = type;
 		return this;
 	}
 }

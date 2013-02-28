@@ -20,28 +20,11 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands;
 
-import greenapi.core.model.data.Frequency;
+import greenapi.core.model.data.User;
 
-import java.io.IOException;
-import java.io.InputStream;
+public interface Who extends Command<User> {
 
-
-public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency> {
-
-	public CurrentCpuFrequency() {
-		super(true, true);
-	}
-
-	@Override
-	protected Frequency parser(String result, InputStream source)
-			throws IOException {
-		return new Frequency(Long.parseLong(result.trim()));
-	}
-
-	@Override
-	public String commandLine() {
-		return "cat /sys/devices/system/cpu/cpu%s/cpufreq/cpuinfo_cur_freq";
-	}
+	boolean isAdmin();
 }

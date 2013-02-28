@@ -28,9 +28,10 @@ public abstract class OperatingSystemFactory {
 
 	public static OperatingSystem getSystemOS() {
 		String name = System.getProperty("os.name");
+		String pkg = OperatingSystem.class.getPackage().getName(); 
 		
-		return (OperatingSystem) ClassUtils.newInstanceForName(String.format(
-				"monitorapi.core.model.software.os.%s.%s.OperatingSystem",
-				name, name.substring(0, 1).toUpperCase()), name);
+		return (OperatingSystem) ClassUtils.				
+				newInstanceForName(String.format(
+				"%s.%s.%sOperatingSystem", pkg, name.toLowerCase(), name), name);
 	}
 }

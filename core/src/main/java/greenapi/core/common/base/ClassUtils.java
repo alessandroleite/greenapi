@@ -80,7 +80,7 @@ public final class ClassUtils {
 					argTypes[i] = args[i] != null ? args[i].getClass() : null;
 				}
 
-				return clazz.getConstructor(clazz).newInstance(args);
+				return clazz.getConstructor(argTypes).newInstance(args);
 			} catch (ClassNotFoundException | NoSuchMethodException
 					| InvocationTargetException | IllegalAccessException
 					| InstantiationException exception) {

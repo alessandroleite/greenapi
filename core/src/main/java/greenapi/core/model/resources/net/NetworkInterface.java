@@ -22,6 +22,13 @@
  */
 package greenapi.core.model.resources.net;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+import com.google.common.base.Strings;
+
+import greenapi.core.common.base.Objects;
+import greenapi.core.common.primitives.Booleans;
 import greenapi.core.model.data.Data;
 import greenapi.core.model.data.NetworkInterfaceStat;
 import greenapi.core.model.resources.Resource;
@@ -36,11 +43,11 @@ public final class NetworkInterface implements Resource, Cloneable {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 5326203263155185690L;
+	private static final long serialVersionUID = -8045185982550019073L;
 
-	private static final NetworkInterface NULL_NETWORK_INTERFACE = new NetworkInterface(
+	public static final NetworkInterface NULL_NETWORK_INTERFACE = new NetworkInterface(
 			null, null, null, null, null, null, null, null, null, null, null,
-			null, new Capabilities(), null, new Resources());
+			null, new Capabilities(), null, new Resources(), false, false, false);
 	
 	/**
 	 * The physical id.
@@ -59,7 +66,12 @@ public final class NetworkInterface implements Resource, Cloneable {
 	private final Measured clock;
 	private final Capabilities capabilities;
 	private final NetworkInterfaceConfiguration configuration;
-	private Resources resources;
+	
+	private boolean active;
+	private boolean claimed;
+	private boolean primary;
+	private Resources resources;	
+	
 	
 	private NetworkInterfaceStat state;
 	
@@ -69,11 +81,14 @@ public final class NetworkInterface implements Resource, Cloneable {
 			String vendor, String busInfo, String logicalName, String version,
 			String serial, Measured size, Measured capacity, Measured width, Measured clock,
 			Capabilities capabilities, NetworkInterfaceConfiguration configuration,
-			Resources resources) {
+			Resources resources, boolean active, boolean claimed, boolean primary) {
 		
 		this(id, description, product, vendor, busInfo, logicalName, version,
 				serial, size, capacity, width, clock, capabilities, configuration);
 		this.resources = resources;
+		this.active = active;
+		this.claimed = claimed;
+		this.primary = primary;
 	}
 
 	public NetworkInterface(String id, String description, String product,
@@ -99,27 +114,34 @@ public final class NetworkInterface implements Resource, Cloneable {
 	
 	public NetworkInterface(NetworkInterface other) {
 		this(other.id(), other.description(), other.product(), other.vendor(),
-				other.busInfo(), other.logicalName(), other.version(), 
-				other.serial(), other.size(), other.capacity, other.width(),
-				other.clock(), other.capabilities(), other.configuration(),
-				other.resources());
+				other.busInfo(), other.logicalName(), other.version(), other.serial(), 
+				Objects.clone(other.size()),  Objects.clone(other.capacity), 
+				Objects.clone(other.width()), Objects.clone(other.clock()), 
+				Objects.clone(other.capabilities()), Objects.clone(other.configuration()),
+				Objects.clone(other.resources()), other.isActive(), other.isClaimed(), other.isPrimary());
 	}
 
 	public static NetworkInterface valueOf(NodeInfo node) {
 		
 		if (node == null) {
-			return NULL_NETWORK_INTERFACE.clone();
+			return null;
 		}
 		
-		return new NetworkInterface(node.getId(), node.getDescription(),
+		NetworkInterface ni =  new NetworkInterface(node.getSerial(), node.getDescription(),
 				node.getProduct(), node.getVendor(), node.getBusInfo(),
 				node.getLogicalName(), node.getVersion(), node.getSerial(),
 				node.getSize(), node.getCapacity(), node.getWidth(),
 				node.getClock(), node.getCapabilities(),
 				NetworkInterfaceConfiguration.valueOf(node.getConfiguration()),
-				node.getResources());
+				node.getResources(), Booleans.valueOf(node.isDisabled()), Booleans.valueOf(node.isClaimed()), 
+				!Strings.isNullOrEmpty(node.getHandle()));
+		
+		return ni;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public NetworkInterface clone() {
 		return new NetworkInterface(this);
@@ -130,6 +152,9 @@ public final class NetworkInterface implements Resource, Cloneable {
 		return null;
 	}
 	
+	/**
+	 * @return the hardware address
+	 */
 	public String hardwareAddress(){
 		return this.serial();
 	}
@@ -276,5 +301,84 @@ public final class NetworkInterface implements Resource, Cloneable {
 	 */
 	public void setNetworkInfo(NetworkInterfaceInfo networkInfo) {
 		this.networkInfo = networkInfo;
+	}
+	
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	/**
+	 * @return the claimed
+	 */
+	public boolean isClaimed() {
+		return claimed;
+	}
+
+	/**
+	 * @param claimed the claimed to set
+	 */
+	public void setClaimed(boolean claimed) {
+		this.claimed = claimed;
+	}
+
+	/**
+	 * @return the primary
+	 */
+	public boolean isPrimary() {
+		return primary;
+	}
+
+	/**
+	 * @param primary the primary to set
+	 */
+	public void setPrimary(boolean primary) {
+		this.primary = primary;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((serial == null) ? 0 : serial.hashCode());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NetworkInterface other = (NetworkInterface) obj;
+		if (serial == null) {
+			if (other.serial != null)
+				return false;
+		} else if (!serial.equals(other.serial))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.MULTI_LINE_STYLE);
 	}
 }

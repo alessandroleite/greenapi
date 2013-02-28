@@ -20,9 +20,10 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands.impl.linux;
 
 import greenapi.core.model.resources.net.NetworkInterface;
+import greenapi.core.model.software.os.commands.Argument;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,9 +51,8 @@ public class NetworkInterfacesDescriptionImpl extends
 		
 		return cards.toArray(new NetworkInterface[cards.size()]);
 	}
-
 	@Override
-	public String commandLine() {
-		return "lshw -class network -xml";
+	public String[] commandLine(Argument... args) {
+		return new String[] { "lshw", "-class", "network", "-xml" };
 	}
 }

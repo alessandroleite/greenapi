@@ -27,6 +27,10 @@ public final class Booleans {
 	private Booleans(){
 		throw new UnsupportedOperationException();
 	}
+	
+	public static boolean valueOf(Boolean value){
+		return value == null ? false : value;
+	}
 
 	public static boolean valueOf(String value) {
 		switch (value) {

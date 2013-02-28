@@ -20,10 +20,44 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command;
+package greenapi.core.model.software.os.commands.impl.linux;
 
+import greenapi.core.common.base.StringTokenizer2;
 import greenapi.core.model.data.Frequency;
+import greenapi.core.model.software.os.commands.Argument;
 
-public interface CpuScalingAvailableFrequencies extends Command<Frequency[]> {
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.StringTokenizer;
 
+
+public class CpuScalingAvailableFrequencies extends
+		LinuxCommandSupport<Frequency[]>
+		implements
+		greenapi.core.model.software.os.commands.CpuScalingAvailableFrequencies {
+
+	private static final String INSTRUCTION_LINE = "cat /sys/devices/system/cpu/cpu%S/cpufreq/scaling_available_frequencies";
+
+	public CpuScalingAvailableFrequencies() {
+		super(true, true);
+	}
+
+	@Override
+	protected Frequency[] parser(String result, InputStream source)
+			throws IOException {
+
+		StringTokenizer tokens = new StringTokenizer2(result.trim(), " ");
+		Frequency[] frequencies = new Frequency[tokens.countTokens()];
+
+		int i = 0;
+		while (tokens.hasMoreElements()) {
+			frequencies[i++] = new Frequency(Long.parseLong(tokens.nextToken()));
+		}
+		return frequencies;
+	}
+
+	@Override
+	public String[] commandLine(Argument... args) {
+		return new String[] { INSTRUCTION_LINE };
+	}
 }

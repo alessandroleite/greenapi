@@ -20,58 +20,29 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command;
+package greenapi.core.model.software.os.commands.impl.linux;
 
-import java.io.Serializable;
+import greenapi.core.model.data.Frequency;
+import greenapi.core.model.software.os.commands.Argument;
 
-public final class Argument implements Serializable {
+import java.io.IOException;
+import java.io.InputStream;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 7693347501569280373L;
-	
-	private final Serializable value;
 
-	public Argument(Serializable value) {
-		this.value = value;
-	}
+public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency> {
 
-	public Serializable value() {
-		return value;
-	}
-	
-	public static Argument valueOf(String value) {
-		return new Argument(value);
+	public CurrentCpuFrequency() {
+		super(true, true);
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
-		return result;
+	protected Frequency parser(String result, InputStream source)
+			throws IOException {
+		return new Frequency(Long.parseLong(result.trim()));
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Argument other = (Argument) obj;
-		if (value == null) {
-			if (other.value != null) {
-				return false;
-			}
-		} else if (!value.equals(other.value)) {
-			return false;
-		}
-		return true;
+	public String[] commandLine(Argument... args) {
+		return new String[] { "cat /sys/devices/system/cpu/cpu%s/cpufreq/cpuinfo_cur_freq" };
 	}
 }

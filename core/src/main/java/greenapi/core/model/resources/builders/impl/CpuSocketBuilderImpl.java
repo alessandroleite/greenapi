@@ -56,7 +56,9 @@ public class CpuSocketBuilderImpl implements CpuSocketBuilder {
 		
 		CpuSocket cpuSocket = new CpuSocket(vendor, cpuModel, maxFrequency, cacheSize, this.cores, frequencies);
 
-		for (Sensor<?, ?> sensor : this.sensors) {
+		if (sensors != null) {
+			for (Sensor<?, ?> sensor : this.sensors) {
+			}
 		}
 
 		return cpuSocket;
@@ -101,7 +103,7 @@ public class CpuSocketBuilderImpl implements CpuSocketBuilder {
 	@Override
 	public CpuSocketBuilder withScalingFrequencies(Frequency... frequencies) {
 		this.frequencies = frequencies;
-		return null;
+		return this;
 	}
 
 	@Override

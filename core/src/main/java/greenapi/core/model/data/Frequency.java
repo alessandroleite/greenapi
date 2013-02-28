@@ -50,12 +50,12 @@ public final class Frequency implements Data<Long>, Comparable<Frequency> {
 	}
 
 	/**
-	 * Returns the frequency value in MHz.
+	 * Returns the frequency value in GHz.
 	 * 
-	 * @return The frequency value in MHz.
+	 * @return The frequency value in GHz.
 	 */
-	public double inMhz() {
-		return this.value() / 1000000d;
+	public double inGhz() {
+		return this.value() / 1000d;
 	}
 	
 	@Override

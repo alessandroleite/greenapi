@@ -26,18 +26,19 @@ import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
 import greenapi.core.model.resources.net.NetworkInterface;
+import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.software.os.OperatingSystem;
-import greenapi.core.model.software.os.command.Command;
-import greenapi.core.model.software.os.command.Who;
-import greenapi.core.model.software.os.command.impl.linux.CpuScalingAvailableFrequencies;
-import greenapi.core.model.software.os.command.impl.linux.CpuTemperature;
-import greenapi.core.model.software.os.command.impl.linux.CurrentCpuFrequency;
-import greenapi.core.model.software.os.command.impl.linux.IOStat;
-import greenapi.core.model.software.os.command.impl.linux.NetworkInterfaceDescriptionImpl;
-import greenapi.core.model.software.os.command.impl.linux.Whoami;
+import greenapi.core.model.software.os.commands.Command;
+import greenapi.core.model.software.os.commands.Who;
+import greenapi.core.model.software.os.commands.impl.linux.CpuScalingAvailableFrequencies;
+import greenapi.core.model.software.os.commands.impl.linux.CpuTemperature;
+import greenapi.core.model.software.os.commands.impl.linux.CurrentCpuFrequency;
+import greenapi.core.model.software.os.commands.impl.linux.IOStat;
+import greenapi.core.model.software.os.commands.impl.linux.NetworkInterfaceDescriptionImpl;
+import greenapi.core.model.software.os.commands.impl.linux.NetworkInterfacesDescriptionImpl;
+import greenapi.core.model.software.os.commands.impl.linux.Whoami;
 
 import java.util.Map;
-
 
 
 public class LinuxOperatingSystem extends OperatingSystem {
@@ -51,7 +52,6 @@ public class LinuxOperatingSystem extends OperatingSystem {
 		super(name);
 	}
 
-
 	@Override
 	public Command<IOStats> iostats() {
 		return new IOStat();
@@ -63,23 +63,28 @@ public class LinuxOperatingSystem extends OperatingSystem {
 	}
 
 	@Override
-	public Command<Frequency> currentCpuFrequency() {
-		return new CurrentCpuFrequency();
+	public Frequency currentCpuFrequency() {
+		return new CurrentCpuFrequency().execute().getValue();
 	}
 
 	@Override
-	public Command<Map<String, Temperature>> cpuTemperature() {
-		return new CpuTemperature();
+	public Map<String, Temperature> cpuTemperature() {
+		return new CpuTemperature().execute().getValue();
+	}
+	
+	@Override
+	public NetworkInterfaces networkInterfaces() {
+		NetworkInterfacesDescriptionImpl command = new NetworkInterfacesDescriptionImpl();
+		return NetworkInterfaces.valueOf(command.execute().getValue());
 	}
 
 	@Override
 	public Who who() {
 		return new Whoami();
 	}
-
-
+	
 	@Override
 	public NetworkInterface networkInterfaceDescription(String id) {
-		return new NetworkInterfaceDescriptionImpl(id).execute();
+		return new NetworkInterfaceDescriptionImpl(id).execute().getValue(); 
 	}
 }

@@ -20,42 +20,58 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.command.impl.linux;
+package greenapi.core.model.software.os.commands;
 
-import greenapi.core.common.base.IOUtils;
-import greenapi.core.model.data.User;
-import greenapi.core.model.software.os.command.Who;
-import greenapi.core.model.software.os.command.impl.AbstractRuntimeCommand;
+import java.io.Serializable;
 
-import java.io.IOException;
-import java.io.InputStream;
+public final class Argument implements Serializable {
 
+	/**
+	 * Serial code version <code>serialVersionUID</code>
+	 */
+	private static final long serialVersionUID = 7693347501569280373L;
+	
+	private final Serializable value;
 
-public class Whoami extends AbstractRuntimeCommand<User> implements Who {
+	public Argument(Serializable value) {
+		this.value = value;
+	}
 
-	static final User ROOT = new User("root");
-
-	public Whoami() {
-		super("whoami");
+	public Serializable value() {
+		return value;
+	}
+	
+	public static Argument valueOf(String value) {
+		return new Argument(value);
 	}
 
 	@Override
-	public boolean isRootRequired() {
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
 	}
 
 	@Override
-	protected boolean isRoot() {
-		return ROOT.equals(this.output());
-	}
-
-	@Override
-	protected User parser(InputStream input) throws IOException {
-		return new User(IOUtils.asString(input).trim());
-	}
-
-	@Override
-	public boolean isAdmin() {
-		return isRoot();
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Argument other = (Argument) obj;
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		} else if (!value.equals(other.value)) {
+			return false;
+		}
+		return true;
 	}
 }

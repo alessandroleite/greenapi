@@ -37,13 +37,14 @@ import greenapi.core.model.resources.builders.impl.NetworkInterfaceBuilderImpl;
 import greenapi.core.model.resources.builders.impl.StorageBuilderImpl;
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
+import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.software.os.OperatingSystem;
+import lshw.types.Capabilities;
 
 import org.hyperic.sigar.CpuPerc;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetInfo;
 import org.hyperic.sigar.NetInterfaceConfig;
-import org.hyperic.sigar.NetInterfaceStat;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarProxy;
 import org.hyperic.sigar.Swap;
@@ -86,47 +87,56 @@ public class HardwareBuilder extends ResourceBuilder<Machine> {
 
 	private CpuSocket[] cpus() throws SigarException {
 		CpuPerc[] cpuPercs = hypervisor().getCpuPercList();
+		
+		
 		Cpu[] cpus = new Cpu[cpuPercs.length];
 
 		for (int i = 0; i < cpuPercs.length; i++) {
 			cpus[i] = new CpuBuilderImpl()
-					.withId(cpus[i].id())
-					.withIrq(cpus[i].irq())
-					.withSoftIrq(cpus[i].softIrq())
-					.withStole(cpus[i].stole())
+					.withId(i)
+					.withIrq(cpuPercs[i].getIrq())
+					.withSoftIrq(cpuPercs[i].getSoftIrq())
+					.withStole(cpuPercs[i].getStolen())
 					.build();
 		}
+		
 
 		org.hyperic.sigar.CpuInfo[] cpuInfos = hypervisor().getCpuInfoList();
 
-		CpuSocket[] sockets = new CpuSocket[cpuInfos.length];
+		CpuSocket[] sockets = new CpuSocket[cpuInfos[0].getTotalSockets()];
 
 		for (int i = 0; i < sockets.length; i++) {
 			sockets[i] = new CpuSocketBuilderImpl()
 					.ofModel(cpuInfos[i].getModel())
+					.ofVendor(cpuInfos[i].getVendor())
 					.withCores(cpus)
 					.withScalingFrequencies()
 					.withMinFrequency(cpuInfos[i].getMhzMin())
-					.withMaxFrequency(cpuInfos[i].getMhzMax())					
-					.withCacheSize(cpuInfos[i].getCacheSize())										
+					.withMaxFrequency(cpuInfos[i].getMhzMax())
+					.withCacheSize(cpuInfos[i].getCacheSize())
 					.build();
 		}
 		return sockets;
 	}
 
-	private NetworkInterface[] netInterfaces() throws SigarException {
+	private NetworkInterfaces netInterfaces() throws SigarException {
 		String[] interfacesId = hypervisor().getNetInterfaceList();
+		NetInterfaceConfig primaryInterface = hypervisor().getNetInterfaceConfig();
 		
-		NetworkInterface[] networkInterfaces = new NetworkInterface[interfacesId.length];
+		NetworkInterfaces interfaces = new NetworkInterfaces();
 		
 		for(int i = 0; i < interfacesId.length; i++) {
 			NetInterfaceConfig interfaceConfig = hypervisor().getNetInterfaceConfig(interfacesId[i]);
 			
 			NetInfo netInfo = hypervisor().getNetInfo();
 			
-			networkInterfaces[i] = new NetworkInterfaceBuilderImpl()
+			NetworkInterface ni = new NetworkInterfaceBuilderImpl()
 					.useOperatingSystemInformations(this.os)
+					.withId(interfaceConfig.getHwaddr().toLowerCase())
 					.withLogicalName(interfaceConfig.getName())
+					.withCapabilities(new Capabilities())
+					.ofType(interfaceConfig.getType())
+					.isPrimary(primaryInterface.getHwaddr().equalsIgnoreCase(interfaceConfig.getHwaddr()))
 					.withNetworkInfo(
 							new NetworkInterfaceInfo(
 									netInfo.getDefaultGateway(), netInfo.getPrimaryDns(),
@@ -135,29 +145,30 @@ public class HardwareBuilder extends ResourceBuilder<Machine> {
 									interfaceConfig.getNetmask(), interfaceConfig.getBroadcast(), 
 									interfaceConfig.getAddress(), interfaceConfig.getDestination()))
 					.build();
+			interfaces.add(ni);
 		}
 		
-		return networkInterfaces;
+		return interfaces;
 	}
 
 	public static void main(String[] args) throws SigarException {
 		SigarProxy proxy = new HardwareBuilder().hypervisor();
-		System.out.println(proxy.getNetInterfaceConfig().getHwaddr());
+		System.out.println(proxy.getNetInterfaceConfig());
 		
-		for(String net : proxy.getNetInterfaceList()) {
-			System.out.println(net);
-		}
+//		for(String net : proxy.getNetInterfaceList()) {
+//			System.out.println(net);
+//		}
 		
-		NetInterfaceConfig primaryInterface = proxy.getNetInterfaceConfig();
+//		NetInterfaceConfig primaryInterface = proxy.getNetInterfaceConfig();
+//		
+//		NetInterfaceStat netInterfaceStat = proxy.getNetInterfaceStat(primaryInterface.getName());
 		
-		NetInterfaceStat netInterfaceStat = proxy.getNetInterfaceStat(primaryInterface.getName());
-		
-		System.out.println(netInterfaceStat);
-		
-		System.out.println(primaryInterface);
-		
-		System.out.println(primaryInterface.getType());
-		
-		System.out.println(proxy.getNetInfo());
+//		System.out.println(netInterfaceStat);
+//		
+//		System.out.println(primaryInterface);
+//		
+//		System.out.println(primaryInterface.getType());
+//		
+//		System.out.println(proxy.getNetInfo());
 	}
 }

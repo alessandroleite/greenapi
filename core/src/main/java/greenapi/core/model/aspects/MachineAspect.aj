@@ -74,11 +74,14 @@ public aspect MachineAspect {
 
 	private void Machine.startMonitor() {
 		Sensor<?, Data<?>>[] sensors = this.sensors();
-		this.sensorsExecutorService = new ScheduledThreadPoolExecutor[sensors.length];
-
-		for (int i = 0; i < sensors.length; i++) {
-			this.sensorsExecutorService[i] = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-			this.sensorsExecutorService[i].scheduleWithFixedDelay(sensors[i], 1, 1, TimeUnit.SECONDS);
+		
+		if (sensors != null) {
+			this.sensorsExecutorService = new ScheduledThreadPoolExecutor[sensors.length];
+			
+			for (int i = 0; i < sensors.length; i++) {
+				this.sensorsExecutorService[i] = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+				this.sensorsExecutorService[i].scheduleWithFixedDelay(sensors[i], 1, 1, TimeUnit.SECONDS);
+			}
 		}
 	}
 

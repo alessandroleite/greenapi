@@ -161,11 +161,12 @@ public class CpuSocket implements Resource {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Vendor......:").append(this.vendor()).append(NEW_LINE);
-		builder.append("Model.......:").append(this.model()).append("-").append(this.mhz()).append(NEW_LINE);
-		builder.append("Frequency...:").append(this.frequency().inMhz()).append(" Mhz").append(NEW_LINE);
-		builder.append("Cores.......:\n[").append(NEW_LINE);
+		StringBuilder builder = new StringBuilder("\n");
+		builder.append("Vendor......: ").append(this.vendor()).append(NEW_LINE);
+		builder.append("Model.......: ").append(this.model()).append("-").append(this.mhz()).append(NEW_LINE);
+		builder.append("Cache size..: ").append(this.cacheSize() / 1024).append("Kb").append(NEW_LINE);
+		builder.append("Frequency...: ").append(this.frequency().inGhz()).append(" Ghz").append(NEW_LINE);
+		builder.append("Cores.......: \n[").append(NEW_LINE);
 
 		for (Cpu cpu : this.cores().get()) {
 			builder.append(TAB).append(cpu).append(NEW_LINE);
@@ -183,7 +184,9 @@ public class CpuSocket implements Resource {
 	 */
 	public Frequency frequency() {
 		synchronized (this) {
-			return (this.state() == null || this.state().frequency() == null) ? Frequency.NULL_FREQUENCY : this.state().frequency();
+			return (this.state() == null || this.state().frequency() == null) 
+					? (this.availableFrequencies()[this.availableFrequencies().length - 1])
+					: this.state().frequency();
 		}
 	}
 
