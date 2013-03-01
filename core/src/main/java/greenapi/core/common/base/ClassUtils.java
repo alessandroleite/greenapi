@@ -22,12 +22,7 @@
  */
 package greenapi.core.common.base;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import greenapi.core.model.exception.GreenApiException;
-
-import java.lang.reflect.InvocationTargetException;
-
+import net.vidageek.mirror.dsl.Mirror;
 
 public final class ClassUtils {
 
@@ -52,40 +47,19 @@ public final class ClassUtils {
 	 * 
 	 * @param fullClassName
 	 *            The name of the class to be instantiate.
+	 * @param args
+	 *            Arguments to use when invoking this constructor
 	 * @return An instance of the given class.
-	 * @throws GreenApiException
-	 *             If the given class doesn't exist or if it is impossible to
-	 *             instantiate its.
 	 */
-	public static Object newInstanceForName(String fullClassName) {
-		try {
-			return Class.forName(checkNotNull(fullClassName)).newInstance();
-		} catch (InstantiationException | IllegalAccessException
-				| ClassNotFoundException exception) {
-			throw new GreenApiException(exception);
-		}
-	}
-
 	public static Object newInstanceForName(String fullClassName,
 			Object... args) {
 
 		if (args == null || args.length == 0) {
-			return newInstanceForName(fullClassName);
+			return new Mirror().on(fullClassName).invoke().constructor()
+					.withoutArgs();
 		} else {
-			try {
-				Class<?> clazz = Class.forName(checkNotNull(fullClassName));
-				Class<?>[] argTypes = new Class[args.length];
-
-				for (int i = 0; i < args.length; i++) {
-					argTypes[i] = args[i] != null ? args[i].getClass() : null;
-				}
-
-				return clazz.getConstructor(argTypes).newInstance(args);
-			} catch (ClassNotFoundException | NoSuchMethodException
-					| InvocationTargetException | IllegalAccessException
-					| InstantiationException exception) {
-				throw new GreenApiException(exception);
-			}
+			return new Mirror().on(fullClassName).invoke().constructor()
+					.withArgs(args);
 		}
 	}
 }
