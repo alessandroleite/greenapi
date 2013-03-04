@@ -13,7 +13,6 @@
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
 
-
 	<dependencies>
 		<!-- Test Scope -->
 		<dependency>
@@ -53,11 +52,11 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>${commons-dbcp.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>${commons-io.version}</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
 		</dependency>
 
 		<dependency>

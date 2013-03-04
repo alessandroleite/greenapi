@@ -10,8 +10,9 @@
 	<inceptionYear>2012</inceptionYear>
 
 	<description>
-	This is a system to keep track of system resources, such as CPU usage, frequency, temperature and the amount of memory used.
-        </description>
+		This is a system to keep track of system resources, such as CPU usage,
+		frequency, temperature and the amount of memory used.
+	</description>
 
 	<repositories>
 		<repository>
@@ -52,15 +53,15 @@
 			<id>github-snapshot-repo</id>
 			<url>https://github.com/alessandroleite/maven-repository/raw/master/snapshots</url>
 			<snapshots>
-			    <enabled>true</enabled>
+				<enabled>true</enabled>
 			</snapshots>
-		 </repository>
+		</repository>
 
-		 <repository>
+		<repository>
 			<id>github-release-repo</id>
 			<url>https://github.com/alessandroleite/maven-repository/raw/master/releases</url>
 			<snapshots>
-			    <enabled>false</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		<repository>
@@ -68,8 +69,8 @@
 			<name>Internal Maven repository of snapshots artifats</name>
 			<url>${internal.snapshots.repo.path}</url>
 			<snapshots>
-     			     	<enabled>true</enabled>
-      				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
 			</snapshots>
 			<releases>
 				<enabled>false</enabled>
@@ -80,11 +81,11 @@
 			<name>Internal Maven repository of release artifats</name>
 			<url>${internal.release.repo.path}</url>
 			<snapshots>
-     			     	<enabled>false</enabled>
+				<enabled>false</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
-			</releases>			
+			</releases>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -112,7 +113,8 @@
 		</pluginRepository>
 		<pluginRepository>
 			<id>mc-thirdparty</id>
-			<name>Local Maven repository of third party libraries not in mavenrepo</name>
+			<name>Local Maven repository of third party libraries not in
+				mavenrepo</name>
 			<url>http://mc-repo.googlecode.com/svn/maven2/thirdparty</url>
 			<snapshots>
 				<enabled>false</enabled>
@@ -129,10 +131,10 @@
 	</pluginRepositories>
 
 	<modules>
-          <module>core</module>
-	  <module>power</module>
-          <module>ui</module>
-	  <module>gpi</module>
+		<module>core</module>
+		<module>power</module>
+		<module>ui</module>
+		<module>gpi</module>
 	</modules>
 
 	<build>
@@ -143,6 +145,48 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>aspectj-maven-plugin</artifactId>
+					<version>${aspectj-maven-plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjrt</artifactId>
+							<version>${aspectjrt.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.aspectj</groupId>
+							<artifactId>aspectjtools</artifactId>
+							<version>${aspectjtools.version}</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<phase>compile</phase>
+							<goals>
+								<goal>compile</goal>
+								<goal>test-compile</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<complianceLevel>${source.version}</complianceLevel>
+						<encoding>${project.build.sourceEncoding}</encoding>
+						<outxml>true</outxml>
+						<source>${source.version}</source>
+						<target>${source.version}</target>
+						<compilerArgument>-Xlint:all</compilerArgument>
+						<!--<ajdtBuildDefFile>build-1-7.aj.properties</ajdtBuildDefFile> -->
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -165,16 +209,16 @@
 					<execution>
 						<phase>package</phase>
 						<goals>
-						    <goal>format</goal>
+							<goal>format</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-			        <artifactId>maven-jar-plugin</artifactId>
-			        <version>2.4</version>
-			        <inherited>true</inherited>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<inherited>true</inherited>
 				<configuration>
 					<archive>
 						<manifest>
@@ -195,28 +239,29 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.0</version>
+          			<artifactId>maven-compiler-plugin</artifactId>
+          			<version>2.5.1</version>
 				<inherited>true</inherited>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>${source.version}</source>
 					<target>${source.version}</target>
 					<showDeprecation>true</showDeprecation>
+					<XaddSerialVersionUID>true</XaddSerialVersionUID>
 					<compilerArgument>-Xlint:all</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-			        <artifactId>maven-eclipse-plugin</artifactId>
-          			<version>2.9</version>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
 				<inherited>true</inherited>
 				<configuration>
 					<additionalProjectnatures>
 						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
 						<projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
 						<projectnature>org.eclipse.jem.workbench.JavaEMFNature</projectnature>
-						<projectnature>org.eclipse.wst.jsdt.core.jsNature </projectnature>						
+						<projectnature>org.eclipse.wst.jsdt.core.jsNature </projectnature>
 					</additionalProjectnatures>
 					<additionalBuildcommands>
 						<buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
@@ -232,65 +277,38 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-        			<artifactId>maven-source-plugin</artifactId>
-        			<version>2.2.1</version>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 				<inherited>true</inherited>
 				<executions>
-			            <execution>
-            				  <id>attach-sources</id>
-            				  <phase>verify</phase>
-            				  <goals>
-				              <goal>jar-no-fork</goal>
-				          </goals>
-			            </execution>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<version>1.4</version>
+				<version>${aspectj-maven-plugin.version}</version>
 				<inherited>true</inherited>
-				<dependencies>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjrt</artifactId>
-						<version>${aspectjrt.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.aspectj</groupId>
-						<artifactId>aspectjtools</artifactId>
-						<version>${aspectjtools.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>					
- 					<complianceLevel>${source.version}</complianceLevel>
-                			<encoding>${project.build.sourceEncoding}</encoding>
-                			<outxml>true</outxml>
-					<source>${source.version}</source>
-					<target>${source.version}</target>
-					<!--<ajdtBuildDefFile>build-1-7.aj.properties</ajdtBuildDefFile> -->
-				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
-	</build>	
+	</build>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<internal.snapshots.repo.path>file://${project.basedir}/maven-repo/snapshots</internal.snapshots.repo.path>
 		<internal.release.repo.path>file://${project.basedir}/maven-repo/releases</internal.release.repo.path>
-		<source.version>1.7</source.version>		
+		<source.version>1.7</source.version>
 		<ajdt.version>1.7.2</ajdt.version>
 		<aspectjrt.version>1.7.1</aspectjrt.version>
 		<aspectjweaver.version>1.7.1</aspectjweaver.version>
 		<aspectjtools.version>1.7.1</aspectjtools.version>
 		<license-header-file>${project.basedir}/License.txt</license-header-file>
+		<aspectj-maven-plugin.version>1.4</aspectj-maven-plugin.version>
 	</properties>
 </project>
