@@ -46,7 +46,6 @@ import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetInfo;
 import org.hyperic.sigar.NetInterfaceConfig;
 import org.hyperic.sigar.SigarException;
-import org.hyperic.sigar.SigarProxy;
 import org.hyperic.sigar.Swap;
 
 public class HardwareBuilder extends ResourceBuilder<Machine> {
@@ -149,26 +148,5 @@ public class HardwareBuilder extends ResourceBuilder<Machine> {
 		}
 		
 		return interfaces;
-	}
-
-	public static void main(String[] args) throws SigarException {
-		SigarProxy proxy = new HardwareBuilder().hypervisor();
-		System.out.println(proxy.getNetInterfaceConfig());
-		
-//		for(String net : proxy.getNetInterfaceList()) {
-//			System.out.println(net);
-//		}
-		
-//		NetInterfaceConfig primaryInterface = proxy.getNetInterfaceConfig();
-//		
-//		NetInterfaceStat netInterfaceStat = proxy.getNetInterfaceStat(primaryInterface.getName());
-		
-//		System.out.println(netInterfaceStat);
-//		
-//		System.out.println(primaryInterface);
-//		
-//		System.out.println(primaryInterface.getType());
-//		
-//		System.out.println(proxy.getNetInfo());
 	}
 }

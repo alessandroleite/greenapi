@@ -1,6 +1,5 @@
 package greenapi.core.model.software.os.commands.impl.linux;
 
-import greenapi.core.common.base.IOUtils;
 import greenapi.core.model.exception.GreenApiException;
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.software.os.commands.Argument;
@@ -9,6 +8,8 @@ import greenapi.core.model.software.os.commands.Result;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 
 import lshw.parser.exception.LshwParserException;
 import lshw.parser.xml.Lshw;
@@ -58,17 +59,18 @@ public class NetworkInterfaceDescriptionImpl extends
 			this.id = args[0].value().toString();
 		}
 
-		String[][] commands = commands(args);
+		String[][] commands = getCommandToExecute(args);
 
 		try {
 			Process process = Runtime.getRuntime().exec(commands[0], commands[1]);
+			process.waitFor();
 			
 			try (InputStream is = process.getInputStream()) {
-				Nodes nodes = Lshw.unmarshall(IOUtils.asString(is).trim());
+				Nodes nodes = Lshw.unmarshall(IOUtils.toString(is).trim());
 				
 				this.result = new Result<NetworkInterface> (NetworkInterface.valueOf(nodes.findNodeByHardwareId(id.trim())));
 			}
-		} catch (IOException | LshwParserException | IllegalArgumentException exception) {
+		} catch (IOException | InterruptedException | LshwParserException | IllegalArgumentException exception) {
 			this.errors.put(exception.getMessage(), exception);
 		}
 		
@@ -79,7 +81,7 @@ public class NetworkInterfaceDescriptionImpl extends
 
 	@Override
 	public String[] commandLine(Argument ... args) {
-		return new String[]{"lshw","-class", "network", "-xml"};
+		return new String[] {"lshw","-class", "network", "-xml"};
 	}
 
 	@Override

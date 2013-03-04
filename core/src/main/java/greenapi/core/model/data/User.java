@@ -29,12 +29,31 @@ public class User implements Serializable {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -7456640775193188391L;
+	private static final long serialVersionUID = 8551076312572107154L;
 
 	private final String name;
 
-	public User(String name) {
+	private final boolean root;
+
+	public User(String name, boolean root) {
 		this.name = name;
+		this.root = root;
+	}
+
+	public User(String name) {
+		this(name, false);
+	}
+	
+	public static User newUser(String name, boolean root){
+		return new User(name, root);
+	}
+	
+	public static User newUser(String name){
+		return new User(name, false);
+	}
+	
+	public static User newRootUser(String name){
+		return new User(name, true);
 	}
 
 	/**
@@ -42,6 +61,14 @@ public class User implements Serializable {
 	 */
 	public String name() {
 		return name;
+	}
+
+	/**
+	 * @return the <code>true</code> if the {@link User} is root,
+	 *         <code>false</code> otherwise.
+	 */
+	public boolean isRoot() {
+		return root;
 	}
 
 	@Override
@@ -54,15 +81,15 @@ public class User implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		
+
 		if (this == obj) {
 			return true;
 		}
-		
+
 		if (obj == null) {
 			return false;
 		}
-		
+
 		if (getClass() != obj.getClass()) {
 			return false;
 		}

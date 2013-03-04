@@ -19,6 +19,10 @@ public final class Result<T> implements Serializable {
 	public Result(T value) {
 		this.value = value;
 	}
+	
+	public Result(T value, Throwable ... errors) {
+		this.value = value;
+	}
 
 	public void add(Throwable error) {
 		this.addAll(Collections.singletonMap(error.getMessage(), error));

@@ -25,10 +25,12 @@ package greenapi.core.model.software.os.linux;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
+import greenapi.core.model.resources.logic.Processes;
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.software.os.OperatingSystem;
 import greenapi.core.model.software.os.commands.Command;
+import greenapi.core.model.software.os.commands.ProcessListCommand;
 import greenapi.core.model.software.os.commands.Who;
 import greenapi.core.model.software.os.commands.impl.linux.CpuScalingAvailableFrequencies;
 import greenapi.core.model.software.os.commands.impl.linux.CpuTemperature;
@@ -86,5 +88,10 @@ public class LinuxOperatingSystem extends OperatingSystem {
 	@Override
 	public NetworkInterface networkInterfaceDescription(String id) {
 		return new NetworkInterfaceDescriptionImpl(id).execute().getValue(); 
+	}
+
+	@Override
+	public Processes processes() {
+		return new ProcessListCommand().execute().getValue();
 	}
 }

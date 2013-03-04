@@ -49,8 +49,8 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 		super(title, axisLabel, cpuSocket, updateIntervalInSeconds);
 		createSeries();
 		setRangeAxisRange(
-				(int) cpuSocket.availableFrequencies()[0].inMhz(),
-				(int) cpuSocket.availableFrequencies()[cpuSocket.availableFrequencies().length - 1].inMhz() + 1
+				(int) cpuSocket.availableFrequencies()[0].inGhz(),
+				(int) cpuSocket.availableFrequencies()[cpuSocket.availableFrequencies().length - 1].inGhz() + 1
 		);
 	}
 
@@ -74,7 +74,7 @@ public class CpuFrequencyLineChart  extends LineChartPanelSupport<CpuSocket>{
 
 		int i = 0;
 		for (Cpu cpu : this.getResource().cores()) {
-			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu.state().getFrequency().inMhz());
+			((TimeSeries) getSeries().get(i++)).add(new Millisecond(), cpu.state().getFrequency().inGhz());
 		}
 	}
 }

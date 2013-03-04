@@ -22,18 +22,19 @@
  */
 package greenapi.core.model.software.os.commands.impl.linux;
 
-import greenapi.core.common.base.IOUtils;
 import greenapi.core.model.data.User;
 import greenapi.core.model.software.os.commands.Who;
-import greenapi.core.model.software.os.commands.impl.AbstractRuntimeCommand;
+import greenapi.core.model.software.os.commands.impl.ExecutableCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 
-public class Whoami extends AbstractRuntimeCommand<User> implements Who {
 
-	static final User ROOT = new User("root");
+public class Whoami extends ExecutableCommand<User> implements Who {
+
+	static final User ROOT = User.newRootUser("root");
 
 	public Whoami() {
 		super("whoami");
@@ -46,12 +47,13 @@ public class Whoami extends AbstractRuntimeCommand<User> implements Who {
 
 	@Override
 	protected boolean isRoot() {
-		return ROOT.equals(this.result().getValue());
+		return this.result().getValue().isRoot();
 	}
 
 	@Override
 	protected User parser(InputStream input) throws IOException {
-		return new User(IOUtils.asString(input).trim());
+		String commandResult = IOUtils.toString(input).trim();
+		return new User(commandResult, ROOT.name().equals(commandResult));
 	}
 
 	@Override

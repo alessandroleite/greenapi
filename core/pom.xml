@@ -53,6 +53,12 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>${commons-dbcp.version}</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>${commons-io.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
@@ -100,5 +106,6 @@
 		<sigar.version>1.6.4</sigar.version>
 		<mirror.version>1.6.1</mirror.version>
 		<lshw.version>0.4-SNAPSHOT</lshw.version>
+		<commons-io.version>2.4</commons-io.version>
 	</properties>
 </project>

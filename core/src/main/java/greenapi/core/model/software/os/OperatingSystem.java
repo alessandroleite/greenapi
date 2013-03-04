@@ -27,6 +27,7 @@ import static java.util.Objects.requireNonNull;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
+import greenapi.core.model.resources.logic.Processes;
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.software.os.commands.Command;
@@ -78,6 +79,8 @@ public abstract class OperatingSystem implements Serializable,
 	public abstract NetworkInterface networkInterfaceDescription(String id);
 	
 	public abstract NetworkInterfaces networkInterfaces();
+	
+	public abstract Processes processes();
 	
 	public abstract Who who();
 

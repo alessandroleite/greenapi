@@ -22,6 +22,11 @@
  */
 package greenapi.core.model.software.os.commands;
 
+/**
+ * Base interface all the Operating System Command have to implement.
+ * 
+ * @param <T>
+ */
 public interface Command<T> {
 
 	/**

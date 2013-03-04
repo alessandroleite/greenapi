@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.base.Preconditions;
 
-public abstract class AbstractRuntimeCommand<T> implements Command<T> {
+public abstract class ExecutableCommand<T> implements Command<T> {
 
 	protected final Map<String, Throwable> errors = new ConcurrentHashMap<>();
 
@@ -65,7 +65,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	 *            subprocess should inherit the environment of the current
 	 *            process.
 	 */
-	public AbstractRuntimeCommand(String[] commands, String... envp) {
+	public ExecutableCommand(String[] commands, String... envp) {
 		this.commands = Preconditions.checkNotNull(commands);
 		this.envp = envp;
 	}
@@ -75,7 +75,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	 * @param commands
 	 *            array containing the command to call and its arguments.
 	 */
-	public AbstractRuntimeCommand(String... commands) {
+	public ExecutableCommand(String... commands) {
 		this(commands, new String[0]);
 	}
 
@@ -91,12 +91,13 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 			return null;
 		}
 
-		String[][] commands = commands(args);
+		String[][] commands = getCommandToExecute(args);
 
 		try {
 			Process process = Runtime.getRuntime().exec(commands[0], commands[1]);
+			process.waitFor();
 			this.result = new Result<>(this.parser(process.getInputStream()));
-		} catch (IOException exception) {
+		} catch (IOException | InterruptedException exception) {
 			this.errors.put(exception.getMessage(), exception);
 		}
 		this.result().addAll(this.getErrors());
@@ -131,7 +132,7 @@ public abstract class AbstractRuntimeCommand<T> implements Command<T> {
 	protected abstract T parser(InputStream input) throws IOException;
 	
 	
-	public String[][] commands(Argument... args) {
+	public String[][] getCommandToExecute(Argument... args) {
 		return new String[][] { this.commands, this.envp };
 	}
 

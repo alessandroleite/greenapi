@@ -23,16 +23,16 @@
 package greenapi.core.model.software.os.commands.impl.linux;
 
 import greenapi.core.common.base.CopyInputStream;
-import greenapi.core.common.base.IOUtils;
-import greenapi.core.model.data.User;
 import greenapi.core.model.software.os.commands.Argument;
-import greenapi.core.model.software.os.commands.impl.AbstractRuntimeCommand;
+import greenapi.core.model.software.os.commands.impl.ExecutableCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 
-public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
+
+public abstract class LinuxCommandSupport<T> extends ExecutableCommand<T> {
 
 	private final boolean rootRequired;
 	private final boolean bash;
@@ -70,7 +70,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 
 	@Override
 	protected boolean isRoot() {
-		return new User("root").equals(new Whoami().execute().getValue());
+		return new Whoami().execute().getValue().isRoot();
 	}
 
 	@Override
@@ -93,13 +93,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String[][] commands(Argument... args) {
-//		List<String> commands = new ArrayList<>();
-//
-//		if (isBashNeeded()) {
-//			commands.add("bash");
-//			commands.add("-c");
-//		}
+	public String[][] getCommandToExecute(Argument... args) {
 
 		String[] instructions = this.commandLine(args);
 		
@@ -109,16 +103,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 			commands[0] = "bash";
 			commands[1] = "-c";
 		} 
-		
 		System.arraycopy(instructions, 0, commands, (isBashNeeded() ? 2 : 0), instructions.length);
-		
-
-//		if (args != null) {
-//			// FIXME Is there a choice better than that?
-//			for (int i = 0; i < args.length; i++) {
-//				//commandLine = commandLine.replaceAll("\\$" + (i + 1), args[i].value().toString());
-//			}
-//		}
 		return new String[][] { commands, envp };
 	}
 
@@ -128,7 +113,7 @@ public abstract class LinuxCommandSupport<T> extends AbstractRuntimeCommand<T> {
 	@Override
 	protected T parser(InputStream input) throws IOException {
 		try (InputStream copy = new CopyInputStream(input).copy()) {
-			return parser(IOUtils.asString(copy).trim(), input);
+			return parser(IOUtils.toString(copy).trim(), input);
 		}
 	}
 
