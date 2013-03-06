@@ -22,57 +22,109 @@
  */
 package greenapi.core.model.data;
 
+import java.util.Objects;
+
+import javax.measure.DecimalMeasure;
+import javax.measure.Measure;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+
 public class Temperature implements Data<Double> {
 
 	/**
-	 * Serial code version <code>serialVersionUID</code> 
+	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -459721679174579396L;
+	private static final long serialVersionUID = -4142905195780850697L;
 	
 	/** The current temperature. */
-	private final double value;
+	private final Measure<Double, javax.measure.quantity.Temperature> value;
 	/** High temperature */
-	private final double high;
+	private final Measure<Double, javax.measure.quantity.Temperature> high;
 	/** Critical temperature */
-	private final double critical;
+	private final Measure<Double, javax.measure.quantity.Temperature> critical;
 
 	/**
+	 * 
+	 * @param valueInCelsius
+	 * @param highInCelsius
+	 * @param criticalInCelsius
+	 */
+	public Temperature(double valueInCelsius, double highInCelsius,
+			double criticalInCelsius) {
+		this(valueInCelsius, highInCelsius, criticalInCelsius, SI.CELSIUS);
+	}
+
+	/**
+	 * 
+	 * @param value
+	 * @param high
+	 * @param critical
+	 * @param unit
+	 */
+	public Temperature(double value, double high, double critical,
+			Unit<javax.measure.quantity.Temperature> unit) {
+		this(DecimalMeasure.valueOf(value, Objects.requireNonNull(unit)),
+				DecimalMeasure.valueOf(high, unit), DecimalMeasure.valueOf(
+						critical, unit));
+	}
+
+	/**
+	 * 
 	 * @param value
 	 * @param high
 	 * @param critical
 	 */
-	public Temperature(double value, double high, double critical) {
+	public Temperature(
+			Measure<Double, javax.measure.quantity.Temperature> value,
+			Measure<Double, javax.measure.quantity.Temperature> high,
+			Measure<Double, javax.measure.quantity.Temperature> critical) {
+
 		this.value = value;
 		this.high = high;
 		this.critical = critical;
 	}
-	
+
+	public static Temperature newTemperatureInCelsius(double valueInCelsius,
+			double highInCelsius, double criticalInCelsius) {
+		return new Temperature(valueInCelsius, highInCelsius, criticalInCelsius);
+	}
+
+	public static Temperature newTemperatureInCelsius(double valueInCelsius) {
+		return newTemperatureInCelsius(valueInCelsius, 0, 0);
+	}
+
+	public static Temperature newTemperature(double value, double high,
+			double critical, Unit<javax.measure.quantity.Temperature> unit) {
+		return new Temperature(value, high, critical, unit);
+	}
+
 	/**
-	 *
+	 * 
 	 * Return the current temperature on the Kelvin scale.
+	 * 
 	 * @return Return the current temperature on the Kelvin scale.
 	 */
-	public double valueInKelvin(){
-		return 0;
+	public double valueInKelvin() {
+		return this.value.to(SI.KELVIN).getValue();
 	}
-	
+
 	/**
 	 * Return the current temperature on the Fahrenheit scale.
+	 * 
 	 * @return Return the current temperature on the Fahrenheit scale.
 	 */
-	public double valueInFahrenheit(){
-		return 1.8 * this.value() + 32;
+	public double valueInFahrenheit() {
+		return 1.8 * this.value.to(SI.CELSIUS).getValue() + 32;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Double value() {
-		return this.value;
+		return this.value.to(SI.CELSIUS).getValue();
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -80,16 +132,9 @@ public class Temperature implements Data<Double> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(critical);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(high);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(value);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -99,26 +144,22 @@ public class Temperature implements Data<Double> {
 		if (this == obj) {
 			return true;
 		}
-		
-		if (!(obj instanceof Temperature)) {
+		if (obj == null) {
 			return false;
 		}
-		
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
 		Temperature other = (Temperature) obj;
-		if (Double.doubleToLongBits(critical) != Double.doubleToLongBits(other.critical)) {
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		} else if (!value.equals(other.value)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(high) != Double.doubleToLongBits(other.high)) {
-			return false;
-		}
-		
-		if (Double.doubleToLongBits(value) != Double.doubleToLongBits(other.value)) {
-			return false;
-		}
-		
 		return true;
 	}
-
 
 	/**
 	 * {@inheritDoc}
@@ -126,27 +167,27 @@ public class Temperature implements Data<Double> {
 	@Override
 	public String toString() {
 		return String.format("Temperature %s °C", this.getValue()
-		/* (high = %s, crit = %s), this.getHigh(), this.getCritical()*/);
+		/* (high = %s, crit = %s), this.getHigh(), this.getCritical() */);
 	}
 
 	/**
 	 * @return the value
 	 */
 	public double getValue() {
-		return value();
+		return this.value.to(SI.CELSIUS).getValue();
 	}
 
 	/**
 	 * @return the high
 	 */
 	public double getHigh() {
-		return high;
+		return high.to(SI.CELSIUS).getValue();
 	}
 
 	/**
 	 * @return the critical
 	 */
 	public double getCritical() {
-		return critical;
+		return critical.to(SI.CELSIUS).getValue();
 	}
 }

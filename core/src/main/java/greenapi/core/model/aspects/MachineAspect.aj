@@ -95,7 +95,7 @@ public aspect MachineAspect {
 	after() returning (Machine machine): call(Machine.new(..)) {
 
 		for (CpuSocket socket : machine.cpus()) {			
-			socket.add(machine);
+			socket.attach(machine);
 		}
 		
 		//machine.memory().add(machine);

@@ -51,7 +51,7 @@ public class CpuScalingAvailableFrequencies extends
 
 		int i = 0;
 		while (tokens.hasMoreElements()) {
-			frequencies[i++] = new Frequency(Long.parseLong(tokens.nextToken()));
+			frequencies[i++] = Frequency.newFrequencyInMhz(Long.parseLong(tokens.nextToken()));
 		}
 		return frequencies;
 	}

@@ -15,14 +15,14 @@ public final class Energy implements Data<Measure<BigDecimal, Power>>, Comparabl
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 2718289241623424983L;
+	private static final long serialVersionUID = 7980385870495269655L;
 
-	private Measure<BigDecimal, Power> value;
+	private final Measure<BigDecimal, Power> value;
 
-	public Energy(BigDecimal value) {
-		this(value, SI.MEGA(SI.WATT));
+	public Energy(BigDecimal powerInMegaWatt) {
+		this(powerInMegaWatt, SI.MEGA(SI.WATT));
 	}
-	
+
 	public Energy(BigDecimal value, Unit<Power> unit) {
 		this.value = DecimalMeasure.valueOf(value, unit);
 	}

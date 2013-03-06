@@ -22,34 +22,36 @@
  */
 package greenapi.core.model.data;
 
-import java.math.BigDecimal;
+import static javax.measure.unit.SI.GIGA;
+import static javax.measure.unit.SI.HERTZ;
+import static javax.measure.unit.SI.MEGA;
 
 import javax.measure.DecimalMeasure;
 import javax.measure.Measure;
-import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
-public final class Frequency implements
-		Data<Measure<BigDecimal, javax.measure.quantity.Frequency>>,
-		Comparable<Frequency> {
+public final class Frequency implements Data<Long>, Comparable<Frequency>,
+		Cloneable {
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = -1779064340006691832L;
+	private static final long serialVersionUID = 5492468590469502716L;
 
-	private static final Long UNKNOWN = 0L;
+	/**
+	 * This instance represents a <code>null</code> frequency. In that case, the
+	 * frequency value is zero.
+	 */
+	public static final Frequency NULL_FREQUENCY = newFrequencyInMhz(0L);
 
-	public static final Frequency NULL_FREQUENCY = newFrequencyInMhz(UNKNOWN);
-
-	private final Measure<BigDecimal, javax.measure.quantity.Frequency> value;
+	private final Measure<Long, javax.measure.quantity.Frequency> value;
 
 	public Frequency(long valueInMhz) {
-		this(valueInMhz, SI.MEGA(SI.HERTZ));
+		this(valueInMhz, MEGA(HERTZ));
 	}
 
 	public Frequency(long value, Unit<javax.measure.quantity.Frequency> unit) {
-		this.value = DecimalMeasure.valueOf(BigDecimal.valueOf(value), unit);
+		this.value = DecimalMeasure.valueOf(Long.valueOf(value), unit);
 	}
 
 	public static Frequency newFrequencyInMhz(long valueInMhz) {
@@ -57,16 +59,16 @@ public final class Frequency implements
 	}
 
 	public static Frequency newFrequencyInGhz(long valueInGhz) {
-		return new Frequency(valueInGhz, SI.GIGA(SI.HERTZ));
+		return new Frequency(valueInGhz, GIGA(HERTZ));
 	}
 
 	public static Frequency newFrequencyInHertz(long valueInHertz) {
-		return new Frequency(valueInHertz, SI.HERTZ);
+		return new Frequency(valueInHertz, HERTZ);
 	}
 
 	@Override
-	public Measure<BigDecimal, javax.measure.quantity.Frequency> value() {
-		return this.value;
+	public Long value() {
+		return this.value.longValue(MEGA(HERTZ));
 	}
 
 	/**
@@ -75,7 +77,7 @@ public final class Frequency implements
 	 * @return The frequency value in GHz.
 	 */
 	public double inGhz() {
-		return this.value().doubleValue(SI.GIGA(SI.HERTZ));
+		return this.value.doubleValue(GIGA(HERTZ));
 	}
 
 	/**
@@ -84,7 +86,7 @@ public final class Frequency implements
 	 * @return The frequency value in MHz.
 	 */
 	public double inMhz() {
-		return this.value().doubleValue(SI.MEGA(SI.HERTZ));
+		return this.value.doubleValue(MEGA(HERTZ));
 	}
 
 	@Override
@@ -125,5 +127,10 @@ public final class Frequency implements
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Frequency clone() {
+		return Frequency.newFrequencyInMhz(this.value());
 	}
 }

@@ -22,12 +22,12 @@
  */
 package greenapi.core.model.aspects;
 
+import greenapi.core.model.util.Observer;
+import greenapi.core.model.util.Subject;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import greenapi.core.model.util.Observer;
-import greenapi.core.model.util.Subject;
 
 /**
  * 
@@ -40,26 +40,28 @@ public abstract aspect ObserverPattern {
 	 * @param observable
 	 */
 	abstract pointcut stateChanges(Subject observable);
-
+	
 	/**
-	 * This after advice notifies all registered observers the new state of the
+	 * This after advice notifies all registered observers about the new state of the
 	 * observable ({@link Subject}) object.
 	 * 
 	 * @param observable
 	 *            The new state of the observable ({@link Subject}) object. It
 	 *            is never <code>null</code>.
 	 */
-	after(Subject observable): stateChanges(observable) {
+	 after(Subject observable): stateChanges(observable) {
 		for (Observer obs : observable.getObservers()) {
 			obs.update(observable);
-		}
+		}		
 	}
+
+	
 
 	// Subject inter-type declaration
 
 	private final Collection<Observer> Subject.observers = new CopyOnWriteArrayList<Observer>();
 
-	public void Subject.add(Observer observer) {
+	public void Subject.attach(Observer observer) {
 		if (observer != null && !observers.contains(observer)) {
 			observers.add(observer);
 		}
@@ -68,9 +70,9 @@ public abstract aspect ObserverPattern {
 	/**
 	 * Remove a {@link Observer}
 	 * 
-	 * @param observer
+	 * @param observer The {@link Observer} to be removed
 	 */
-	public void Subject.remove(Observer observer) {
+	public void Subject.detach (Observer observer) {
 		if (observer != null) {
 			observers.remove(observer);
 		}

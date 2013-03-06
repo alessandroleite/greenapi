@@ -38,7 +38,7 @@ public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency> {
 	@Override
 	protected Frequency parser(String result, InputStream source)
 			throws IOException {
-		return new Frequency(Long.parseLong(result.trim()));
+		return Frequency.newFrequencyInMhz(Long.parseLong(result.trim()));
 	}
 
 	@Override

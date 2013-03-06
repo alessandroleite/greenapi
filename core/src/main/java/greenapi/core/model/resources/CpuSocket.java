@@ -76,14 +76,14 @@ public class CpuSocket implements Resource {
 	 */
 	private CpuSocketState state;
 
-	public CpuSocket(String vendor, String model, long mhz, long cacheSize, Cpu[] cores, Frequency... frequencies) {
+	public CpuSocket(String vendor, String model, long mhz, long cacheSizeInBytes, Cpu[] cores, Frequency... frequencies) {
 
 		this.vendor = vendor;
 		this.model = model;
 		this.mhz = mhz;
-		this.cacheSize = cacheSize;
+		this.cacheSize = cacheSizeInBytes;
 
-		this.availableFrequencies = (frequencies == null ? new Frequency[] { new Frequency(new Long(mhz)) } : frequencies);
+		this.availableFrequencies = (frequencies == null ? new Frequency[] { Frequency.newFrequencyInMhz(new Long(mhz)) } : frequencies);
 		Arrays.sort(this.availableFrequencies);
 		this.cores = new Cores(this);
 		
@@ -92,8 +92,8 @@ public class CpuSocket implements Resource {
 		}
 	}
 	
-	public CpuSocket(String vendor, String model, long mhz, long cacheSize, Cpu ... cores) {
-		this(vendor, model, mhz, cacheSize, cores, new Frequency(mhz));
+	public CpuSocket(String vendor, String model, long mhz, long cacheSizeInBytes, Cpu ... cores) {
+		this(vendor, model, mhz, cacheSizeInBytes, cores, Frequency.newFrequencyInMhz(mhz));
 	}
 
 	/**

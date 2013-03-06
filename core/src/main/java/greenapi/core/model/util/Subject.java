@@ -22,10 +22,7 @@
  */
 package greenapi.core.model.util;
 
-import greenapi.core.model.data.Data;
-
 import java.util.Collection;
-
 
 public interface Subject {
 
@@ -37,7 +34,7 @@ public interface Subject {
 	 *            The {@link Observable} to be add. Must be not
 	 *            <code>null</code>.
 	 */
-	void add(Observer obs);
+	void attach(Observer obs);
 
 	/**
 	 * Remove a given {@link Observer} of this {@link Subject}.
@@ -45,7 +42,7 @@ public interface Subject {
 	 * @param obs
 	 *            The {@link Observer} to be removed of this {@link Subject}.
 	 */
-	void remove(Observer obs);
+	void detach(Observer obs);
 
 	/**
 	 * Returns a read-only {@link Collection} with the {@link Observer}s of a
@@ -61,6 +58,5 @@ public interface Subject {
 	 * 
 	 * @return The new state of the observable object.
 	 */
-	@SuppressWarnings("rawtypes")
-	Data getData();
+	// Data getData();
 }

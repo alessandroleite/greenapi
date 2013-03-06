@@ -51,7 +51,7 @@ public class CpuSocketBuilderImpl implements CpuSocketBuilder {
 		checkArgument((maxFrequency > 0 || frequencies != null && frequencies.length > 0), "CPU maximum frequency must be greater than zero.");
 		
 		if (this.frequencies == null || this.frequencies.length == 0) {
-			this.frequencies = new Frequency[] { new Frequency(this.minFrequency), new Frequency(this.maxFrequency) };
+			this.frequencies = new Frequency[] { Frequency.newFrequencyInMhz(this.minFrequency), Frequency.newFrequencyInMhz(this.maxFrequency) };
 		}
 		
 		CpuSocket cpuSocket = new CpuSocket(vendor, cpuModel, maxFrequency, cacheSize, this.cores, frequencies);

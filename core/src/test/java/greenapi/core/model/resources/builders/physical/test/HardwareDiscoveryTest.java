@@ -22,23 +22,23 @@
  */
 package greenapi.core.model.resources.builders.physical.test;
 
+import greenapi.core.model.resources.Machine;
+import greenapi.core.model.resources.builders.impl.physical.HardwareBuilder;
+import greenapi.core.model.software.os.OperatingSystemFactory;
+
 import java.util.Arrays;
 
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarProxy;
 
-import greenapi.core.model.resources.Machine;
-import greenapi.core.model.resources.builders.impl.physical.HardwareBuilder;
-import greenapi.core.model.software.os.OperatingSystemFactory;
-
 public class HardwareDiscoveryTest {
 
 	public static void main(String[] args) throws SigarException {
+		
 		Machine machine = new HardwareBuilder().withOS(
 				OperatingSystemFactory.getSystemOS()).build();
 		
-		System.out.println(machine.getOs().processes());
-		
+		System.out.println(machine.getOs().processes());		
 		//System.out.println(machine);
 		
 		SigarProxy proxy = new HardwareBuilder().hypervisor();

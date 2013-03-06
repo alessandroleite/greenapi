@@ -44,6 +44,9 @@ public class CpuBuilderImpl implements CpuBuilder {
 		checkArgument(id != null && id >= 0);
 		Cpu cpu = new Cpu(String.valueOf(id), irq, softIrq, stole, cpuState, cpuTemperature);
 		
+		cpu.setState(null);
+		
+		
 		if (cpuSocket != null){
 			cpu.setCpuSocket(cpuSocket);
 		}
