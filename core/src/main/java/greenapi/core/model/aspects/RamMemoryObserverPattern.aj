@@ -30,10 +30,7 @@ public aspect RamMemoryObserverPattern extends ObserverPattern {
 
 	declare parents: Memory implements Subject;
 
-	pointcut stateChanges(Subject s) : target (s) && (
-			call (MemoryState Memory.setState(..)));
+	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && 
+					  (call (MemoryState Memory.setState(..)));
 
-	public MemoryState Memory.getData() {
-		return this.state();
-	}
 }

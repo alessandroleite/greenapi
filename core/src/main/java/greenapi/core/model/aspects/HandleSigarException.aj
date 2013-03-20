@@ -40,9 +40,12 @@ public aspect HandleSigarException {
 	 * {@link ResourceException}. This implementation picks out execution of
 	 * method declared to throw {@link SigarException} in our project.
 	 */
-	pointcut throwsResourceException(): ( 
+	pointcut throwsResourceException(): 
+		( 
 			(within(greenapi.core.model.resources.builders..*) || within(greenapi.core.model.sensors ..*) ) && 
-			( execution (* build(..)) || execution (* collect(..) )  ) );
+			( execution (* build(..)) || execution (* collect(..)) ) ||
+			(within(greenapi.core.model.software.os.commands.impl.PsImpl) && (execution (* execute(..))))
+		);
 
 	/**
 	 * This around advice converts {@link SigarException} to
@@ -51,7 +54,8 @@ public aspect HandleSigarException {
 	 * {@link SigarException} will be thrown from this join point, and thus that
 	 * none will be converted the AspectJ runtime to {@link SoftException}.
 	 * 
-	 * @return
+	 * @return The reference of the target object.
+	 * @throws ResourceException If the target method throws {@link SigarException}
 	 */
 	Object around(): throwsResourceException() {
 		try {

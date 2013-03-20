@@ -30,8 +30,10 @@ import greenapi.core.model.sensors.Sensor;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -45,7 +47,7 @@ public class Process implements Resource, Comparable<Process> {
 
 	private final long id;
 	
-	private final long parentId;
+	private final Process parent;
 
 	private final String name;
 
@@ -54,24 +56,30 @@ public class Process implements Resource, Comparable<Process> {
 	private final List<String> modules = new LinkedList<>();
 
 	private final User user;
+	
+	private final Map<Long, Process> children = new HashMap<>();
 
 	private ProcessState state;
 
-	public Process(long id, long parentId, String name, String[] arguments, User user, String[] modules, ProcessState state) {
-		this(id, parentId, name, arguments, user, modules);
+	public Process(long id, Process parent, String name, String[] arguments, User user, String[] modules, ProcessState state) {
+		this(id, parent, name, arguments, user, modules);
 		this.state = state;
 	}
 
-	public Process(long id, long parentId, String name, String[] arguments, User user, String ... modules) {
+	public Process(long id, Process parent, String name, String[] arguments, User user, String ... modules) {
 
 		this.id = id;
-		this.parentId = parentId;
+		this.parent = parent;
 		this.name = name;
 		this.arguments = arguments == null ? new String[0] : arguments;
 		this.user = user;
 
 		if (modules != null) {
 			this.modules.addAll(Arrays.asList(modules));
+		}
+		
+		if (parent != null) {
+			this.parent.children.put(id, this);
 		}
 	}
 
@@ -122,17 +130,17 @@ public class Process implements Resource, Comparable<Process> {
 	}
 
 	/**
-	 * @return the id
+	 * @return the pid
 	 */
 	public long pid() {
 		return id;
 	}
 	
 	/**
-	 * @return the id
+	 * @return the parent
 	 */
-	public long parentPid() {
-		return this.parentId;
+	public Process parent() {
+		return this.parent;
 	}
 
 	/**
@@ -162,6 +170,10 @@ public class Process implements Resource, Comparable<Process> {
 	public User user() {
 		return user;
 	}
+	
+	public Map<Long, Process> children() {
+		return Collections.unmodifiableMap(children);
+	}
 
 	@Override
 	public Sensor<?, Data<?>>[] sensors() {
@@ -171,5 +183,5 @@ public class Process implements Resource, Comparable<Process> {
 	@Override
 	public int compareTo(final Process other) {
 		return Long.valueOf(this.pid()).compareTo(other.pid());
-	}
+	}	
 }

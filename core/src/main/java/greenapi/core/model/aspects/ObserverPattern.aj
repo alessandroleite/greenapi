@@ -39,7 +39,7 @@ public abstract aspect ObserverPattern {
 	 * 
 	 * @param observable
 	 */
-	abstract pointcut stateChanges(Subject observable);
+	abstract pointcut notifyObservers(Subject observable, Object data);
 	
 	/**
 	 * This after advice notifies all registered observers about the new state of the
@@ -49,9 +49,9 @@ public abstract aspect ObserverPattern {
 	 *            The new state of the observable ({@link Subject}) object. It
 	 *            is never <code>null</code>.
 	 */
-	 after(Subject observable): stateChanges(observable) {
+	 after(Subject observable, Object data): notifyObservers(observable, data) {
 		for (Observer obs : observable.getObservers()) {
-			obs.update(observable);
+			obs.update(observable, data);
 		}		
 	}
 

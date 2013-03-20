@@ -103,6 +103,7 @@
 		<internal.snapshots.repo.path>file://${basedir}/../maven-repo/snapshots</internal.snapshots.repo.path>
 		<internal.release.repo.path>file://${basedir}/../maven-repo/releases</internal.release.repo.path>
 		<license-header-file>${basedir}/../License.txt</license-header-file>
+		<checkstyle.file>${basedir}/../checkstyle.xml</checkstyle.file>
 		<junit.version>4.10</junit.version>
 		<jcommander.version>1.17</jcommander.version>
 		<guava.version>13.0.1</guava.version>

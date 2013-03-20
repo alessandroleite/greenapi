@@ -30,8 +30,8 @@ import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.software.os.OperatingSystem;
 import greenapi.core.model.software.os.commands.Command;
-import greenapi.core.model.software.os.commands.ProcessListCommand;
 import greenapi.core.model.software.os.commands.Who;
+import greenapi.core.model.software.os.commands.impl.PsImpl;
 import greenapi.core.model.software.os.commands.impl.linux.CpuScalingAvailableFrequencies;
 import greenapi.core.model.software.os.commands.impl.linux.CpuTemperature;
 import greenapi.core.model.software.os.commands.impl.linux.CurrentCpuFrequency;
@@ -92,6 +92,6 @@ public class LinuxOperatingSystem extends OperatingSystem {
 
 	@Override
 	public Processes processes() {
-		return new ProcessListCommand().execute().getValue();
+		return new PsImpl().execute().getValue();
 	}
 }

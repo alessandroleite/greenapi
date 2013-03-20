@@ -30,11 +30,7 @@ public aspect CpuObserverPattern extends ObserverPattern {
 
 	declare parents: Cpu implements Subject;
 
-	pointcut stateChanges(Subject s): target(s) && ( 
-		  call(CpuState Cpu.setState(..)) || 
-		  call(Temperature Cpu.setTemperature(..))) ;
+	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) &&  ( 
+		  call(CpuState Cpu.setState(..)) ||  call(Temperature Cpu.setTemperature(..))) ;
 
-	public CpuState Cpu.getData() {		
-		return this.state();
-	}
 }

@@ -20,15 +20,15 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.aspects;
+package greenapi.core.model.software.os.commands;
 
-import greenapi.core.model.data.CpuSocketState;
-import greenapi.core.model.resources.CpuSocket;
-import greenapi.core.model.util.Subject;
+import greenapi.core.model.resources.logic.Processes;
 
-public aspect CpuSocketObserver extends ObserverPattern {
-
-	declare parents: CpuSocket implements Subject;
-
-	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && (call  (CpuSocketState CpuSocket.setState(..)));
+public interface Ps extends Command<Processes> {
+	
+	/**
+	 * The processes ordered by id.
+	 * @return A list with the processes ordered by id.
+	 */
+	Processes list();
 }

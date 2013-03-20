@@ -37,9 +37,7 @@ import lshw.parser.exception.LshwParserException;
 import lshw.parser.xml.Lshw;
 import lshw.types.Nodes;
 
-public class NetworkInterfaceDescriptionImpl extends
-		LinuxCommandSupport<NetworkInterface> implements
-		NetworkInterfaceDescription {
+public final class NetworkInterfaceDescriptionImpl extends LinuxCommandSupport<NetworkInterface> implements NetworkInterfaceDescription {
 
 	private String id;
 
@@ -57,25 +55,20 @@ public class NetworkInterfaceDescriptionImpl extends
 
 	@Override
 	public NetworkInterface execute(String id) {
-		Result<NetworkInterface> result = execute(Argument.valueOf(id));
-		return result.getValue();
+		return execute(Argument.valueOf(id)).getValue();
 	}
 
 	@Override
 	public Result<NetworkInterface> execute(Argument... args) {
 		
 		if (this.isRootRequired() && !isRoot()) {
-			GreenApiException exception = new GreenApiException("Please, execute this command as a root user!");
-			errors.put(exception.getMessage(), exception);
-			return null;
+			return Result.newFailureResult(new GreenApiException("Please, execute this command as a root user!"));
 		}
 		
-		if (this.id == null && (args == null || args.length == 0 || args[0] == null)){
+		if (this.id == null && (args == null || args.length == 0 || args[0] == null)) {
 			
-			GreenApiException exception = new GreenApiException("networkId is null!");
-			errors.put(exception.getMessage(), exception);
+			return Result.newFailureResult(new GreenApiException("networkId is null!"));
 			
-			return null;
 		} else if (this.id == null && (args != null && args.length > 0)) {
 			
 			this.id = args[0].value().toString();
@@ -93,10 +86,8 @@ public class NetworkInterfaceDescriptionImpl extends
 				this.result = new Result<NetworkInterface> (NetworkInterface.valueOf(nodes.findNodeByHardwareId(id.trim())));
 			}
 		} catch (IOException | InterruptedException | LshwParserException | IllegalArgumentException exception) {
-			this.errors.put(exception.getMessage(), exception);
+			result = Result.newFailureResult(exception);
 		}
-		
-		this.result().addAll(this.getErrors());
 		
 		return this.result();
 	}

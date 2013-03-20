@@ -52,11 +52,4 @@ public interface Subject {
 	 *         {@link Subject}.
 	 */
 	Collection<Observer> getObservers();
-
-	/**
-	 * Returns the new state of the observable object.
-	 * 
-	 * @return The new state of the observable object.
-	 */
-	// Data getData();
 }

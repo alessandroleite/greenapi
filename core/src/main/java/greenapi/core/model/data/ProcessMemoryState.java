@@ -46,8 +46,7 @@ public class ProcessMemoryState implements Data<ProcessMemoryState> {
 
 	private final long size;
 
-	public ProcessMemoryState(long resident, long pageFaults, long majorFaults,
-			long share, long minorFaults, long size) {
+	public ProcessMemoryState(long resident, long pageFaults, long majorFaults, long share, long minorFaults, long size) {
 		this.resident = resident;
 		this.pageFaults = pageFaults;
 		this.majorFaults = majorFaults;

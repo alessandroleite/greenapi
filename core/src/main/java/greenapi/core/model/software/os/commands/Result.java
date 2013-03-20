@@ -32,7 +32,7 @@ public final class Result<T> implements Serializable {
 	/**
 	 * Serial code version <code>serialVersionUID</code>
 	 */
-	private static final long serialVersionUID = 8320691434005267590L;
+	private static final long serialVersionUID = -2841637758284066768L;
 
 	private final T value;
 
@@ -44,6 +44,19 @@ public final class Result<T> implements Serializable {
 	
 	public Result(T value, Throwable ... errors) {
 		this.value = value;
+		
+		if (errors != null) {
+			for(Throwable err : errors)
+			this.errors.put(err.getMessage(), err);
+		}
+	}
+	
+	public static <T> Result<T> newResult(T value, Throwable ... errors){
+		return new Result<>(value, errors);
+	}
+	
+	public static <T> Result<T> newFailureResult(Throwable ... errors) {
+		return new Result<T>(null, errors);
 	}
 
 	public void add(Throwable error) {

@@ -29,16 +29,12 @@ import greenapi.core.model.software.os.commands.Result;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 
 import com.google.common.base.Preconditions;
 
 public abstract class ExecutableCommand<T> implements Command<T> {
-
-	protected final Map<String, Throwable> errors = new ConcurrentHashMap<>();
 
 	/**
 	 * Array containing the command to call and its arguments.
@@ -84,11 +80,10 @@ public abstract class ExecutableCommand<T> implements Command<T> {
 	 */
 	@Override
 	public Result<T> execute(Argument... args) {
+		Map<String, Throwable> errors = new HashMap<>();
 
 		if (this.isRootRequired() && !isRoot()) {
-			GreenApiException exception = new GreenApiException("Please, execute this command as a root user!");
-			errors.put(exception.getMessage(), exception);
-			return null;
+			return Result.newFailureResult(new GreenApiException("Please, execute this command as a root user!"));
 		}
 
 		String[][] commands = getCommandToExecute(args);
@@ -96,11 +91,17 @@ public abstract class ExecutableCommand<T> implements Command<T> {
 		try {
 			Process process = Runtime.getRuntime().exec(commands[0], commands[1]);
 			process.waitFor();
-			this.result = new Result<>(this.parser(process.getInputStream()));
+			this.result = Result.newResult(this.parser(process.getInputStream()));
 		} catch (IOException | InterruptedException exception) {
-			this.errors.put(exception.getMessage(), exception);
+			errors.put(exception.getMessage(), exception);
 		}
-		this.result().addAll(this.getErrors());
+		
+		if (result == null) {
+			result = new Result<>(null);
+		}
+		
+		this.result().addAll(errors);
+		
 		return result;
 	}
 
@@ -142,16 +143,6 @@ public abstract class ExecutableCommand<T> implements Command<T> {
 	 * @return <code>true</code> if the execution of succeeded without error.
 	 */
 	protected boolean wasSuccessful() {
-		return this.errors.isEmpty();
-	}
-
-	/**
-	 * Returns the errors occurred during the execution of a command.
-	 * 
-	 * @return A {@link Map} which the key is the name or description of the
-	 *         error and the value is an instance of an {@link Exception}.
-	 */
-	protected Map<String, Throwable> getErrors() {
-		return Collections.unmodifiableMap(this.errors);
+		return this.result() != null ? this.result().wasSuccessfully() : false;
 	}
 }

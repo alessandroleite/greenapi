@@ -20,7 +20,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.core.model.software.os.commands;
+package greenapi.core.model.software.os.commands.impl;
 
 import greenapi.core.model.data.ProcessCpuState;
 import greenapi.core.model.data.ProcessMemoryState;
@@ -30,8 +30,13 @@ import greenapi.core.model.data.User;
 import greenapi.core.model.resources.builders.impl.physical.SigarFactory;
 import greenapi.core.model.resources.logic.Process;
 import greenapi.core.model.resources.logic.Processes;
+import greenapi.core.model.software.os.commands.Argument;
+import greenapi.core.model.software.os.commands.Ps;
+import greenapi.core.model.software.os.commands.Result;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hyperic.sigar.ProcCpu;
 import org.hyperic.sigar.ProcMem;
@@ -40,7 +45,9 @@ import org.hyperic.sigar.ProcTime;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarProxy;
 
-public class ProcessListCommand implements Command<Processes> {
+public final class PsImpl implements Ps {
+	
+	private Result<Processes> result;
 
 	@Override
 	public boolean isRootRequired() {
@@ -49,50 +56,89 @@ public class ProcessListCommand implements Command<Processes> {
 
 	@Override
 	public Result<Processes> result() {
-		return null;
+		return this.result;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Result<Processes> execute(Argument... args) {
-		Result<Processes> result = new Result<Processes>(new Processes());
+		result = new Result<Processes>(new Processes());
 
 		SigarProxy proxy = SigarFactory.getInstance();
-
-		try {
+		
+		Map<Long, Process> processes = new HashMap<>();
 
 			for (long pid : proxy.getProcList()) {
-				User user = User.newUser(proxy.getProcCredName(pid).getUser());
 
 				ProcState state = proxy.getProcState(pid);
-				List<String> modules = proxy.getProcModules(pid);
 				ProcCpu cpuState = proxy.getProcCpu(pid);
 				ProcMem memState = proxy.getProcMem(pid);
 				ProcTime procTime = proxy.getProcTime(pid);
 
-				Process process = new Process(pid, state.getPpid(),
-						state.getName(), proxy.getProcArgs(pid), user,
-						modules.toArray(new String[modules.size()]));
-				process.setState(new ProcessState(process, state.getThreads(),
-						state.getTty(), state.getProcessor(), state
-								.getPriority(), state.getNice(), proxy
-								.getProcFd(pid).getTotal(),
-						new ProcessCpuState(cpuState.getUser(), cpuState
-								.getLastTime(), cpuState.getPercent(), cpuState
-								.getStartTime(), cpuState.getTotal(), cpuState
-								.getSys()), new ProcessMemoryState(memState
-								.getResident(), memState.getPageFaults(),
-								memState.getMajorFaults(), memState.getShare(),
-								memState.getMinorFaults(), memState.getSize()),
-						new ProcessTime(procTime.getUser(), procTime
-								.getStartTime(), procTime.getTotal(), procTime
-								.getSys())));
-
+				Process process = build(pid, proxy, processes);
+				process.setState
+				(
+						new ProcessState
+						(
+								process, state.getThreads(), state.getTty(), state.getProcessor(), state.getPriority(), state.getNice(), 
+								getProcFd(pid, proxy),
+						new ProcessCpuState
+						(
+								cpuState.getUser(), cpuState.getLastTime(), cpuState.getPercent(), 
+								cpuState.getStartTime(), cpuState.getTotal(), cpuState.getSys()), 
+								new ProcessMemoryState 
+								(
+										memState.getResident(), memState.getPageFaults(),  memState.getMajorFaults(), memState.getShare(), 
+										memState.getMinorFaults(), memState.getSize()
+								),
+								new ProcessTime
+								(
+										procTime.getUser(), procTime.getStartTime(), procTime.getTotal(), procTime.getSys()
+								)
+						)
+				);
 				result.getValue().add(process);
 			}
-		} catch (SigarException exception) {
-			result.add(exception);
-		}
 		return result;
 	}
+	
+	private long getProcFd(long pid, SigarProxy proxy) throws SigarException {
+		try {
+			return proxy.getProcFd(pid).getTotal();
+		} catch (org.hyperic.sigar.SigarPermissionDeniedException exception) {
+			return -1;
+		}
+	}
+
+	private Process build(long pid, SigarProxy proxy, Map<Long, Process> processes) throws SigarException {
+		
+		if (pid == 0)
+		{
+			return null;
+		}
+		
+		if (processes.get(pid) != null)
+		{
+			return processes.get(pid);
+		}
+		
+		ProcState state = proxy.getProcState(pid);
+		List<?> modules = proxy.getProcModules(pid);
+		User user = User.newUser(proxy.getProcCredName(pid).getUser());
+		
+		Process process = new Process
+		(
+				pid, build(state.getPpid(), proxy, processes), state.getName(), proxy.getProcArgs(pid), user,
+				modules.toArray(new String[modules.size()])
+		);
+		
+		processes.put(pid, process);
+		
+		return process;
+	}
+
+
+	@Override
+	public Processes list() {
+		return this.execute().getValue();
+	}	
 }
