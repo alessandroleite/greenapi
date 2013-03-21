@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,57 +27,141 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Result<T> implements Serializable {
+import com.google.common.base.Preconditions;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -2841637758284066768L;
+/**
+ * @param <T>
+ */
+public final class Result<T> implements Serializable
+{
 
-	private final T value;
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -2841637758284066768L;
 
-	private final Map<String, Throwable> errors = new HashMap<>();
+    /**
+     * The value of the result.
+     */
+    private final T value;
 
-	public Result(T value) {
-		this.value = value;
-	}
-	
-	public Result(T value, Throwable ... errors) {
-		this.value = value;
-		
-		if (errors != null) {
-			for(Throwable err : errors)
-			this.errors.put(err.getMessage(), err);
-		}
-	}
-	
-	public static <T> Result<T> newResult(T value, Throwable ... errors){
-		return new Result<>(value, errors);
-	}
-	
-	public static <T> Result<T> newFailureResult(Throwable ... errors) {
-		return new Result<T>(null, errors);
-	}
+    /**
+     * The errors of the execution.
+     */
+    private final Map<String, Throwable> errors = new HashMap<>();
 
-	public void add(Throwable error) {
-		this.addAll(Collections.singletonMap(error.getMessage(), error));
-	}
+    /**
+     * Create an instance of this class assigned it a value.
+     * 
+     * @param resultValue The value of the result.
+     */
+    public Result(T resultValue)
+    {
+        this.value = resultValue;
+    }
 
-	public void addAll(Map<String, Throwable> errors) {
-		for (String key : errors.keySet()) {
-			this.errors.put(key, errors.get(key));
-		}
-	}
+    /**
+     * Create an instance of this class assigned it a value and its execution errors.
+     * 
+     * @param resultValue
+     *            The value of the result.
+     * @param executionErrors
+     *            The errors of the execution.
+     */
+    public Result(T resultValue, Throwable... executionErrors)
+    {
+        this.value = resultValue;
 
-	public Map<String, Throwable> getErrors() {
-		return Collections.unmodifiableMap(this.errors);
-	}
+        if (errors != null)
+        {
+            for (Throwable err : executionErrors)
+                this.errors.put(err.getMessage(), err);
+        }
+    }
 
-	public boolean wasSuccessfully() {
-		return this.errors.isEmpty();
-	}
+    /**
+     * Factory method to create a {@link Result} with its value and errors in case of exists one.
+     * 
+     * @param resultValue
+     *            The value of the result.
+     * @param errors
+     *            The errors of the execution.
+     * @param <T>
+     *            The result value type.
+     * @return An instance of {@link Result} with its value and errors in case of exists one.
+     */
+    public static <T> Result<T> newResult(T resultValue, Throwable... errors)
+    {
+        return new Result<>(resultValue, errors);
+    }
 
-	public T getValue() {
-		return value;
-	}
+    /**
+     * Factory method to create a new failure result. A failure result often has a <code>null</code> value and at least one error.
+     * 
+     * @param errors
+     *            The errors with the cause of the failure.
+     * @param <T>
+     *            The result value type expected.
+     * @return An instance of the {@link Result} with a <code>null</code> value and at least one error.
+     */
+    public static <T> Result<T> newFailureResult(Throwable... errors)
+    {
+        Preconditions.checkArgument(errors.length > 0);
+        return new Result<T>((T) null, errors);
+    }
+
+    /**
+     * Add one errors to this {@link Result}.
+     * 
+     * @param error
+     *            The error do be added.
+     */
+    public void add(Throwable error)
+    {
+        this.addAll(Collections.singletonMap(error.getMessage(), error));
+    }
+
+    /**
+     * Copy all errors of the given {@link Map} to this {@link Result}.
+     * 
+     * @param errorsToCopy
+     *            The errors to be copied replacing the same errors.
+     */
+    public void addAll(Map<String, Throwable> errorsToCopy)
+    {
+        for (String key : errors.keySet())
+        {
+            this.errors.put(key, errors.get(key));
+        }
+    }
+
+    /**
+     * Returns a read-only {@link Map} with the errors of the execution.
+     * 
+     * @return A read-only {@link Map} with the errors of the execution.
+     */
+    public Map<String, Throwable> getErrors()
+    {
+        return Collections.unmodifiableMap(this.errors);
+    }
+
+    /**
+     * Returns <code>true</code> if the execution occurred with errors.
+     * 
+     * @return <code>true</code> if the execution occurred with errors.
+     */
+    public boolean wasSuccessfully()
+    {
+        return this.errors.isEmpty();
+    }
+
+    /**
+     * Returns the value of the execution.
+     * 
+     * @return the value of the execution.
+     */
+    public T getValue()
+    {
+        return value;
+    }
 }

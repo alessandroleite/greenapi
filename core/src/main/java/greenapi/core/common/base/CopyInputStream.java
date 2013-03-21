@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,34 +22,70 @@
  */
 package greenapi.core.common.base;
 
+/**
+ * 
+ */
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public final class CopyInputStream {
-	private final InputStream source;
+import java.util.Objects;
 
-	public CopyInputStream(InputStream source) {
-		this.source = source;
-	}
+public final class CopyInputStream
+{
+    /**
+     * The reference to the origin {@link InputStream}.
+     */
+    private final InputStream source;
 
-	private int copyIn(ByteArrayOutputStream copy) throws IOException {
-		int read = 0;
-		int chunk = 0;
-		byte[] data = new byte[256];
+    /**
+     * Create a instance of this class but it does not copy the {@link InputStream} yet.
+     * 
+     * @param is
+     *            The {@link InputStream} to be copied. Might not be <code>null</code>.
+     */
+    public CopyInputStream(InputStream is)
+    {
+        this.source = Objects.requireNonNull(is);
+    }
 
-		while (-1 != (chunk = source.read(data))) {
-			read += data.length;
-			copy.write(data, 0, chunk);
-		}
-		return read;
-	}
+    /**
+     * Return a copy of the given {@link InputStream}.
+     * 
+     * @return A copy of the given {@link InputStream}.
+     * @throws IOException
+     *             If it doesn't possible to copy the {@link InputStream}.
+     */
+    public InputStream copy() throws IOException
+    {
+        try (ByteArrayOutputStream copy = new ByteArrayOutputStream())
+        {
+            copyIn(copy);
+            return (InputStream) new ByteArrayInputStream(copy.toByteArray());
+        }
+    }
 
-	public InputStream copy() throws IOException {
-		try (ByteArrayOutputStream copy = new ByteArrayOutputStream()) {
-			copyIn(copy);
-			return (InputStream) new ByteArrayInputStream(copy.toByteArray());
-		}
-	}
+    /**
+     * Copy all content of the given {@link InputStream} into a given {@link OutputStream}.
+     * 
+     * @param dest
+     *            The {@link OutputStream} to write the data of the {@link InputStream}.
+     * @return The number of bytes reads.
+     * @throws IOException
+     *             If the {@link InputStream} is in an invalid state.
+     */
+    private int copyIn(ByteArrayOutputStream dest) throws IOException
+    {
+        int read = 0;
+        int chunk = 0;
+        byte[] data = new byte[256];
+
+        while (-1 != (chunk = source.read(data)))
+        {
+            read += data.length;
+            dest.write(data, 0, chunk);
+        }
+        return read;
+    }
 }

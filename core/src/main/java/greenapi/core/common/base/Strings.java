@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,31 +24,69 @@ package greenapi.core.common.base;
 
 import com.google.common.base.Preconditions;
 
-public final class Strings {
-	
-	public static final String NEW_LINE = "\n";
-	public static final String TAB = "\t";
-	public static final String RETURN = "\r";
-	
+public final class Strings
+{
 
-	private Strings(){
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * New line character.
+     */
+    public static final String NEW_LINE = "\n";
 
-	public static String format(double val, boolean multi) {
-		String p = String.valueOf(val * (multi ? 100.0 : 1));
-		int ix = p.indexOf(".") + 1;
-		String percent = p.substring(0, ix) + p.substring(ix, ix + 1);
-		return percent + "%";
-	}
-	
-	public static String format(double val){
-		return format(val,true);
-	}
-	
-	public static String checkArgumentIsNullOrEmpty(String value) {
-		Preconditions.checkArgument(!com.google.common.base.Strings.isNullOrEmpty(value));
-		return value;
-	}
+    /**
+     * Tabular character.
+     */
+    public static final String TAB = "\t";
 
+    /**
+     * Return carry character.
+     */
+    public static final String RETURN = "\r";
+
+    /**
+     * Private constructor. It's never invoked.
+     */
+    private Strings()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Format a {@link Double} value as percentage.
+     * 
+     * @param val The value to be formatted.
+     * @param multi <code>true</code> if the value must be multiplied by 100.
+     * @return The value formated as a {@link String} percentage value.
+     */
+    public static String format(double val, boolean multi)
+    {
+        String p = String.valueOf(val * (multi ? 100.0 : 1));
+        int ix = p.indexOf(".") + 1;
+        String percent = p.substring(0, ix) + p.substring(ix, ix + 1);
+        return percent + "%";
+    }
+
+    /**
+     * Format a {@link Double} value as percentage value.
+     * 
+     * @param val
+     *            The value to be formatted.
+     * @return The value formated as a {@link String} percentage value.
+     */
+    public static String format(double val)
+    {
+        return format(val, true);
+    }
+
+    /**
+     * Check if a given {@link String} is <code>null</code> or empty and return the same {@link String}.
+     * 
+     * @param value
+     *            The {@link String} to be checked.
+     * @return The given {@link String}.
+     */
+    public static String checkArgumentIsNullOrEmpty(String value)
+    {
+        Preconditions.checkArgument(!com.google.common.base.Strings.isNullOrEmpty(value));
+        return value;
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,42 +22,66 @@
  */
 package greenapi.core.model.software.os.commands.impl.linux;
 
-import greenapi.core.common.base.StringTokenizer2;
-import greenapi.core.model.data.Frequency;
-import greenapi.core.model.software.os.commands.Argument;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.StringTokenizer;
 
 
-public class CpuScalingAvailableFrequencies extends
-		LinuxCommandSupport<Frequency[]>
-		implements
-		greenapi.core.model.software.os.commands.CpuScalingAvailableFrequencies {
+import greenapi.core.common.base.StringTokenizer2;
+import greenapi.core.model.data.Frequency;
+import greenapi.core.model.software.os.commands.Argument;
 
-	private static final String INSTRUCTION_LINE = "cat /sys/devices/system/cpu/cpu%S/cpufreq/scaling_available_frequencies";
+public class CpuScalingAvailableFrequencies extends LinuxCommandSupport<Frequency[]> implements
+        greenapi.core.model.software.os.commands.CpuScalingAvailableFrequencies
+{
 
-	public CpuScalingAvailableFrequencies() {
-		super(true, true);
-	}
+    /**
+     * The Linux command to return the available CPU frequencies.
+     */
+    private static final String INSTRUCTION_LINE = "cat /sys/devices/system/cpu/cpu%S/cpufreq/scaling_available_frequencies";
 
-	@Override
-	protected Frequency[] parser(String result, InputStream source)
-			throws IOException {
+    /**
+     * Create an instance of this command.
+     */
+    public CpuScalingAvailableFrequencies()
+    {
+        super(true, true);
+    }
 
-		StringTokenizer tokens = new StringTokenizer2(result.trim(), " ");
-		Frequency[] frequencies = new Frequency[tokens.countTokens()];
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Frequency[] parser(String result, InputStream source) throws IOException
+    {
 
-		int i = 0;
-		while (tokens.hasMoreElements()) {
-			frequencies[i++] = Frequency.newFrequencyInMhz(Long.parseLong(tokens.nextToken()));
-		}
-		return frequencies;
-	}
+        StringTokenizer tokens = new StringTokenizer2(result.trim(), " ");
+        Frequency[] frequencies = new Frequency[tokens.countTokens()];
 
-	@Override
-	public String[] commandLine(Argument... args) {
-		return new String[] { INSTRUCTION_LINE };
-	}
+        int i = 0;
+        while (tokens.hasMoreElements())
+        {
+            frequencies[i++] = Frequency.newFrequencyInMhz(Long.parseLong(tokens.nextToken()));
+        }
+        return frequencies;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] commandLine(Argument... args)
+    {
+        return new String[] {INSTRUCTION_LINE};
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Frequency[] frequencies()
+    {
+        return this.result().getValue();
+    }
 }

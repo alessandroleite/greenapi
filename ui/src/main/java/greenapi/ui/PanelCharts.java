@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -40,55 +40,61 @@ import javax.swing.JTabbedPane;
 
 import com.google.common.base.Preconditions;
 
-public class PanelCharts extends JFrame {
+public class PanelCharts extends JFrame
+{
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 802444743246742398L;
+    /**
+     * Serial code version <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 802444743246742398L;
 
-	private final JTabbedPane tabbedPane;
-	
-	private final Machine machine;
-	
-	private final List<JPanel> panels = new ArrayList<JPanel>();
-	
-	public PanelCharts(Machine machine){
-		this.machine = Preconditions.checkNotNull(machine);
-		this.tabbedPane = new JTabbedPane();
-		this.addContent();
-	}
+    private final JTabbedPane tabbedPane;
 
-	protected void addContent() {
-		
-		this.addPanel(new CpuLoadMultiCoreLineChart(machine.cpus()[0]));
-		this.addPanel(new TemperatureMultiCoreLineChart(machine.cpus()[0]));
-		this.addPanel(new CpuFrequencyLineChart(machine.cpus()[0]));
-		this.addPanel(new SystemMemoryLineChart(machine.ram()));
-		this.addPanel(new CpuFrequencyPanel(machine.cpus()[0]));
-		//this.addPanel(new IOStatPanel(machine));
-		//this.addPanel(new SystemLoadPanel(machine));
-		
-		this.tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
-		getContentPane().add(this.tabbedPane);
+    private final Machine machine;
 
-		for (JPanel panel : this.getPanels()) {
-			panel.setVisible(true);
-			this.tabbedPane.add(panel, panel.getClass().getSimpleName());
-		}
-		setPreferredSize(new Dimension(1024, 768));
-		
-		this.pack();
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		setVisible(true);
-	}
-	
-	public void addPanel(JPanel panel) {
-		this.panels.add(panel);
-	}
-	
-	public List<JPanel> getPanels() {
-		return Collections.unmodifiableList(panels);
-	}
+    private final List<JPanel> panels = new ArrayList<JPanel>();
+
+    public PanelCharts(Machine machine)
+    {
+        this.machine = Preconditions.checkNotNull(machine);
+        this.tabbedPane = new JTabbedPane();
+        this.addContent();
+    }
+
+    protected void addContent()
+    {
+
+        this.addPanel(new CpuLoadMultiCoreLineChart(machine.cpus()[0]));
+        this.addPanel(new TemperatureMultiCoreLineChart(machine.cpus()[0]));
+        this.addPanel(new CpuFrequencyLineChart(machine.cpus()[0]));
+        this.addPanel(new SystemMemoryLineChart(machine.ram()));
+        this.addPanel(new CpuFrequencyPanel(machine.cpus()[0]));
+        // this.addPanel(new IOStatPanel(machine));
+        // this.addPanel(new SystemLoadPanel(machine));
+
+        this.tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
+        getContentPane().add(this.tabbedPane);
+
+        for (JPanel panel : this.getPanels())
+        {
+            panel.setVisible(true);
+            this.tabbedPane.add(panel, panel.getClass().getSimpleName());
+        }
+        setPreferredSize(new Dimension(1024, 768));
+
+        this.pack();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void addPanel(JPanel panel)
+    {
+        this.panels.add(panel);
+    }
+
+    public List<JPanel> getPanels()
+    {
+        return Collections.unmodifiableList(panels);
+    }
 }

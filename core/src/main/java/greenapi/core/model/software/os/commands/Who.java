@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,7 +24,13 @@ package greenapi.core.model.software.os.commands;
 
 import greenapi.core.model.data.User;
 
-public interface Who extends Command<User> {
+public interface Who extends Command<User>
+{
 
-	boolean isAdmin();
+    /**
+     * Return <code>true</code> if the user is a root user.
+     * 
+     * @return <code>true</code> if the user is a root user.
+     */
+    boolean isAdmin();
 }

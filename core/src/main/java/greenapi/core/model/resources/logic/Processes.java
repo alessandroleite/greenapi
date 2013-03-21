@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,8 +22,6 @@
  */
 package greenapi.core.model.resources.logic;
 
-import greenapi.core.common.base.Strings;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,61 +31,119 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Processes implements Serializable, Iterable<Process> {
+import greenapi.core.common.base.Strings;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 6373147351109904529L;
-	
-	private Map<Long, Process> processes = new ConcurrentHashMap<>();
+public class Processes implements Serializable, Iterable<Process>
+{
 
-	public Processes(Process... processes) {
-		if (processes != null) {
-			for (Process process : processes) {
-				this.add(process);
-			}
-		}
-	}
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -4256946089168155269L;
+   
+    /**
+     * The {@link Map} with the processes. The key if the process's id and it's never <code>null</code>.
+     */
+    private final Map<Long, Process> processesMap = new ConcurrentHashMap<>();
 
-	public Processes(List<Process> processes) {
-		this(processes.toArray(new Process[processes.size()]));
-	}
+    /**
+     * Create an instance of this class with the given processes.
+     * 
+     * @param processes
+     *            The processes to be added.
+     */
+    public Processes(Process... processes)
+    {
+        if (processes != null)
+        {
+            for (Process process : processes)
+            {
+                this.add(process);
+            }
+        }
+    }
 
-	public Processes newProcesses(Process... processes) {
-		return new Processes(processes);
-	}
+    /**
+     * Create an instance of this class with a given processes.
+     * 
+     * @param processes
+     *            The available processes.
+     */
+    public Processes(List<Process> processes)
+    {
+        this(processes.toArray(new Process[processes.size()]));
+    }
 
-	public void add(Process process) {
-		this.processes.put(Objects.requireNonNull(process).pid(), process);
-	}
+    /**
+     * Factory method to create an instance of this class with a given processes.
+     * 
+     * @param processes
+     *            The available processes.
+     * @return An instance of this class with a given processes.
+     */
+    public Processes newProcesses(Process... processes)
+    {
+        return new Processes(processes);
+    }
 
-	public Collection<Process> processes() {
-		return Collections.unmodifiableCollection(processes.values());
-	}
+    /**
+     * Add a given {@link Process}.
+     * 
+     * @param process
+     *            The {@link Process} to be added. Might not be <code>null</code>.
+     */
+    public void add(Process process)
+    {
+        this.processesMap.put(Objects.requireNonNull(process).pid(), process);
+    }
 
-	public boolean isEmpty() {
-		return this.processes.isEmpty();
-	}
+    /**
+     * Returns a read-only {@link Collection} with the {@link Process}es.
+     * 
+     * @return A read-only {@link Collection} with the {@link Process}es
+     */
+    public Collection<Process> processes()
+    {
+        return Collections.unmodifiableCollection(processesMap.values());
+    }
 
-	public int size() {
-		return this.processes.size();
-	}
+    /**
+     * Returns <code>true</code> if there is no {@link Process}.
+     * 
+     * @return <code>true</code> if there is no {@link Process}
+     */
+    public boolean isEmpty()
+    {
+        return this.processesMap.isEmpty();
+    }
 
-	@Override
-	public Iterator<Process> iterator() {
-		return processes().iterator();
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("Processes [\n\t");
-		
-		for (Process process : this.processes.values()) {
-			sb.append(process).append(Strings.NEW_LINE).append(Strings.TAB);
-		}
-		sb.append(Strings.RETURN).append("]\n");
-		
-		return sb.toString();
-	}
+    /**
+     * Return the number of processes available.
+     * 
+     * @return the number of processes available.
+     */
+    public int size()
+    {
+        return this.processesMap.size();
+    }
+
+    @Override
+    public Iterator<Process> iterator()
+    {
+        return processes().iterator();
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder("Processes [\n\t");
+
+        for (Process process : this.processesMap.values())
+        {
+            sb.append(process).append(Strings.NEW_LINE).append(Strings.TAB);
+        }
+        sb.append(Strings.RETURN).append("]\n");
+
+        return sb.toString();
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,18 +24,33 @@ package greenapi.core.common.base;
 
 import net.vidageek.mirror.dsl.Mirror;
 
-public final class Objects {
+public final class Objects
+{
 
-	private Objects() {
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * Private default constructor that it's never called.
+     */
+    private Objects()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends Cloneable> T clone(T object) {
-		if (object != null) {
-			return (T) new Mirror().on(object).invoke().method("clone")
-					.withoutArgs();
-		}
-		return null;
-	}
+    /**
+     * Invoke the clone method of a {@link Cloneable} type.
+     * 
+     * @param object
+     *            The {@link Cloneable} instance to execute the method clone.
+     * @param <T>
+     *            The {@link Cloneable} type.
+     * @return The return of the clone method.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Cloneable> T clone(T object)
+    {
+        if (object != null)
+        {
+            return (T) new Mirror().on(object).invoke().method("clone").withoutArgs();
+        }
+        return null;
+    }
 }

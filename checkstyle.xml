@@ -88,7 +88,10 @@
         <!-- Lines should be maximum of 150 characters -->
         <module name="LineLength">
 	  <property name="max" value="150"/>
+   	  <property name="ignorePattern" value="^ *\* *[^ ]+$"/>
+	  <property name="ignorePattern" value="^ *\@param*[^ ]+$"/>
 	</module>
+
 
         <!--  -->
         <module name="MethodParamPad"/>

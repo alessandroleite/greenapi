@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,42 +24,64 @@ package greenapi.core.common.base;
 
 import net.vidageek.mirror.dsl.Mirror;
 
-public final class ClassUtils {
+import org.apache.log4j.Logger;
 
-	private ClassUtils() {
-		throw new UnsupportedOperationException();
-	}
+public final class ClassUtils
+{
+    /**
+     * Private constructor. It's never invoked.
+     */
+    private ClassUtils()
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public static ClassLoader getDefaultClassLoader() {
-		ClassLoader cl = null;
-		try {
-			cl = Thread.currentThread().getContextClassLoader();
-		} catch (Throwable ignore) {
-		}
-		if (cl == null) {
-			cl = ClassUtils.class.getClassLoader();
-		}
-		return cl;
-	}
+    /**
+     * Returns the {@link ClassLoader} of this {@link Class}.
+     * 
+     * @return the {@link ClassLoader} of this {@link Class}.
+     */
+    public static ClassLoader getDefaultClassLoader()
+    {
+        ClassLoader cl = null;
+        try
+        {
+            cl = Thread.currentThread().getContextClassLoader();
+        }
+        catch (Throwable ignore)
+        {
+            if (Logger.getLogger(ClassUtils.class).isDebugEnabled())
+            {
+                Logger.getLogger(ClassUtils.class).debug(ignore.getMessage(), ignore);
+            }
+        }
 
-	/**
-	 * Create a instance of a given class.
-	 * 
-	 * @param fullClassName
-	 *            The name of the class to be instantiate.
-	 * @param args
-	 *            Arguments to use when invoking this constructor
-	 * @return An instance of the given class.
-	 */
-	public static Object newInstanceForName(String fullClassName,
-			Object... args) {
+        if (cl == null)
+        {
+            cl = ClassUtils.class.getClassLoader();
+        }
+        return cl;
+    }
 
-		if (args == null || args.length == 0) {
-			return new Mirror().on(fullClassName).invoke().constructor()
-					.withoutArgs();
-		} else {
-			return new Mirror().on(fullClassName).invoke().constructor()
-					.withArgs(args);
-		}
-	}
+    /**
+     * Create a instance of a given class.
+     * 
+     * @param fullClassName
+     *            The name of the class to be instantiate.
+     * @param args
+     *            Arguments to use when invoking this constructor
+     * @return An instance of the given class.
+     */
+    public static Object newInstanceForName(String fullClassName, Object... args)
+    {
+
+        if (args == null || args.length == 0)
+        {
+            return new Mirror().on(fullClassName).invoke().constructor().withoutArgs();
+        }
+        else
+        {
+            return new Mirror().on(fullClassName).invoke().constructor().withArgs(args);
+        }
+    }
 }

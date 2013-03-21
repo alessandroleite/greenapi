@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,11 +24,13 @@ package greenapi.core.model.software.os.commands;
 
 import greenapi.core.model.resources.logic.Processes;
 
-public interface Ps extends Command<Processes> {
-	
-	/**
-	 * The processes ordered by id.
-	 * @return A list with the processes ordered by id.
-	 */
-	Processes list();
+public interface Ps extends Command<Processes>
+{
+
+    /**
+     * Return all processes in creation order.
+     * 
+     * @return A list with the processes ordered by id.
+     */
+    Processes list();
 }

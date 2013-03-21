@@ -210,7 +210,7 @@
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
-				<inherited>true</inherited>
+				<inherited>true</inherited>				
 				<configuration>
 					<header>${license-header-file}</header>
 					<excludes>
@@ -219,7 +219,9 @@
 						<exclude>**/README.md</exclude>
 						<exclude>**/travis.yml</exclude>
 						<exclude>**/checkstyle.xml</exclude>
+						<exclude>**/.checkstyle</exclude>
 					</excludes>
+					<strictCheck>true</strictCheck>
 				</configuration>
 				<executions>
 					<execution>
@@ -290,13 +292,17 @@
 							<name>.checkstyle</name>
 							<content>
 							  <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-					<fileset-config file-format-version="1.2.0" simple-config="true">
-					    <fileset name="all" enabled="true" check-config-name="${checkstyle.file}" local="false">
-						<file-match-pattern match-pattern="." include-pattern="true"/>
-					    </fileset>
-					    <filter name="NonSrcDirs" enabled="true"/>
-					</fileset-config>
+							<fileset-config file-format-version="1.2.0" simple-config="true" sync-formatter="true">
+							  <local-check-config name="${project.groupId}-checkstyle" location="${checkstyle.file}" type="external" description="">
+							    <additional-data name="protect-config-file" value="false"/>
+							  </local-check-config>
+							  <fileset name="all" enabled="true" check-config-name="${project.groupId}-checkstyle" local="true">
+							    <file-match-pattern match-pattern="." include-pattern="true"/>
+							  </fileset>
+							</fileset-config>
 					]]>
+
+
 							</content>
 						      </file>
 					</additionalConfig>

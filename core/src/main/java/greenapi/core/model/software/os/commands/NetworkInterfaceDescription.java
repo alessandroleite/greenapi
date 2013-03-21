@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,7 +24,15 @@ package greenapi.core.model.software.os.commands;
 
 import greenapi.core.model.resources.net.NetworkInterface;
 
-public interface NetworkInterfaceDescription extends Command<NetworkInterface> {
+public interface NetworkInterfaceDescription extends Command<NetworkInterface>
+{
 
-	NetworkInterface execute(String id);
+    /**
+     * Return an instance of the {@link NetworkInterface} that has the given id.
+     * 
+     * @param id
+     *            The id of the network interface to be returned. Might not be <code>null</code>.
+     * @return An instance of the {@link NetworkInterface} that has the given id
+     */
+    NetworkInterface execute(String id);
 }

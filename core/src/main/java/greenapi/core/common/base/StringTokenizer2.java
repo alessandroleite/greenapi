@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,42 +24,86 @@ package greenapi.core.common.base;
 
 import java.util.StringTokenizer;
 
-public class StringTokenizer2 extends StringTokenizer {
+/**
+ * This class is a {@link StringTokenizer} but with the option to get the tokens as an array of {@link String}.
+ * 
+ */
+public final class StringTokenizer2 extends StringTokenizer
+{
 
-	private final String delim;
-	private final boolean returnDelims;
-	private final String str;
+    /**
+     * The {@link String} delimiter.
+     */
+    private final String delim;
 
-	public StringTokenizer2(String str) {
-		this(str, "", false);
-	}
+    /**
+     * <code>true</code> if the delimiters must be returned as tokens.
+     */
+    private final boolean returnDelims;
 
-	public StringTokenizer2(String str, String delim) {
-		this(str, delim, false);
-	}
+    /**
+     * The {@link String} to be worked.
+     */
+    private final String str;
 
-	public StringTokenizer2(String str, String delim, boolean returnDelims) {
-		super(str, delim, returnDelims);
+    /**
+     * Create an instance of this class with a empty delimiter.
+     * 
+     * @param strValue
+     *            The {@link String} value.
+     */
+    public StringTokenizer2(String strValue)
+    {
+        this(strValue, "", false);
+    }
 
-		this.str = str;
-		this.delim = delim;
-		this.returnDelims = returnDelims;
-	}
+    /**
+     * Create an instance of this class with a given {@link String} value and a delimiter.
+     * 
+     * @param strValue
+     *            The {@link String} value. Might not be <code>null</code>.
+     * @param delimiterValue
+     *            The delimiter.
+     */
+    public StringTokenizer2(String strValue, String delimiterValue)
+    {
+        this(strValue, delimiterValue, false);
+    }
 
-	/**
-	 * Return the tokens as array without change the state of the {@link StringTokenizer}.
-	 *   
-	 * @return The tokens as array without change the state of the {@link StringTokenizer}.
-	 */
-	public String[] tokenAsArray() {
-		StringTokenizer copy = new StringTokenizer(this.str, this.delim, this.returnDelims);
+    /**
+     * Create an instance of this class with a given {@link String} value and a delimiter.
+     * 
+     * @param strValue
+     *            The {@link String} value. Might not be <code>null</code>.
+     * @param delimitersValue
+     *            The delimiter.
+     * @param returnDelimsValue
+     *            flag indicating whether to return the delimiters as tokens.
+     */
+    public StringTokenizer2(String strValue, String delimitersValue, boolean returnDelimsValue)
+    {
+        super(strValue, delimitersValue, returnDelimsValue);
 
-		String[] tokens = new String[copy.countTokens()];
+        this.str = strValue;
+        this.delim = delimitersValue;
+        this.returnDelims = returnDelimsValue;
+    }
 
-		for (int i = 0; i < copy.countTokens(); i++) {
-			tokens[i] = copy.nextToken();
-		}
+    /**
+     * Return the tokens as array without change the state of the {@link StringTokenizer}.
+     * 
+     * @return The tokens as array without change the state of the {@link StringTokenizer}.
+     */
+    public String[] tokenAsArray()
+    {
+        StringTokenizer copy = new StringTokenizer(this.str, this.delim, this.returnDelims);
 
-		return tokens;
-	}
+        String[] tokens = new String[copy.countTokens()];
+
+        for (int i = 0; i < copy.countTokens(); i++)
+        {
+            tokens[i] = copy.nextToken();
+        }
+        return tokens;
+    }
 }

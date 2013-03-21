@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 Alessandro Ferreira Leite, http://www.alessandro.cc/
+ * Copyright (c) 2012 I2RGreen
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,6 +24,12 @@ package greenapi.core.model.software.os.commands;
 
 import greenapi.core.model.data.Frequency;
 
-public interface CpuScalingAvailableFrequencies extends Command<Frequency[]> {
-
+public interface CpuScalingAvailableFrequencies extends Command<Frequency[]>
+{
+    /**
+     * Returns the available frequencies.
+     * 
+     * @return The available frequencies.
+     */
+    Frequency[] frequencies();
 }
