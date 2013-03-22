@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,11 +27,13 @@ import greenapi.core.model.data.Temperature;
 import greenapi.core.model.resources.Cpu;
 import greenapi.core.model.util.Subject;
 
-public aspect CpuObserverPattern extends ObserverPattern {
+public aspect CpuObserverPattern extends ObserverPattern
+{
 
-	declare parents: Cpu implements Subject;
+    declare parents:Cpu implements Subject;
 
-	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) &&  ( 
-		  call(CpuState Cpu.setState(..)) ||  call(Temperature Cpu.setTemperature(..))) ;
+    pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && 
+                                                               (call(CpuState Cpu.setState(..)) || 
+                                                                call(Temperature Cpu.setTemperature(..))) ;
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,52 +22,51 @@
  */
 package greenapi.core.model.resources.builders;
 
+import java.math.BigDecimal;
+
 import greenapi.core.model.resources.net.NetworkInterface;
 import greenapi.core.model.resources.net.NetworkInterfaceConfiguration;
 import greenapi.core.model.resources.net.NetworkInterfaceInfo;
 import greenapi.core.model.software.os.OperatingSystem;
 
-import java.math.BigDecimal;
-
 import lshw.types.Capabilities;
 
-public interface NetInterfaceBuilder extends Builder<NetworkInterface> {
+public interface NetInterfaceBuilder extends Builder<NetworkInterface>
+{
 
-	NetInterfaceBuilder useOperatingSystemInformations(OperatingSystem os);
+    NetInterfaceBuilder useOperatingSystemInformations(OperatingSystem os);
 
-	NetInterfaceBuilder withNetworkInfo(
-			NetworkInterfaceInfo networkInterfaceInfo);
+    NetInterfaceBuilder withNetworkInfo(NetworkInterfaceInfo networkInterfaceInfo);
 
-	NetInterfaceBuilder withId(String id);
+    NetInterfaceBuilder withId(String id);
 
-	NetInterfaceBuilder withDescription(String description);
+    NetInterfaceBuilder withDescription(String description);
 
-	NetInterfaceBuilder withProductName(String name);
+    NetInterfaceBuilder withProductName(String name);
 
-	NetInterfaceBuilder ofVendor(String vendor);
+    NetInterfaceBuilder ofVendor(String vendor);
 
-	NetInterfaceBuilder withBusInfo(String busInfo);
+    NetInterfaceBuilder withBusInfo(String busInfo);
 
-	NetInterfaceBuilder withLogicalName(String name);
+    NetInterfaceBuilder withLogicalName(String name);
 
-	NetInterfaceBuilder withVersion(String version);
+    NetInterfaceBuilder withVersion(String version);
 
-	NetInterfaceBuilder withHardwareId(String serial);
+    NetInterfaceBuilder withHardwareId(String serial);
 
-	NetInterfaceBuilder withSize(BigDecimal size);
+    NetInterfaceBuilder withSize(BigDecimal size);
 
-	NetInterfaceBuilder withCapacity(BigDecimal capacity);
+    NetInterfaceBuilder withCapacity(BigDecimal capacity);
 
-	NetInterfaceBuilder withWidth(BigDecimal width);
+    NetInterfaceBuilder withWidth(BigDecimal width);
 
-	NetInterfaceBuilder withClock(BigDecimal clock);
+    NetInterfaceBuilder withClock(BigDecimal clock);
 
-	NetInterfaceBuilder withCapabilities(Capabilities capabilities);
+    NetInterfaceBuilder withCapabilities(Capabilities capabilities);
 
-	NetInterfaceBuilder withConfiguration(
-			NetworkInterfaceConfiguration configuration);
+    NetInterfaceBuilder withConfiguration(NetworkInterfaceConfiguration configuration);
 
-	NetInterfaceBuilder ofType(String type);
+    NetInterfaceBuilder ofType(String type);
 
-	NetInterfaceBuilder isPrimary(boolean value);
+    NetInterfaceBuilder isPrimary(boolean value);
 }

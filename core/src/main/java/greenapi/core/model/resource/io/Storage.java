@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,71 +22,91 @@
  */
 package greenapi.core.model.resource.io;
 
+import java.math.BigInteger;
+
 import greenapi.core.model.data.Data;
 import greenapi.core.model.resources.Resource;
 import greenapi.core.model.sensors.Sensor;
 
-import java.math.BigInteger;
+public class Storage implements Resource
+{
 
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = 8726051732367611687L;
 
-public class Storage implements Resource {
-	
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 8726051732367611687L;
+    /**
+     * The storage's id.
+     */
+    private final String id;
 
-	private final String id;
-	
-	private final String name;
-	
-	private final BigInteger size;
-	
-	private final StorageInfo info;
-	
-	public Storage(String id, String name, BigInteger size, StorageInfo info) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.size = size;
-		this.info = info;
-	}
-	
+    /**
+     * The storage's name.
+     */
+    private final String name;
 
-	@Override
-	public Sensor<?, Data<?>>[] sensors() {
-		return null;
-	}
+    /**
+     * The storage's size.
+     */
+    private final BigInteger size;
 
+    /**
+     * The storage's info.
+     */
+    private final StorageInfo info;
 
-	/**
-	 * @return the id
-	 */
-	public String id() {
-		return id;
-	}
+    /**
+     * 
+     * @param storageId The storage's id. Might not be <code>null</code>.
+     * @param storageName The storage's name. Might not be <code>null</code> or empty.
+     * @param storageSize The storage's size. Might not be <code>null</code> or zero.
+     * @param storageInfo The storage's info. Might not be <code>null</code>.
+     */
+    public Storage(String storageId, String storageName, BigInteger storageSize, StorageInfo storageInfo)
+    {
+        super();
+        this.id = storageId;
+        this.name = storageName;
+        this.size = storageSize;
+        this.info = storageInfo;
+    }
 
+    @Override
+    public Sensor<?, Data<?>>[] sensors()
+    {
+        return null;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String name() {
-		return name;
-	}
+    /**
+     * @return the id
+     */
+    public String id()
+    {
+        return id;
+    }
 
+    /**
+     * @return the name
+     */
+    public String name()
+    {
+        return name;
+    }
 
-	/**
-	 * @return the size
-	 */
-	public BigInteger size() {
-		return size;
-	}
+    /**
+     * @return the size
+     */
+    public BigInteger size()
+    {
+        return size;
+    }
 
-
-	/**
-	 * @return the info
-	 */
-	public StorageInfo info() {
-		return info;
-	}
+    /**
+     * @return the info
+     */
+    public StorageInfo info()
+    {
+        return info;
+    }
 }

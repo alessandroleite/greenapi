@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,51 +24,84 @@ package greenapi.core.model.resource.io;
 
 import java.io.Serializable;
 
-public final class StorageInfo implements Serializable {
+public final class StorageInfo implements Serializable
+{
 
-	/**
-	 * Serial code version code <code>serialVersionUID</code> 
-	 */
-	private static final long serialVersionUID = 2494983296526446200L;
-	
-	private final Integer heads;
-	private final Integer sectors;
-	private final Integer cylinders;
-	private final Integer totalOfSectors;
+    /**
+     * Serial code version code <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = 2494983296526446200L;
 
-	public StorageInfo(Integer heads, Integer sectors, Integer cylinders, Integer totalOfSectors) {
-		
-		this.heads = heads;
-		this.sectors = sectors;
-		this.cylinders = cylinders;
-		this.totalOfSectors = totalOfSectors;
-	}
+    /**
+     * The number of heads.
+     */
+    private final Integer heads;
 
-	/**
-	 * @return the heads
-	 */
-	public Integer heads() {
-		return heads;
-	}
+    /**
+     * The number of sectors.
+     */
+    private final Integer sectors;
 
-	/**
-	 * @return the sectors
-	 */
-	public Integer sectors() {
-		return sectors;
-	}
+    /**
+     * The number of cylinders.
+     */
+    private final Integer cylinders;
 
-	/**
-	 * @return the cylinders
-	 */
-	public Integer cylinders() {
-		return cylinders;
-	}
+    /**
+     * Total number of sectors.
+     */
+    private final Integer totalOfSectors;
 
-	/**
-	 * @return the totalSectors
-	 */
-	public Integer totalOfSectors() {
-		return totalOfSectors;
-	}
+    /**
+     * Create a {@link StorageInfo} instance.
+     * 
+     * @param numberOfHeads
+     *            The number of heads.
+     * @param numberOfSectors
+     *            The number of sectors available.
+     * @param numberOfCylinders
+     *            The number of cylinders.
+     * @param totalNumberOfSectors
+     *            The sum sectors available.
+     */
+    public StorageInfo(Integer numberOfHeads, Integer numberOfSectors, Integer numberOfCylinders, Integer totalNumberOfSectors)
+    {
+
+        this.heads = numberOfHeads;
+        this.sectors = numberOfSectors;
+        this.cylinders = numberOfCylinders;
+        this.totalOfSectors = totalNumberOfSectors;
+    }
+
+    /**
+     * @return the heads
+     */
+    public Integer heads()
+    {
+        return heads;
+    }
+
+    /**
+     * @return the sectors
+     */
+    public Integer sectors()
+    {
+        return sectors;
+    }
+
+    /**
+     * @return the cylinders
+     */
+    public Integer cylinders()
+    {
+        return cylinders;
+    }
+
+    /**
+     * @return the totalSectors
+     */
+    public Integer totalOfSectors()
+    {
+        return totalOfSectors;
+    }
 }

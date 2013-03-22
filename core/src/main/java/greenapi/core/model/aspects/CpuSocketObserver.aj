@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -26,9 +26,10 @@ import greenapi.core.model.data.CpuSocketState;
 import greenapi.core.model.resources.CpuSocket;
 import greenapi.core.model.util.Subject;
 
-public aspect CpuSocketObserver extends ObserverPattern {
+public aspect CpuSocketObserver extends ObserverPattern
+{
 
-	declare parents: CpuSocket implements Subject;
+    declare parents: CpuSocket implements Subject;
 
-	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && (call  (CpuSocketState CpuSocket.setState(..)));
+    pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && (call (CpuSocketState CpuSocket.setState(..)));
 }

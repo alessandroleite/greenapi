@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,6 +22,8 @@
  */
 package greenapi.core.model.software.os.linux;
 
+import java.util.Map;
+
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.data.IOStats;
 import greenapi.core.model.data.Temperature;
@@ -40,58 +42,89 @@ import greenapi.core.model.software.os.commands.impl.linux.NetworkInterfaceDescr
 import greenapi.core.model.software.os.commands.impl.linux.NetworkInterfacesDescriptionImpl;
 import greenapi.core.model.software.os.commands.impl.linux.Whoami;
 
-import java.util.Map;
+public class LinuxOperatingSystem extends OperatingSystem
+{
 
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -8793069665840194590L;
 
-public class LinuxOperatingSystem extends OperatingSystem {
-	
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -8793069665840194590L;
+    /**
+     * Create a Linux instance.
+     * 
+     * @param name
+     *            The name of the O.S.
+     */
+    public LinuxOperatingSystem(String name)
+    {
+        super(name);
+    }
 
-	public LinuxOperatingSystem(String name) {
-		super(name);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Command<IOStats> iostats()
+    {
+        return new IOStat();
+    }
 
-	@Override
-	public Command<IOStats> iostats() {
-		return new IOStat();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CpuScalingAvailableFrequencies cpuAvailableFrequencies()
+    {
+        return new CpuScalingAvailableFrequencies();
+    }
 
-	@Override
-	public CpuScalingAvailableFrequencies cpuAvailableFrequencies() {
-		return new CpuScalingAvailableFrequencies();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Frequency currentCpuFrequency()
+    {
+        return new CurrentCpuFrequency().execute().getValue();
+    }
 
-	@Override
-	public Frequency currentCpuFrequency() {
-		return new CurrentCpuFrequency().execute().getValue();
-	}
+    @Override
+    public Map<String, Temperature> cpuTemperature()
+    {
+        return new CpuTemperature().execute().getValue();
+    }
 
-	@Override
-	public Map<String, Temperature> cpuTemperature() {
-		return new CpuTemperature().execute().getValue();
-	}
-	
-	@Override
-	public NetworkInterfaces networkInterfaces() {
-		NetworkInterfacesDescriptionImpl command = new NetworkInterfacesDescriptionImpl();
-		return NetworkInterfaces.valueOf(command.execute().getValue());
-	}
+    @Override
+    public NetworkInterfaces networkInterfaces()
+    {
+        NetworkInterfacesDescriptionImpl command = new NetworkInterfacesDescriptionImpl();
+        return NetworkInterfaces.valueOf(command.execute().getValue());
+    }
 
-	@Override
-	public Who who() {
-		return new Whoami();
-	}
-	
-	@Override
-	public NetworkInterface networkInterfaceDescription(String id) {
-		return new NetworkInterfaceDescriptionImpl(id).execute().getValue(); 
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Who who()
+    {
+        return new Whoami();
+    }
 
-	@Override
-	public Processes processes() {
-		return new PsImpl().execute().getValue();
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NetworkInterface networkInterfaceDescription(String id)
+    {
+        return new NetworkInterfaceDescriptionImpl(id).execute().getValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Processes processes()
+    {
+        return new PsImpl().execute().getValue();
+    }
 }

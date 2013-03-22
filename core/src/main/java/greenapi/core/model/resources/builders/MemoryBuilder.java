@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,19 +22,19 @@
  */
 package greenapi.core.model.resources.builders;
 
+import java.util.Map;
+
 import greenapi.core.model.resources.Memory;
 import greenapi.core.model.resources.MemoryType;
 
-import java.util.Map;
+public interface MemoryBuilder extends Builder<Memory>
+{
 
+    MemoryBuilder ofType(MemoryType type);
 
-public interface MemoryBuilder extends Builder<Memory> {
-	
-	MemoryBuilder ofType(MemoryType type);
-	
-	MemoryBuilder withSize(long size);
-	
-	MemoryBuilder withProperties(Map<String, String> properties);
-	
-	MemoryBuilder withProperty(String name, String value);
+    MemoryBuilder withSize(long size);
+
+    MemoryBuilder withProperties(Map<String, String> properties);
+
+    MemoryBuilder withProperty(String name, String value);
 }

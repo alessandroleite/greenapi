@@ -24,83 +24,144 @@ package greenapi.core.model.data;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+import greenapi.core.common.base.Strings;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 8551076312572107154L;
+public class User implements Serializable
+{
 
-	private final String name;
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = 8551076312572107154L;
 
-	private final boolean root;
+    /**
+     * The name of the user.
+     */
+    private final String name;
 
-	public User(String name, boolean root) {
-		this.name = name;
-		this.root = root;
-	}
+    /**
+     * Flag that indicates if the user is root.
+     */
+    private final boolean root;
 
-	public User(String name) {
-		this(name, false);
-	}
-	
-	public static User newUser(String name, boolean root){
-		return new User(name, root);
-	}
-	
-	public static User newUser(String name){
-		return new User(name, false);
-	}
-	
-	public static User newRootUser(String name){
-		return new User(name, true);
-	}
+    /**
+     * Create a {@link User} with a given name and indicates that he/she is root.
+     * 
+     * @param username
+     *            The name of the user. Might not be <code>null</code> or empty.
+     * @param isRoot
+     *            Flag that indicates if the user is root.
+     */
+    public User(String username, boolean isRoot)
+    {
+        this.name = Strings.checkArgumentIsNotNullOrEmpty(username);
+        this.root = isRoot;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String name() {
-		return name;
-	}
+    /**
+     * Create a {@link User} with a given name.
+     * 
+     * @param username
+     *            The name of the user. Might not be <code>null</code> or empty.
+     */
+    public User(String username)
+    {
+        this(username, false);
+    }
 
-	/**
-	 * @return the <code>true</code> if the {@link User} is root,
-	 *         <code>false</code> otherwise.
-	 */
-	public boolean isRoot() {
-		return root;
-	}
+    /**
+     * Factory method to create a {@link User}.
+     * 
+     * @param username
+     *            The name of the user. Might not be <code>null</code> or empty.
+     * @param isRoot
+     *            Flag that indicates if the user is root.
+     * @return An instance of the {@link User}
+     */
+    public static User newUser(String username, boolean isRoot)
+    {
+        return new User(username, isRoot);
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+    /**
+     * Create a non root {@link User}.
+     * 
+     * @param username
+     *            The name of the user. Might not be <code>null</code> or empty.
+     * @return An instance of {@link User}.
+     */
+    public static User newUser(String username)
+    {
+        return new User(username, false);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
+    /**
+     * Create a root {@link User}.
+     * 
+     * @param username
+     *            The name of the user. Might not be <code>null</code> or empty.
+     * @return An instance of {@link User}.
+     */
+    public static User newRootUser(String username)
+    {
+        return new User(username, true);
+    }
 
-		if (this == obj) {
-			return true;
-		}
+    /**
+     * @return the name
+     */
+    public String name()
+    {
+        return name;
+    }
 
-		if (obj == null) {
-			return false;
-		}
+    /**
+     * @return the <code>true</code> if the {@link User} is root, <code>false</code> otherwise.
+     */
+    public boolean isRoot()
+    {
+        return root;
+    }
 
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		User other = (User) obj;
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+
+        if (this == obj)
+        {
+            return true;
+        }
+
+        if (obj == null)
+        {
+            return false;
+        }
+
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        User other = (User) obj;
+        if (name == null)
+        {
+            if (other.name != null)
+            {
+                return false;
+            }
+        }
+        else if (!name.equals(other.name))
+        {
+            return false;
+        }
+        return true;
+    }
 }

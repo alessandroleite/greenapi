@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,42 +22,53 @@
  */
 package greenapi.core.model.software.os.commands.impl.linux;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import greenapi.core.model.data.User;
 import greenapi.core.model.software.os.commands.Who;
 import greenapi.core.model.software.os.commands.impl.ExecutableCommand;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.commons.io.IOUtils;
 
+public class Whoami extends ExecutableCommand<User> implements Who
+{
 
-public class Whoami extends ExecutableCommand<User> implements Who {
+    /**
+     * 
+     */
+    static final User ROOT = User.newRootUser("root");
 
-	static final User ROOT = User.newRootUser("root");
+    /**
+     * The default constructor.
+     */
+    public Whoami()
+    {
+        super("whoami");
+    }
 
-	public Whoami() {
-		super("whoami");
-	}
+    @Override
+    public boolean isRootRequired()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean isRootRequired() {
-		return false;
-	}
+    @Override
+    protected boolean isRoot()
+    {
+        return this.result().getValue().isRoot();
+    }
 
-	@Override
-	protected boolean isRoot() {
-		return this.result().getValue().isRoot();
-	}
+    @Override
+    protected User parser(InputStream input) throws IOException
+    {
+        String commandResult = IOUtils.toString(input).trim();
+        return new User(commandResult, ROOT.name().equals(commandResult));
+    }
 
-	@Override
-	protected User parser(InputStream input) throws IOException {
-		String commandResult = IOUtils.toString(input).trim();
-		return new User(commandResult, ROOT.name().equals(commandResult));
-	}
-
-	@Override
-	public boolean isAdmin() {
-		return isRoot();
-	}
+    @Override
+    public boolean isAdmin()
+    {
+        return isRoot();
+    }
 }

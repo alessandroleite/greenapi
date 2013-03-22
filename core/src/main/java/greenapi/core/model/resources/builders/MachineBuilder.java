@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -30,21 +30,22 @@ import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.sensors.Sensor;
 import greenapi.core.model.software.os.OperatingSystem;
 
-public interface MachineBuilder extends Builder<Machine> {
+public interface MachineBuilder extends Builder<Machine>
+{
 
-	MachineBuilder withId(String id);
+    MachineBuilder withId(String id);
 
-	MachineBuilder withName(String name);
+    MachineBuilder withName(String name);
 
-	MachineBuilder withCpus(CpuSocket... cpuSockets);
+    MachineBuilder withCpus(CpuSocket... cpuSockets);
 
-	MachineBuilder withMemory(Memory... memories);
+    MachineBuilder withMemory(Memory... memories);
 
-	MachineBuilder withStorages(Storage... storages);
+    MachineBuilder withStorages(Storage... storages);
 
-	MachineBuilder withOs(OperatingSystem os);
+    MachineBuilder withOs(OperatingSystem os);
 
-	MachineBuilder withNetInterfaces(NetworkInterfaces networkInterfaces);
+    MachineBuilder withNetInterfaces(NetworkInterfaces networkInterfaces);
 
-	MachineBuilder withSensors(Sensor<?, ?>... sensors);
+    MachineBuilder withSensors(Sensor<?, ?>... sensors);
 }

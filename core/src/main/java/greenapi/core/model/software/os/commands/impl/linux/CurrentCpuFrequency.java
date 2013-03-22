@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,27 +22,38 @@
  */
 package greenapi.core.model.software.os.commands.impl.linux;
 
-import greenapi.core.model.data.Frequency;
-import greenapi.core.model.software.os.commands.Argument;
-
 import java.io.IOException;
 import java.io.InputStream;
 
+import greenapi.core.model.data.Frequency;
+import greenapi.core.model.software.os.commands.Argument;
 
-public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency> {
+public class CurrentCpuFrequency extends LinuxCommandSupport<Frequency>
+{
 
-	public CurrentCpuFrequency() {
-		super(true, true);
-	}
+    /**
+     * Default constructor. This command needs bash and root user.
+     */
+    public CurrentCpuFrequency()
+    {
+        super(true, true);
+    }
 
-	@Override
-	protected Frequency parser(String result, InputStream source)
-			throws IOException {
-		return Frequency.newFrequencyInMhz(Long.parseLong(result.trim()));
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Frequency parser(String result, InputStream source) throws IOException
+    {
+        return Frequency.newFrequencyInMhz(Long.parseLong(result.trim()));
+    }
 
-	@Override
-	public String[] commandLine(Argument... args) {
-		return new String[] { "cat /sys/devices/system/cpu/cpu%s/cpufreq/cpuinfo_cur_freq" };
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] commandLine(Argument... args)
+    {
+        return new String[] {"cat /sys/devices/system/cpu/cpu%s/cpufreq/cpuinfo_cur_freq"};
+    }
 }

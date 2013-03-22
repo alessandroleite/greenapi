@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,19 +22,37 @@
  */
 package greenapi.core.model.exception;
 
+public class ResourceException extends GreenApiException
+{
 
-public class ResourceException extends RuntimeException {
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = 1560811770591240606L;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 1560811770591240606L;
+    /**
+     * Create an exception with a given cause.
+     * 
+     * @param cause
+     *            The cause (which is saved for later retrieval by the Throwable.getCause() method). (A null value is permitted, and indicates that
+     *            the cause is nonexistent or unknown.).
+     */
+    public ResourceException(Exception cause)
+    {
+        this(cause != null ? cause.getMessage() : null, cause);
+    }
 
-	public ResourceException(Exception exception) {
-		this(exception.getMessage(), exception);
-	}
-	
-	public ResourceException(String message, Exception exception) {
-		super (message, exception);
-	}
+    /**
+     * Create an exception with a given message and cause.
+     * 
+     * @param message
+     *            the detail message (which is saved for later retrieval by the Throwable.getMessage() method).
+     * @param cause
+     *            The cause (which is saved for later retrieval by the Throwable.getCause() method). (A null value is permitted, and indicates that
+     *            the cause is nonexistent or unknown.).
+     */
+    public ResourceException(String message, Exception cause)
+    {
+        super(message, cause);
+    }
 }

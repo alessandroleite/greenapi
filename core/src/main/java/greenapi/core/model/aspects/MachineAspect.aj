@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -34,71 +34,80 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This aspect declares {@link Machine} objects as {@link Observer} and
- * complements the constructor call to add the machine as observer of CPUs and
+ * This aspect declares {@link Machine} objects as {@link Observer} and complements the constructor call to add the machine as observer of CPUs and
  * start the sensors.
  * 
  * @author Alessandro
  */
-public aspect MachineAspect {
+public aspect MachineAspect
+{
 
-	declare parents: Machine implements Observer;
-	
-	private Integer Machine.id;
-	
-	public void Machine.setId(Integer id) {
-		this.id = id;
-	}
-	
-	public Integer Machine.id(){
-		return this.id;
-	}
-	
-	private ScheduledExecutorService Machine.persistExecutorService = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+    declare parents: Machine implements Observer;
 
-	public void Machine.update(final Subject observable, final Object... args) {		
-		this.persistExecutorService.execute(new Runnable() {
-			public void run() {
-				update();
-			}
-		}); 
-		System.out.println(observable);
-	}
-	
-	public void Machine.update() {
-		//MachineDao.instance().persist(this);
-		//TODO
-	}
+    private Integer Machine.id;
 
-	private ScheduledExecutorService[] Machine.sensorsExecutorService;
+    public void Machine.setId(Integer id)
+    {
+        this.id = id;
+    }
 
-	private void Machine.startMonitor() {
-		Sensor<?, Data<?>>[] sensors = this.sensors();
-		
-		if (sensors != null) {
-			this.sensorsExecutorService = new ScheduledThreadPoolExecutor[sensors.length];
-			
-			for (int i = 0; i < sensors.length; i++) {
-				this.sensorsExecutorService[i] = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-				this.sensorsExecutorService[i].scheduleWithFixedDelay(sensors[i], 1, 1, TimeUnit.SECONDS);
-			}
-		}
-	}
+    public Integer Machine.id()
+    {
+        return this.id;
+    }
 
-	/**
-	 * This after advice complements the state of the {@link Machine} object
-	 * after the constructor call.
-	 * 
-	 * @param machine
-	 *            The target object.
-	 */
-	after() returning (Machine machine): call(Machine.new(..)) {
+    private ScheduledExecutorService Machine.persistExecutorService = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
 
-		for (CpuSocket socket : machine.cpus()) {			
-			socket.attach(machine);
-		}
-		
-		//machine.memory().add(machine);
-		machine.startMonitor();
-	}
+    public void Machine.update(final Subject observable, final Object... args)
+    {
+        this.persistExecutorService.execute(new Runnable()
+        {
+            public void run()
+            {
+                update();
+            }
+        });
+        System.out.println(observable);
+    }
+
+    public void Machine.update()
+    {
+        // MachineDao.instance().persist(this);
+        // TODO
+    }
+
+    private ScheduledExecutorService[] Machine.sensorsExecutorService;
+
+    private void Machine.startMonitor()
+    {
+        Sensor<?, Data<?>>[] sensors = this.sensors();
+
+        if (sensors != null)
+        {
+            this.sensorsExecutorService = new ScheduledThreadPoolExecutor[sensors.length];
+
+            for (int i = 0; i < sensors.length; i++)
+            {
+                this.sensorsExecutorService[i] = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+                this.sensorsExecutorService[i].scheduleWithFixedDelay(sensors[i], 1, 1, TimeUnit.SECONDS);
+            }
+        }
+    }
+
+    /**
+     * This after advice complements the state of the {@link Machine} object after the constructor call.
+     * 
+     * @param machine
+     *            The target object.
+     */
+    after() returning (Machine machine): call(Machine.new(..)) {
+
+        for (CpuSocket socket : machine.cpus())
+        {
+            socket.attach(machine);
+        }
+
+        // machine.memory().add(machine);
+        machine.startMonitor();
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,32 +24,29 @@ package greenapi.core.model.util;
 
 import java.util.Collection;
 
-public interface Subject {
+public interface Subject
+{
 
-	/**
-	 * Add a new {@link Observer} to this observable ({@link Subject}) that will
-	 * be notified when the state of the observable object change.
-	 * 
-	 * @param obs
-	 *            The {@link Observable} to be add. Must be not
-	 *            <code>null</code>.
-	 */
-	void attach(Observer obs);
+    /**
+     * Add a new {@link Observer} to this observable ({@link Subject}) that will be notified when the state of the observable object change.
+     * 
+     * @param obs
+     *            The {@link Observable} to be add. Must be not <code>null</code>.
+     */
+    void attach(Observer obs);
 
-	/**
-	 * Remove a given {@link Observer} of this {@link Subject}.
-	 * 
-	 * @param obs
-	 *            The {@link Observer} to be removed of this {@link Subject}.
-	 */
-	void detach(Observer obs);
+    /**
+     * Remove a given {@link Observer} of this {@link Subject}.
+     * 
+     * @param obs
+     *            The {@link Observer} to be removed of this {@link Subject}.
+     */
+    void detach(Observer obs);
 
-	/**
-	 * Returns a read-only {@link Collection} with the {@link Observer}s of a
-	 * {@link Subject}.
-	 * 
-	 * @return A read-only {@link Collection} with the {@link Observer}s of a
-	 *         {@link Subject}.
-	 */
-	Collection<Observer> getObservers();
+    /**
+     * Returns a read-only {@link Collection} with the {@link Observer}s of a {@link Subject}.
+     * 
+     * @return A read-only {@link Collection} with the {@link Observer}s of a {@link Subject}.
+     */
+    Collection<Observer> getObservers();
 }

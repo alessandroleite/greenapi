@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -26,17 +26,21 @@ import greenapi.core.model.exception.GreenApiException;
 
 import java.sql.SQLException;
 
-public aspect HandleSQLException {
+public aspect HandleSQLException
+{
 
-	declare soft: SQLException: throwsGreenApiException();
+    declare soft: SQLException: throwsGreenApiException();
 
-	pointcut throwsGreenApiException(): (within(monitor.model.dao..*) && execution(* persist(..)));
+    pointcut throwsGreenApiException(): (within(monitor.model.dao..*) && execution(* persist(..)));
 
-	Object around(): throwsGreenApiException() {
-		try {
-			return proceed();
-		} catch (SQLException exception) {
-			throw new GreenApiException(exception);
-		}
-	}
+    Object around(): throwsGreenApiException() {
+        try
+        {
+            return proceed();
+        }
+        catch (SQLException exception)
+        {
+            throw new GreenApiException(exception);
+        }
+    }
 }

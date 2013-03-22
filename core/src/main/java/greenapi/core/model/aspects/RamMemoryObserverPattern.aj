@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -26,11 +26,10 @@ import greenapi.core.model.data.MemoryState;
 import greenapi.core.model.resources.Memory;
 import greenapi.core.model.util.Subject;
 
-public aspect RamMemoryObserverPattern extends ObserverPattern {
+public aspect RamMemoryObserverPattern extends ObserverPattern
+{
 
-	declare parents: Memory implements Subject;
+    declare parents: Memory implements Subject;
 
-	pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && 
-					  (call (MemoryState Memory.setState(..)));
-
+    pointcut notifyObservers(Subject observable, Object data): target(observable) && args(data) && (call (MemoryState Memory.setState(..)));
 }

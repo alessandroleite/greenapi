@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,15 +22,17 @@
  */
 package greenapi.core.model.resources.builders;
 
-import greenapi.core.model.exception.ResourceException;
 import greenapi.core.model.resources.Resource;
 
-public interface Builder<T extends Resource> {
+public interface Builder<T extends Resource>
+{
 
-	/**
-	 * @return A {@link Resource} instance
-	 * @throws ResourceException
-	 *             Throws if build of resource is impossible.
-	 */
-	T build();
+    /**
+     * Build a given {@link Resource}.
+     * 
+     * @return A {@link Resource} instance.
+     * @throws greenapi.core.model.exception.ResourceException
+     *             Throws if it's impossible to build the resource.
+     */
+    T build();
 }

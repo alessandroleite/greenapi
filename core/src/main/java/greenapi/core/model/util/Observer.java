@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,7 +22,16 @@
  */
 package greenapi.core.model.util;
 
-public interface Observer {
+public interface Observer
+{
 
-	void update(Subject observable, Object ... args);
+    /**
+     * Notify the {@link Observer} about the new {@link Subject} state.
+     * 
+     * @param observable
+     *            The object that is observable.
+     * @param args
+     *            The value(s) that represent(s) the new state.
+     */
+    void update(Subject observable, Object... args);
 }

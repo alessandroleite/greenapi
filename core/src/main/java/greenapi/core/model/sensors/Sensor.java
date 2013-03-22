@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -24,30 +24,32 @@ package greenapi.core.model.sensors;
 
 import greenapi.core.model.data.Data;
 
-
 /**
- * 
- * @author alessandro
- * 
- * @param <E> The type of data collected by this {@link Sensor}.
- * @param <T> The type collected by this {@link Sensor}.
+ * @param <E>
+ *            The type of data collected by this {@link Sensor}.
+ * @param <T>
+ *            The type collected by this {@link Sensor}.
  */
-public interface Sensor<E, T extends Data<E>> extends Runnable {
+public interface Sensor<E, T extends Data<E>> extends Runnable
+{
 
-	@SuppressWarnings("unchecked")
-	Sensor<?, Data<?>>[] NULL_SENSORS = new Sensor[] {};
+    /**
+     * This instance represents a <code>null</code> sensor.
+     */
+    @SuppressWarnings("unchecked")
+    Sensor<?, Data<?>>[] NULL_SENSORS = new Sensor[] {};
 
-	/**
-	 * Return the current value of this sensor.
-	 * 
-	 * @return The current value of this sensor.
-	 */
-	T collect();
+    /**
+     * Return the current value of this sensor.
+     * 
+     * @return The current value of this sensor.
+     */
+    T collect();
 
-	/**
-	 * Returns the sensor name.
-	 * 
-	 * @return The sensor name.
-	 */
-	String name();
+    /**
+     * Returns the sensor name.
+     * 
+     * @return The sensor name.
+     */
+    String name();
 }

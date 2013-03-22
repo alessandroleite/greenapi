@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,7 +22,8 @@
  */
 package greenapi.core.model.resources.builders.impl;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import com.google.common.base.Preconditions;
+
 import greenapi.core.common.base.Strings;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.exception.ResourceException;
@@ -31,84 +32,128 @@ import greenapi.core.model.resources.CpuSocket;
 import greenapi.core.model.resources.builders.CpuSocketBuilder;
 import greenapi.core.model.sensors.Sensor;
 
-public class CpuSocketBuilderImpl implements CpuSocketBuilder {
+public class CpuSocketBuilderImpl implements CpuSocketBuilder
+{
 
-	private String vendor;
-	private String cpuModel;
-	private long maxFrequency;
-	private long minFrequency;
-	private long cacheSize;
+    /**
+     * The vendor's name.
+     */
+    private String vendor;
 
-	private Cpu[] cores;
-	private Frequency[] frequencies;
-	private Sensor<?, ?>[] sensors;
+    /**
+     * The CPU model.
+     */
+    private String cpuModel;
 
-	@Override
-	public CpuSocket build() throws ResourceException {
+    /**
+     * The maximum CPU's frequency.
+     */
+    private long maxFrequency;
+    /**
+     * The minimum CPU's frequency.
+     */
+    private long minFrequency;
+    
+    /**
+     * The CPU's cache size.
+     */
+    private long cacheSize;
 
-		checkArgument((cores != null && cores.length > 0), "Must be at least one core/cpu.");
-		
-		checkArgument((maxFrequency > 0 || frequencies != null && frequencies.length > 0), "CPU maximum frequency must be greater than zero.");
-		
-		if (this.frequencies == null || this.frequencies.length == 0) {
-			this.frequencies = new Frequency[] { Frequency.newFrequencyInMhz(this.minFrequency), Frequency.newFrequencyInMhz(this.maxFrequency) };
-		}
-		
-		CpuSocket cpuSocket = new CpuSocket(vendor, cpuModel, maxFrequency, cacheSize, this.cores, frequencies);
+    /**
+     * 
+     */
+    private Cpu[] cores;
+    
+    /**
+     * The CPU's frequencies.
+     */
+    private Frequency[] cpuFrequencies;
+    
+    /**
+     * The CPU's sensors.
+     */
+    private Sensor<?, ?>[] sensors;
 
-		if (sensors != null) {
-			for (Sensor<?, ?> sensor : this.sensors) {
-			}
-		}
+    @Override
+    public CpuSocket build() throws ResourceException
+    {
 
-		return cpuSocket;
-	}
+        Preconditions.checkArgument(cores != null && cores.length > 0, "Must be at least one core/cpu.");
 
-	@Override
-	public CpuSocketBuilder ofVendor(String vendor) {
-		this.vendor = Strings.checkArgumentIsNullOrEmpty(vendor);
-		return this;
-	}
+        Preconditions.checkArgument(maxFrequency > 0 || cpuFrequencies != null && cpuFrequencies.length > 0,
+                "CPU maximum frequency must be greater than zero.");
 
-	@Override
-	public CpuSocketBuilder ofModel(String model) {
-		this.cpuModel = Strings.checkArgumentIsNullOrEmpty(model);
-		return this;
-	}
+        if (this.cpuFrequencies == null || this.cpuFrequencies.length == 0)
+        {
+            this.cpuFrequencies = new Frequency[] {Frequency.newFrequencyInMhz(this.minFrequency), Frequency.newFrequencyInMhz(this.maxFrequency)};
+        }
 
-	@Override
-	public CpuSocketBuilder withMaxFrequency(int maxFrequency) {
-		this.maxFrequency = maxFrequency;
-		return this;
-	}
+        CpuSocket cpuSocket = new CpuSocket(vendor, cpuModel, maxFrequency, cacheSize, this.cores, cpuFrequencies);
 
-	@Override
-	public CpuSocketBuilder withMinFrequency(int minFrequency) {
-		this.minFrequency = minFrequency;
-		return this;
-	}
+//        if (sensors != null)
+//        {
+//            for (Sensor<?, ?> sensor : this.sensors)
+//            {
+//                cpu
+//            }
+//        }
 
-	@Override
-	public CpuSocketBuilder withCacheSize(long cacheSize) {
-		this.cacheSize = cacheSize;
-		return this;
-	}
+        return cpuSocket;
+    }
 
-	@Override
-	public CpuSocketBuilder withCores(Cpu... cpus) {
-		this.cores = cpus;
-		return this;
-	}
+    @Override
+    public CpuSocketBuilder ofVendor(String vendorName)
+    {
+        this.vendor = Strings.checkArgumentIsNotNullOrEmpty(vendorName);
+        return this;
+    }
 
-	@Override
-	public CpuSocketBuilder withScalingFrequencies(Frequency... frequencies) {
-		this.frequencies = frequencies;
-		return this;
-	}
+    @Override
+    public CpuSocketBuilder ofModel(String model)
+    {
+        this.cpuModel = Strings.checkArgumentIsNotNullOrEmpty(model);
+        return this;
+    }
 
-	@Override
-	public CpuSocketBuilder withSensors(Sensor<?, ?>... sensors) {
-		this.sensors = sensors;
-		return this;
-	}
+    @Override
+    public CpuSocketBuilder withMaxFrequency(int maxFrequencyValue)
+    {
+        this.maxFrequency = maxFrequencyValue;
+        return this;
+    }
+
+    @Override
+    public CpuSocketBuilder withMinFrequency(int minFrequencyValue)
+    {
+        this.minFrequency = minFrequencyValue;
+        return this;
+    }
+
+    @Override
+    public CpuSocketBuilder withCacheSize(long cacheSizeValue)
+    {
+        this.cacheSize = cacheSizeValue;
+        return this;
+    }
+
+    @Override
+    public CpuSocketBuilder withCores(Cpu... cpus)
+    {
+        this.cores = cpus;
+        return this;
+    }
+
+    @Override
+    public CpuSocketBuilder withScalingFrequencies(Frequency... cpuFrequencyValues)
+    {
+        this.cpuFrequencies = cpuFrequencyValues;
+        return this;
+    }
+
+    @Override
+    public CpuSocketBuilder withSensors(Sensor<?, ?>... availableSensors)
+    {
+        this.sensors = availableSensors;
+        return this;
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -29,62 +29,62 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * 
- * @author Alessandro
- */
-public abstract aspect ObserverPattern {
+public abstract aspect ObserverPattern
+{
 
-	/**
-	 * 
-	 * @param observable
-	 */
-	abstract pointcut notifyObservers(Subject observable, Object data);
-	
-	/**
-	 * This after advice notifies all registered observers about the new state of the
-	 * observable ({@link Subject}) object.
-	 * 
-	 * @param observable
-	 *            The new state of the observable ({@link Subject}) object. It
-	 *            is never <code>null</code>.
-	 */
-	 after(Subject observable, Object data): notifyObservers(observable, data) {
-		for (Observer obs : observable.getObservers()) {
-			obs.update(observable, data);
-		}		
-	}
+    /**
+     * Notify the observers about the new state of the subject.
+     * 
+     * @param observable The {@link Subject} that is observable and has a new state.
+     */
+    abstract pointcut notifyObservers(Subject observable, Object data);
 
-	
+    /**
+     * This after advice notifies all registered observers about the new state of the observable ({@link Subject}) object.
+     * 
+     * @param observable
+     *            The new state of the observable ({@link Subject}) object. It is never <code>null</code>.
+     */
+    after(Subject observable, Object data): notifyObservers(observable, data) {
+        for (Observer obs : observable.getObservers())
+        {
+            obs.update(observable, data);
+        }
+    }
 
-	// Subject inter-type declaration
+    // Subject inter-type declaration
 
-	private final Collection<Observer> Subject.observers = new CopyOnWriteArrayList<Observer>();
+    private final Collection<Observer> Subject.observers = new CopyOnWriteArrayList<Observer>();
 
-	public void Subject.attach(Observer observer) {
-		if (observer != null && !observers.contains(observer)) {
-			observers.add(observer);
-		}
-	}
+    public void Subject.attach(Observer observer)
+    {
+        if (observer != null && !observers.contains(observer))
+        {
+            observers.add(observer);
+        }
+    }
 
-	/**
-	 * Remove a {@link Observer}
-	 * 
-	 * @param observer The {@link Observer} to be removed
-	 */
-	public void Subject.detach (Observer observer) {
-		if (observer != null) {
-			observers.remove(observer);
-		}
-	}
+    /**
+     * Remove a {@link Observer}
+     * 
+     * @param observer
+     *            The {@link Observer} to be removed
+     */
+    public void Subject.detach(Observer observer)
+    {
+        if (observer != null)
+        {
+            observers.remove(observer);
+        }
+    }
 
-	/**
-	 * Returns the {@link Observer}s of a observable instance.
-	 * 
-	 * @return An unmodified {@link Collection} with the {@link Observer}s
-	 *         instances of this observable.
-	 */
-	public Collection<Observer> Subject.getObservers() {
-		return Collections.unmodifiableCollection(this.observers);
-	}
+    /**
+     * Returns the {@link Observer}s of a observable instance.
+     * 
+     * @return An unmodified {@link Collection} with the {@link Observer}s instances of this observable.
+     */
+    public Collection<Observer> Subject.getObservers()
+    {
+        return Collections.unmodifiableCollection(this.observers);
+    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -22,22 +22,48 @@
  */
 package greenapi.core.model.exception;
 
-public class GreenApiException extends RuntimeException{
+public class GreenApiException extends RuntimeException
+{
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1653041892643887935L;
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -1653041892643887935L;
 
-	public GreenApiException(Throwable root) {
-		super(root);
-	}
-	
-	public GreenApiException(String message) {
-		super(message);
-	}
-	
-	public GreenApiException(String message, Throwable root) {
-		super(message, root);
-	}
+    /**
+     * Create an exception with a given cause.
+     * 
+     * @param cause
+     *            The cause (which is saved for later retrieval by the Throwable.getCause() method). (A null value is permitted, and indicates that
+     *            the cause is nonexistent or unknown.).
+     */
+    public GreenApiException(Throwable cause)
+    {
+        super(cause);
+    }
+
+    /**
+     * Create an exception with a given message.
+     * 
+     * @param message
+     *            the detail message (which is saved for later retrieval by the Throwable.getMessage() method).
+     */
+    public GreenApiException(String message)
+    {
+        super(message);
+    }
+
+    /**
+     * Create a message with a given message and cause.
+     * 
+     * @param message
+     *            the detail message (which is saved for later retrieval by the Throwable.getMessage() method).
+     * @param cause
+     *            The cause (which is saved for later retrieval by the Throwable.getCause() method). (A null value is permitted, and indicates that
+     *            the cause is nonexistent or unknown.).
+     */
+    public GreenApiException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
 }

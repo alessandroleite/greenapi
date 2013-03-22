@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -27,41 +27,41 @@ import greenapi.core.model.exception.ResourceException;
 import org.aspectj.lang.SoftException;
 import org.hyperic.sigar.SigarException;
 
-public aspect HandleSigarException {
+public aspect HandleSigarException
+{
 
-	/**
-	 * Declare {@link SigarException} soft to enable use by clients that not
-	 * declared to handle {@link SigarException}.
-	 */
-	declare soft: org.hyperic.sigar.SigarException : throwsResourceException();
+    /**
+     * Declare {@link SigarException} soft to enable use by clients that not declared to handle {@link SigarException}.
+     */
+    declare soft: org.hyperic.sigar.SigarException : throwsResourceException();
 
-	/**
-	 * Pick out join points to convert {@link SigarException} to
-	 * {@link ResourceException}. This implementation picks out execution of
-	 * method declared to throw {@link SigarException} in our project.
-	 */
-	pointcut throwsResourceException(): 
-		( 
-			(within(greenapi.core.model.resources.builders..*) || within(greenapi.core.model.sensors ..*) ) && 
-			( execution (* build(..)) || execution (* collect(..)) ) ||
-			(within(greenapi.core.model.software.os.commands.impl.PsImpl) && (execution (* execute(..))))
-		);
+    /**
+     * Pick out join points to convert {@link SigarException} to {@link ResourceException}. This implementation picks out execution of method declared
+     * to throw {@link SigarException} in our project.
+     */
+    pointcut throwsResourceException(): (
+            (within(greenapi.core.model.resources.builders..*) || within(greenapi.core.model.sensors ..*) ) &&  
+            (execution (* build(..)) || execution (* collect(..))) || 
+            (within(greenapi.core.model.software.os.commands.impl.PsImpl) && (execution (* execute(..))))
+            );
 
-	/**
-	 * This around advice converts {@link SigarException} to
-	 * {@link ResourceException} at all join points picked out by
-	 * {@link #throwsResourceException()}. That means *no*
-	 * {@link SigarException} will be thrown from this join point, and thus that
-	 * none will be converted the AspectJ runtime to {@link SoftException}.
-	 * 
-	 * @return The reference of the target object.
-	 * @throws ResourceException If the target method throws {@link SigarException}
-	 */
-	Object around(): throwsResourceException() {
-		try {
-			return proceed();
-		} catch (SigarException exception) {
-			throw new ResourceException(exception);
-		}
-	}
+    /**
+     * This around advice converts {@link SigarException} to {@link ResourceException} at all join points picked out by
+     * {@link #throwsResourceException()}. That means *no* {@link SigarException} will be thrown from this join point, and thus that none will be
+     * converted the AspectJ runtime to {@link SoftException}.
+     * 
+     * @return The reference of the target object.
+     * @throws ResourceException
+     *             If the target method throws {@link SigarException}
+     */
+    Object around(): throwsResourceException() {
+        try
+        {
+            return proceed();
+        }
+        catch (SigarException exception)
+        {
+            throw new ResourceException(exception);
+        }
+    }
 }

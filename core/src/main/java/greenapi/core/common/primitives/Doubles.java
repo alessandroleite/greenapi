@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,11 +25,21 @@ package greenapi.core.common.primitives;
 public final class Doubles
 {
 
+    /**
+     * Default constructor that's never called.
+     */
     private Doubles()
     {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Converts a {@link String} to {@link Double}. In case of wrong value, the return is <code>null</code>.
+     * 
+     * @param value
+     *            The value to be converted to {@link Double}
+     * @return The value converted to {@link Double} or <code>null</code>
+     */
     public static double valueOf(String value)
     {
         try

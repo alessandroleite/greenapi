@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -53,8 +53,10 @@ public final class Strings
     /**
      * Format a {@link Double} value as percentage.
      * 
-     * @param val The value to be formatted.
-     * @param multi <code>true</code> if the value must be multiplied by 100.
+     * @param val
+     *            The value to be formatted.
+     * @param multi
+     *            <code>true</code> if the value must be multiplied by 100.
      * @return The value formated as a {@link String} percentage value.
      */
     public static String format(double val, boolean multi)
@@ -78,13 +80,16 @@ public final class Strings
     }
 
     /**
-     * Check if a given {@link String} is <code>null</code> or empty and return the same {@link String}.
+     * Check if a given {@link String} is not <code>null</code> or empty and return the same {@link String}. If the value is <code>null</code> or
+     * empty this method throws the exception {@link IllegalArgumentException}.
      * 
      * @param value
      *            The {@link String} to be checked.
      * @return The given {@link String}.
+     * @throws IllegalArgumentException
+     *             if the value is <code>null</code> or empty.
      */
-    public static String checkArgumentIsNullOrEmpty(String value)
+    public static String checkArgumentIsNotNullOrEmpty(String value)
     {
         Preconditions.checkArgument(!com.google.common.base.Strings.isNullOrEmpty(value));
         return value;

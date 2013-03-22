@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 I2RGreen
+ * Copyright (c) 2012 GreenI2R
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
@@ -25,8 +25,14 @@ package greenapi.core.model.resources.builders;
 import greenapi.core.model.resource.io.Storage;
 import greenapi.core.model.software.os.OperatingSystem;
 
-public interface StorageBuilder extends Builder<Storage> {
-	
-	StorageBuilder os(OperatingSystem os);
-
+public interface StorageBuilder extends Builder<Storage>
+{
+    /**
+     * Define the {@link OperatingSystem} that can interact with the {@link Storage}.
+     * 
+     * @param os
+     *            The {@link OperatingSystem}'s instance.
+     * @return The same instance of the fluent interface.
+     */
+    StorageBuilder os(OperatingSystem os);
 }
