@@ -22,268 +22,331 @@
  */
 package greenapi.core.model.resources;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static greenapi.core.common.base.Strings.NEW_LINE;
-import static greenapi.core.common.base.Strings.TAB;
+import java.util.Arrays;
 
 import greenapi.core.model.data.CpuSocketState;
 import greenapi.core.model.data.Data;
 import greenapi.core.model.data.Frequency;
 import greenapi.core.model.sensors.Sensor;
 
-import java.util.Arrays;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+import static greenapi.core.common.base.Strings.NEW_LINE;
+import static greenapi.core.common.base.Strings.TAB;
 
-public class CpuSocket implements Resource {
+public class CpuSocket implements Resource
+{
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -1374875406516879490L;
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -1374875406516879490L;
 
-	/**
-	 * Vendor name
-	 */
-	private final String vendor;
+    /**
+     * Vendor name.
+     */
+    private final String vendor;
 
-	/**
-	 * CPU model
-	 */
-	private final String model;
+    /**
+     * CPU model.
+     */
+    private final String model;
 
-	/**
-	 * Number of Mega-Hertz
-	 */
-	private final long mhz;
+    /**
+     * Number of Mega-Hertz.
+     */
+    private final long mhz;
 
-	/**
-	 * Cores available in this socket.
-	 */
-	private final Cores cores;
+    /**
+     * Cores available in this socket.
+     */
+    private final Cores cores;
 
-	/**
-	 * The frequencies available.
-	 */
-	private final Frequency[] availableFrequencies;
+    /**
+     * The frequencies available.
+     */
+    private final Frequency[] availableFrequencies;
 
-	/**
-	 * The cache size;
-	 */
-	private final long cacheSize;
+    /**
+     * The cache size.
+     */
+    private final long cacheSize;
 
-	/**
-	 * The cpu state.
-	 */
-	private CpuSocketState state;
+    /**
+     * The cpu state.
+     */
+    private CpuSocketState state;
 
-	public CpuSocket(String vendor, String model, long mhz, long cacheSizeInBytes, Cpu[] cores, Frequency... frequencies) {
+    /**
+     * 
+     * @param vendorName The vendor name.
+     * @param cpuSocketModel The CPU model.
+     * @param frequencyInMhz The maximum frequency in MHz.
+     * @param cacheSizeInBytes The cache size in bytes.
+     * @param socketCores The cores of this CPU.
+     * @param frequencies This CPU frequencies.
+     */
+    public CpuSocket(String vendorName, String cpuSocketModel, long frequencyInMhz, long cacheSizeInBytes, Cpu[] socketCores,
+            Frequency... frequencies)
+    {
 
-		this.vendor = vendor;
-		this.model = model;
-		this.mhz = mhz;
-		this.cacheSize = cacheSizeInBytes;
+        this.vendor = vendorName;
+        this.model = cpuSocketModel;
+        this.mhz = frequencyInMhz;
+        this.cacheSize = cacheSizeInBytes;
 
-		this.availableFrequencies = (frequencies == null ? new Frequency[] { Frequency.newFrequencyInMhz(new Long(mhz)) } : frequencies);
-		Arrays.sort(this.availableFrequencies);
-		this.cores = new Cores(this);
-		
-		for(Cpu core: cores) {
-			this.add(core);
-		}
-	}
-	
-	public CpuSocket(String vendor, String model, long mhz, long cacheSizeInBytes, Cpu ... cores) {
-		this(vendor, model, mhz, cacheSizeInBytes, cores, Frequency.newFrequencyInMhz(mhz));
-	}
+        this.availableFrequencies = frequencies == null ? new Frequency[] {Frequency.newFrequencyInMhz(new Long(mhz))} : frequencies;
+        Arrays.sort(this.availableFrequencies);
+        this.cores = new Cores(this);
 
-	/**
-	 * Add a given CPU (core) to this {@link CpuSocket}.
-	 * 
-	 * @param cpu The CPU (core) to be added.
-	 */
-	public void add(Cpu cpu) {
-		checkNotNull(cpu).setCpuSocket(this);
-		this.cores().add(cpu);
-	}
+        for (Cpu core : socketCores)
+        {
+            this.add(core);
+        }
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (cacheSize ^ (cacheSize >>> 32));
-		result = prime * result + cores.size();
-		result = prime * result + (int) (mhz ^ (mhz >>> 32));
-		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		result = prime * result + ((vendor == null) ? 0 : vendor.hashCode());
-		return result;
-	}
+    /**
+     * 
+     * @param vendorName
+     *            The vendor's name.
+     * @param cpuSocketModel
+     *            This CPU model.
+     * @param frequencyInMhz
+     *            This maximum frequency.
+     * @param cacheSizeInBytes
+     *            This cache size in bytes.
+     * @param socketCores
+     *            The cores of this socket.
+     */
+    public CpuSocket(String vendorName, String cpuSocketModel, long frequencyInMhz, long cacheSizeInBytes, Cpu... socketCores)
+    {
+        this(vendorName, cpuSocketModel, frequencyInMhz, cacheSizeInBytes, socketCores, Frequency.newFrequencyInMhz(frequencyInMhz));
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
+    /**
+     * Add a given CPU (core) to this {@link CpuSocket}.
+     * 
+     * @param cpu
+     *            The CPU (core) to be added.
+     */
+    public void add(Cpu cpu)
+    {
+        checkNotNull(cpu).setCpuSocket(this);
+        this.cores().add(cpu);
+    }
 
-		if (!(obj instanceof CpuSocket)) {
-			return false;
-		}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (cacheSize ^ (cacheSize >>> 32));
+        result = prime * result + cores.size();
+        result = prime * result + (int) (mhz ^ (mhz >>> 32));
+        result = prime * result + ((model == null) ? 0 : model.hashCode());
+        result = prime * result + ((vendor == null) ? 0 : vendor.hashCode());
+        return result;
+    }
 
-		CpuSocket other = (CpuSocket) obj;
-		if (cacheSize != other.cacheSize) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
 
-		if (!cores.equals(other.cores)) {
-			return false;
-		}
+        if (!(obj instanceof CpuSocket))
+        {
+            return false;
+        }
 
-		if (mhz != other.mhz) {
-			return false;
-		}
+        CpuSocket other = (CpuSocket) obj;
+        if (cacheSize != other.cacheSize)
+        {
+            return false;
+        }
 
-		if (model == null) {
-			if (other.model != null) {
-				return false;
-			}
-		} else if (!model.equals(other.model)) {
-			return false;
-		}
+        if (!cores.equals(other.cores))
+        {
+            return false;
+        }
 
-		if (vendor == null) {
-			if (other.vendor != null) {
-				return false;
-			}
-		} else if (!vendor.equals(other.vendor)) {
-			return false;
-		}
-		return true;
-	}
+        if (mhz != other.mhz)
+        {
+            return false;
+        }
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder("\n");
-		builder.append("Vendor......: ").append(this.vendor()).append(NEW_LINE);
-		builder.append("Model.......: ").append(this.model()).append("-").append(this.mhz()).append(NEW_LINE);
-		builder.append("Cache size..: ").append(this.cacheSize() / 1024).append("Kb").append(NEW_LINE);
-		builder.append("Frequency...: ").append(this.frequency().inGhz()).append(" Ghz").append(NEW_LINE);
-		builder.append("Cores.......: \n[").append(NEW_LINE);
+        if (model == null)
+        {
+            if (other.model != null)
+            {
+                return false;
+            }
+        }
+        else if (!model.equals(other.model))
+        {
+            return false;
+        }
 
-		for (Cpu cpu : this.cores().get()) {
-			builder.append(TAB).append(cpu).append(NEW_LINE);
-		}
+        if (vendor == null)
+        {
+            if (other.vendor != null)
+            {
+                return false;
+            }
+        }
+        else if (!vendor.equals(other.vendor))
+        {
+            return false;
+        }
+        return true;
+    }
 
-		builder.append("]").append(NEW_LINE);
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder("\n");
+        builder.append("Vendor......: ").append(this.vendor()).append(NEW_LINE);
+        builder.append("Model.......: ").append(this.model()).append("-").append(this.mhz()).append(NEW_LINE);
+        builder.append("Cache size..: ").append(this.cacheSize() / 1024).append("Kb").append(NEW_LINE);
+        builder.append("Frequency...: ").append(this.frequency().inGhz()).append(" Ghz").append(NEW_LINE);
+        builder.append("Cores.......: \n[").append(NEW_LINE);
 
-		return builder.toString();
-	}
+        for (Cpu cpu : this.cores().get())
+        {
+            builder.append(TAB).append(cpu).append(NEW_LINE);
+        }
 
-	/**
-	 * Returns the current frequency.
-	 * 
-	 * @return The current frequency.
-	 */
-	public Frequency frequency() {
-		synchronized (this) {
-			return (this.state() == null || this.state().frequency() == null) 
-					? (this.availableFrequencies()[this.availableFrequencies().length - 1])
-					: this.state().frequency();
-		}
-	}
+        builder.append("]").append(NEW_LINE);
 
-	/**
-	 * @return the vendor
-	 */
-	public String vendor() {
-		return vendor;
-	}
+        return builder.toString();
+    }
 
-	/**
-	 * @return the model
-	 */
-	public String model() {
-		return model;
-	}
+    /**
+     * Returns the current frequency.
+     * 
+     * @return The current frequency.
+     */
+    public Frequency frequency()
+    {
+        synchronized (this)
+        {
+            return (this.state() == null || this.state().frequency() == null) ? (this.availableFrequencies()[this.availableFrequencies().length - 1])
+                    : this.state().frequency();
+        }
+    }
 
-	/**
-	 * @return the mhz
-	 */
-	public long mhz() {
-		return mhz;
-	}
+    /**
+     * @return the vendor
+     */
+    public String vendor()
+    {
+        return vendor;
+    }
 
-	/**
-	 * @return the cores
-	 */
-	public Cores cores() {
-		return cores;
-	}
+    /**
+     * @return the model
+     */
+    public String model()
+    {
+        return model;
+    }
 
-	/**
-	 * @return the cacheSize
-	 */
-	public long cacheSize() {
-		return cacheSize;
-	}
+    /**
+     * @return the mhz
+     */
+    public long mhz()
+    {
+        return mhz;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Sensor<?, Data<?>>[] sensors() {
-		//return new Sensor[] { new CpuSocketSensor(this) };
-		//TODO
-		return null;
-	}
+    /**
+     * @return the cores
+     */
+    public Cores cores()
+    {
+        return cores;
+    }
 
-	/**
-	 * Returns the combined workload of the {@link Cores} of this
-	 * {@link CpuSocket}.
-	 * 
-	 * @return The combined workload of the {@link Cores} of this
-	 *         {@link CpuSocket}.
-	 */
-	public Double getCombinedLoad() {
+    /**
+     * @return the cacheSize
+     */
+    public long cacheSize()
+    {
+        return cacheSize;
+    }
 
-		double sum = 0.0D;
-		for (Cpu cpu : cores()) {
-			sum += cpu.load();
-		}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Sensor<?, Data<?>>[] sensors()
+    {
+        // return new Sensor[] { new CpuSocketSensor(this) };
+        // TODO
+        return null;
+    }
 
-		return (sum / cores().size());
-	}
+    /**
+     * Returns the combined workload of the {@link Cores} of this {@link CpuSocket}.
+     * 
+     * @return The combined workload of the {@link Cores} of this {@link CpuSocket}.
+     */
+    public Double getCombinedLoad()
+    {
 
-	/**
-	 * 
-	 * @param state
-	 *            the new state of this {@link CpuSocket}.
-	 */
-	public CpuSocketState setState(CpuSocketState state) {
-		synchronized (this) {
-			final CpuSocketState previousSocketState = this.state;
-			this.state = state;
-			return previousSocketState;
-		}
-	}
+        double sum = 0.0D;
+        for (Cpu cpu : cores())
+        {
+            sum += cpu.load();
+        }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public CpuSocketState state() {
-		return this.state;
-	}
+        return sum / cores().size();
+    }
 
-	/**
-	 * @return the available frequencies.
-	 */
-	public Frequency[] availableFrequencies() {
-		return availableFrequencies;
-	}
+    /**
+     * Update this {@link CpuSocket} state and returns the previous state.
+     * 
+     * @param newState
+     *            the new state of this {@link CpuSocket}.
+     * @return The previous state.
+     */
+    public CpuSocketState setState(CpuSocketState newState)
+    {
+        synchronized (this)
+        {
+            final CpuSocketState previousSocketState = this.state;
+            this.state = newState;
+            return previousSocketState;
+        }
+    }
 
-	/**
-	 * @return
-	 */
-	public String description() {
-		return this.vendor() + " " + this.model() + "-" + this.mhz();
-	}
+    /**
+     * Return this {@link CpuSocket} state.
+     * 
+     * @return This {@link CpuSocketState}.
+     */
+    public CpuSocketState state()
+    {
+        return this.state;
+    }
+
+    /**
+     * @return the available frequencies.
+     */
+    public Frequency[] availableFrequencies()
+    {
+        return availableFrequencies;
+    }
+
+    /**
+     * Return the description of this {@link CpuSocket}. The description is: vendor name and model - frequency in MHz.
+     * 
+     * @return The description of this {@link CpuSocket}.
+     */
+    public String description()
+    {
+        return this.vendor() + " " + this.model() + "-" + this.mhz();
+    }
 }

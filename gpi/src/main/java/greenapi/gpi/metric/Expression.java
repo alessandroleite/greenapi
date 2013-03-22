@@ -22,7 +22,6 @@
  */
 package greenapi.gpi.metric;
 
-
 public interface Expression
 {
 
@@ -40,8 +39,9 @@ public interface Expression
 
     /**
      * Returns an {@link Expression} whose value is (this &times multiplicand).
-     *  
-     * @param multiplicand The value to be multiplied by this {@link Expression}.
+     * 
+     * @param multiplicand
+     *            The value to be multiplied by this {@link Expression}.
      * @return An {@link Expression} whose value is (this &times multiplicand).
      */
     Expression multiply(Expression multiplicand);
@@ -54,7 +54,7 @@ public interface Expression
      *            power to raise this {@link Expression} to.
      * @return An {@link Expression} whose value is (this ^ n).
      * @throws ArithmeticException
-     *             - if the value of the given {@link Expression} is out of range.
+     *             if the value of the given {@link Expression} is out of range.
      */
     Expression pow(Expression expression);
 }
