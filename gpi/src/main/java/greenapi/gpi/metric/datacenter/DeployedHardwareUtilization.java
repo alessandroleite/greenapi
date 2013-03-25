@@ -22,32 +22,38 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import greenapi.gpi.measure.Ratio;
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.Formulae;
-import greenapi.gpi.metric.Metric;
-
 import java.math.BigDecimal;
 
-import javax.measure.quantity.Quantity;
+import greenapi.gpi.measure.Ratio;
+import greenapi.gpi.metric.Metric;
 
 /**
  * This metric measures how much servers are running live applications in relation to the numbers of servers in the data center. In essence, this
  * metric quantify the fraction of the data center equipment that is consuming energy without running any application or handling data that anyone
- * cares about. In other words, the DH-UR metric helps data center administrator quantify the opportunity for servers to increase
- * their utilization by virtualizing. For servers, it is computed as shown below.
+ * cares about. In other words, the DH-UR metric helps data center administrator quantify the opportunity for servers to increase their utilization by
+ * virtualizing. For servers, it is computed as shown below.
  * 
  * <pre>
  *    DH-UR (Servers) = Number of servers running applications / Number of servers. <br/>
  *    DH-UR (Storage) = Number of terabytes of storage holding frequently accessed data / Total terabytes of storage. <br/>
  * </pre>
+ * 
+ * <strong>Example</strong> <br/>
+ * <code><pre>{@code}   
+ *      Expression<BigDecimal, Ratio> exp = NumberOfNonIdleServers.newInstance(servers).divideBy(NumberOfServers.newInstance(servers));
+ * </pre></code>
+ * 
+ * or 
+ * 
+ * <code><pre>{@code}   
+ *      int n = 10;
+ *      javax.measure.Measure<BigDecimal, Ratio> value = ExpressionBuilder.evaluate("numberOfNonIdleServers(n) / n", n);
+ * </pre></code>
+ * 
+ * The first example shows the use of two functions (NumberOfNonIdleServers, NumberOfServers) to build an expression and the second
+ * shows the use of an expression to get calculate the value.
+ * 
  */
 public interface DeployedHardwareUtilization extends Metric<BigDecimal, Ratio>
 {
-
-    interface NumberOfNonIdleServers extends Expression {
-    }
-    
-    interface NumberOfServers extends Formulae<Long, Quantity> {
-    }
 }

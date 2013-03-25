@@ -34,5 +34,5 @@ public interface Formulae<V, Q extends Quantity>
      *            The expression of the formulae.
      * @return The value of the formulae.
      */
-    Measure<V, Q> compute(Expression expression);
+    Measure<V, Q> compute(Expression<V> expression);
 }

@@ -30,210 +30,237 @@ import greenapi.core.model.sensors.Sensor;
 import java.util.LinkedList;
 import java.util.List;
 
+public class Cpu implements Resource, Comparable<Cpu>
+{
 
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = 7738476533366442479L;
 
-public class Cpu implements Resource, Comparable<Cpu> {
+    private volatile CpuSocket cpuSocket;
+    private final String name;
+    private final double irq;
+    private final double softIrq;
+    private final double stole;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = 7738476533366442479L;
-	
-	private volatile CpuSocket cpuSocket;
-	private final String name;
-	private final double irq;
-	private final double softIrq;
-	private final double stole;
+    private CpuState state;
+    private Temperature temperature;
 
-	private CpuState state;
-	private Temperature temperature;
-	
-	private final List<Sensor<?, Data<?>>> sensors = new LinkedList<>();
+    private final List<Sensor<?, Data<?>>> sensors = new LinkedList<>();
 
-	public Cpu(String name, double irq, double softIrq, double stole) {
-		this.name = name;
-		this.irq = irq;
-		this.softIrq = softIrq;
-		this.stole = stole;
-	}
+    public Cpu(String name, double irq, double softIrq, double stole)
+    {
+        this.name = name;
+        this.irq = irq;
+        this.softIrq = softIrq;
+        this.stole = stole;
+    }
 
-	public Cpu(CpuSocket socket, String name, double irq, double softIrq, double stole) {
-		this(name, irq, softIrq, stole);
-		this.cpuSocket = socket;
-	}
-		
-	public Cpu(String name, double irq, double softIrq,
-			double stole, CpuState state, Temperature temperature) {
-		this(name, irq, softIrq, stole);
-		this.temperature = temperature;
-		this.state = state;
-	}
-	
-	public Cpu(CpuSocket socket, String name, double irq, double softIrq,
-			double stole, CpuState state, Temperature temperature) {
-		this(name, irq, softIrq, stole, state, temperature);
-		this.cpuSocket = cpuSocket;
-	}
+    public Cpu(CpuSocket socket, String name, double irq, double softIrq, double stole)
+    {
+        this(name, irq, softIrq, stole);
+        this.cpuSocket = socket;
+    }
 
+    public Cpu(String name, double irq, double softIrq, double stole, CpuState state, Temperature temperature)
+    {
+        this(name, irq, softIrq, stole);
+        this.temperature = temperature;
+        this.state = state;
+    }
 
-	/**
-	 * Returns CPU id.
-	 * 
-	 * @return this CPU id.
-	 */
-	public Integer id() {
-		return Integer.parseInt(this.name().replaceAll("\\D", ""));
-	}
+    public Cpu(CpuSocket socket, String name, double irq, double softIrq, double stole, CpuState state, Temperature temperature)
+    {
+        this(name, irq, softIrq, stole, state, temperature);
+        this.cpuSocket = cpuSocket;
+    }
 
-	/**
-	 * Return the load state of the CPU.
-	 * 
-	 * @return the load state of the CPU
-	 */
-	public double load() {
-		return this.state().getCombined() * 100.0D;
-	}
+    /**
+     * Returns CPU id.
+     * 
+     * @return this CPU id.
+     */
+    public Integer id()
+    {
+        return Integer.parseInt(this.name().replaceAll("\\D", ""));
+    }
 
-	@Override
-	public int compareTo(Cpu o) {
-		return this.name.compareTo(o.name);
-	}
+    /**
+     * Return the load state of the CPU.
+     * 
+     * @return the load state of the CPU
+     */
+    public double load()
+    {
+        return this.state().getCombined() * 100.0D;
+    }
 
-	@Override
-	public int hashCode() {
+    @Override
+    public int compareTo(Cpu o)
+    {
+        return this.name.compareTo(o.name);
+    }
 
-		final int prime = 31;
-		int result = 1;
+    @Override
+    public int hashCode()
+    {
 
-		result = prime * result
-				+ ((cpuSocket == null) ? 0 : cpuSocket.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+        final int prime = 31;
+        int result = 1;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
+        result = prime * result + ((cpuSocket == null) ? 0 : cpuSocket.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
 
-		if (!(obj instanceof Cpu)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
 
-		Cpu other = (Cpu) obj;
-		if (cpuSocket == null) {
-			if (other.cpuSocket != null) {
-				return false;
-			}
-		} else if (!cpuSocket.equals(other.cpuSocket)) {
-			return false;
-		}
+        if (!(obj instanceof Cpu))
+        {
+            return false;
+        }
 
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
+        Cpu other = (Cpu) obj;
+        if (cpuSocket == null)
+        {
+            if (other.cpuSocket != null)
+            {
+                return false;
+            }
+        }
+        else if (!cpuSocket.equals(other.cpuSocket))
+        {
+            return false;
+        }
 
-		return true;
-	}
+        if (name == null)
+        {
+            if (other.name != null)
+            {
+                return false;
+            }
+        }
+        else if (!name.equals(other.name))
+        {
+            return false;
+        }
 
-	@Override
-	public String toString() {
-		return "CPU " + (this.name) + " .... state: "
-				+ (this.state() == null ? "UNKNOWN" : this.state())
-				+ " .... temperature: "
-				+ (this.temperature() == null ? "UNKNOWN" : this.temperature());
-	}
+        return true;
+    }
 
-	public CpuState setState(CpuState state) {
-		synchronized (this) {
+    @Override
+    public String toString()
+    {
+        return "CPU " + (this.name) + " .... state: " + (this.state() == null ? "UNKNOWN" : this.state()) + " .... temperature: "
+                + (this.temperature() == null ? "UNKNOWN" : this.temperature());
+    }
 
-			CpuState old_state = this.state;
-			this.state = state;
-			
-			return old_state;
-		}
-	}
+    public CpuState setState(CpuState state)
+    {
+        synchronized (this)
+        {
 
-	/**
-	 * @param temperature
-	 *            the temperature to set
-	 */
-	public Temperature setTemperature(Temperature temperature) {
-		synchronized (this) {
-			final Temperature previousTemperature = this.temperature;
+            CpuState old_state = this.state;
+            this.state = state;
 
-			this.temperature = temperature;
-			return previousTemperature;
-		}
-	}
+            return old_state;
+        }
+    }
 
-	/**
-	 * @return the state
-	 */
-	public CpuState state() {
-		return state;
-	}
+    /**
+     * @param temperature
+     *            the temperature to set
+     */
+    public Temperature setTemperature(Temperature temperature)
+    {
+        synchronized (this)
+        {
+            final Temperature previousTemperature = this.temperature;
 
-	/**
-	 * @return the temperature
-	 */
-	public Temperature temperature() {
-		return temperature;
-	}
+            this.temperature = temperature;
+            return previousTemperature;
+        }
+    }
 
-	/**
-	 * @return the cpu
-	 */
-	public CpuSocket cpuSocket() {
-		return cpuSocket;
-	}
+    /**
+     * @return the state
+     */
+    public CpuState state()
+    {
+        return state;
+    }
 
-	/**
-	 * @param cpuSocket the cpuSocket to set
-	 */
-	public void setCpuSocket(CpuSocket cpuSocket) {
-		this.cpuSocket = cpuSocket;
-	}
+    /**
+     * @return the temperature
+     */
+    public Temperature temperature()
+    {
+        return temperature;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String name() {
-		return name;
-	}
+    /**
+     * @return the cpu
+     */
+    public CpuSocket cpuSocket()
+    {
+        return cpuSocket;
+    }
 
-	/**
-	 * @return the irq
-	 */
-	public double irq() {
-		return irq;
-	}
+    /**
+     * @param cpuSocket
+     *            the cpuSocket to set
+     */
+    public void setCpuSocket(CpuSocket cpuSocket)
+    {
+        this.cpuSocket = cpuSocket;
+    }
 
-	/**
-	 * @return the softIrq
-	 */
-	public double softIrq() {
-		return softIrq;
-	}
+    /**
+     * @return the name
+     */
+    public String name()
+    {
+        return name;
+    }
 
-	/**
-	 * @return the stole
-	 */
-	public double stole() {
-		return stole;
-	}
+    /**
+     * @return the irq
+     */
+    public double irq()
+    {
+        return irq;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public Sensor<?, Data<?>>[] sensors() {		
-		return this.sensors.toArray(new Sensor[this.sensors.size()]);
-	}
+    /**
+     * @return the softIrq
+     */
+    public double softIrq()
+    {
+        return softIrq;
+    }
+
+    /**
+     * @return the stole
+     */
+    public double stole()
+    {
+        return stole;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Sensor<?, Data<?>>[] sensors()
+    {
+        return this.sensors.toArray(new Sensor[this.sensors.size()]);
+    }
 }

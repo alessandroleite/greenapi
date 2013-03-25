@@ -22,63 +22,84 @@
  */
 package greenapi.core.model.resources.builders.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import greenapi.core.model.data.MemoryState;
 import greenapi.core.model.resources.Memory;
 import greenapi.core.model.resources.MemoryType;
 import greenapi.core.model.resources.RamMemory;
 import greenapi.core.model.resources.builders.MemoryBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
+public class MemoryBuilderImpl implements MemoryBuilder
+{
+    /**
+     * The type of the memory. The default is {@link MemoryType#RAM}.
+     */
+    private MemoryType memoryType = MemoryType.RAM;
 
+    /**
+     * The size of the memory.
+     */
+    private long size;
 
-public class MemoryBuilderImpl implements MemoryBuilder {
+    /**
+     * The properties of the memory.
+     */
+    private Map<String, String> properties = new HashMap<>();
 
-	private MemoryType memoryType = MemoryType.RAM;
-	private long size;
-	private Map<String, String> properties = new HashMap<>();
-	private MemoryState memoryUsage;
+    /**
+     * The state of the memory (percentage of memory used and memory available).
+     */
+    private MemoryState memoryUsage;
 
-	@Override
-	public Memory build() {
-		Memory mem = null;
+    @Override
+    public Memory build()
+    {
+        Memory mem = null;
 
-		if (memoryType == null) {
-			this.memoryType = MemoryType.RAM;
-		}
+        if (memoryType == null)
+        {
+            this.memoryType = MemoryType.RAM;
+        }
 
-		switch (this.memoryType) {
-		case SWAP:
-			break;
-		case CACHE:
-			break;
-		default:
-			mem = new RamMemory(size, memoryUsage);
-		}
-		return mem;
-	}
+        switch (this.memoryType)
+        {
+        case SWAP:
+            break;
+        case CACHE:
+            break;
+        default:
+            mem = new RamMemory(size, memoryUsage);
+        }
+        return mem;
+    }
 
-	@Override
-	public MemoryBuilder ofType(MemoryType type) {
-		this.memoryType = type;
-		return this;
-	}
+    @Override
+    public MemoryBuilder ofType(MemoryType type)
+    {
+        this.memoryType = type;
+        return this;
+    }
 
-	@Override
-	public MemoryBuilder withSize(long size) {
-		this.size = size;
-		return this;
-	}
+    @Override
+    public MemoryBuilder withSize(long memorySize)
+    {
+        this.size = memorySize;
+        return this;
+    }
 
-	@Override
-	public MemoryBuilder withProperties(Map<String, String> properties) {
-		this.properties.putAll(properties);
-		return this;
-	}
+    @Override
+    public MemoryBuilder withProperties(Map<String, String> memoryProperties)
+    {
+        this.properties.putAll(memoryProperties);
+        return this;
+    }
 
-	@Override
-	public MemoryBuilder withProperty(String propertyName, String propertyValue) {
-		this.properties.put(propertyName, propertyValue);
-		return this;
-	}
+    @Override
+    public MemoryBuilder withProperty(String propertyName, String propertyValue)
+    {
+        this.properties.put(propertyName, propertyValue);
+        return this;
+    }
 }

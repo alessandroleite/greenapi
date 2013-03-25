@@ -29,69 +29,78 @@ import greenapi.core.model.resources.Cpu;
 import greenapi.core.model.resources.CpuSocket;
 import greenapi.core.model.resources.builders.CpuBuilder;
 
-public class CpuBuilderImpl implements CpuBuilder {
+public class CpuBuilderImpl implements CpuBuilder
+{
 
-	private Integer id;
-	private double irq;
-	private double softIrq;
-	private double stole;
-	private Temperature cpuTemperature;
-	private CpuState cpuState;
-	private CpuSocket cpuSocket;
+    private Integer id;
+    private double irq;
+    private double softIrq;
+    private double stole;
+    private Temperature cpuTemperature;
+    private CpuState cpuState;
+    private CpuSocket cpuSocket;
 
-	@Override
-	public Cpu build() {
-		checkArgument(id != null && id >= 0);
-		Cpu cpu = new Cpu(String.valueOf(id), irq, softIrq, stole, cpuState, cpuTemperature);
-		
-		cpu.setState(null);
-		
-		
-		if (cpuSocket != null){
-			cpu.setCpuSocket(cpuSocket);
-		}
-		return cpu;
-	}
+    @Override
+    public Cpu build()
+    {
+        checkArgument(id != null && id >= 0);
+        Cpu cpu = new Cpu(String.valueOf(id), irq, softIrq, stole, cpuState, cpuTemperature);
 
-	@Override
-	public CpuBuilder withId(Integer id) {
-		this.id = id;
-		return this;
-	}
+        cpu.setState(null);
 
-	@Override
-	public CpuBuilder withIrq(double irq) {
-		this.irq = irq;
-		return this;
-	}
+        if (cpuSocket != null)
+        {
+            cpu.setCpuSocket(cpuSocket);
+        }
+        return cpu;
+    }
 
-	@Override
-	public CpuBuilder withSoftIrq(double softIrq) {
-		this.softIrq = softIrq;
-		return this;
-	}
+    @Override
+    public CpuBuilder withId(Integer id)
+    {
+        this.id = id;
+        return this;
+    }
 
-	@Override
-	public CpuBuilder withStole(double stole) {
-		this.stole = stole;
-		return this;
-	}
+    @Override
+    public CpuBuilder withIrq(double irq)
+    {
+        this.irq = irq;
+        return this;
+    }
 
-	@Override
-	public CpuBuilder withTemperature(Temperature temperature) {
-		this.cpuTemperature = temperature;
-		return this;
-	}
+    @Override
+    public CpuBuilder withSoftIrq(double softIrq)
+    {
+        this.softIrq = softIrq;
+        return this;
+    }
 
-	@Override
-	public CpuBuilder withState(CpuState state) {
-		this.cpuState = state;
-		return this;
-	}
+    @Override
+    public CpuBuilder withStole(double stole)
+    {
+        this.stole = stole;
+        return this;
+    }
 
-	@Override
-	public CpuBuilder in(CpuSocket cpuSocket) {
-		this.cpuSocket = cpuSocket;
-		return this;
-	}
+    @Override
+    public CpuBuilder withTemperature(Temperature temperature)
+    {
+        this.cpuTemperature = temperature;
+        return this;
+    }
+
+    @Override
+    public CpuBuilder withState(CpuState state)
+    {
+        this.cpuState = state;
+        return this;
+    }
+
+    @Override
+    public CpuBuilder in(CpuSocket cpuSocket)
+    {
+        this.cpuSocket = cpuSocket;
+        return this;
+    }
 }

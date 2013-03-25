@@ -152,6 +152,7 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>aspectj-maven-plugin</artifactId>
 					<version>${aspectj-maven-plugin.version}</version>
+					<inherited>true</inherited>
 					<dependencies>
 						<dependency>
 							<groupId>org.aspectj</groupId>
@@ -192,6 +193,19 @@
 					  <configLocation>${checkstyle.file}</configLocation>
 					  <headerLocation>${license-header-file}</headerLocation>
 					</configuration>         
+				</plugin>
+				<plugin>
+					<groupId>com.github.koraktor</groupId>
+					<artifactId>mavanagaiata</artifactId>
+					<inherited>true</inherited>
+					<executions>
+					    <execution>
+						<id>load-git-branch</id>
+						<goals>
+						    <goal>branch</goal>
+						</goals>
+					    </execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

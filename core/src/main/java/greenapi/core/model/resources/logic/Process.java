@@ -22,12 +22,6 @@
  */
 package greenapi.core.model.resources.logic;
 
-import greenapi.core.model.data.Data;
-import greenapi.core.model.data.ProcessState;
-import greenapi.core.model.data.User;
-import greenapi.core.model.resources.Resource;
-import greenapi.core.model.sensors.Sensor;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,153 +29,243 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import greenapi.core.model.data.Data;
+import greenapi.core.model.data.ProcessState;
+import greenapi.core.model.data.User;
+import greenapi.core.model.resources.Resource;
+import greenapi.core.model.sensors.Sensor;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Process implements Resource, Comparable<Process> {
+public class Process implements Resource, Comparable<Process>
+{
 
-	/**
-	 * Serial code version <code>serialVersionUID</code>
-	 */
-	private static final long serialVersionUID = -6213100157196885498L;
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -6213100157196885498L;
 
-	private final long id;
-	
-	private final Process parent;
+    /**
+     * The process's id.
+     */
+    private final long id;
 
-	private final String name;
+    /**
+     * The process's parent.
+     */
+    private final Process parent;
 
-	private final String[] arguments;
+    /**
+     * The process's name.
+     */
+    private final String name;
 
-	private final List<String> modules = new LinkedList<>();
+    /**
+     * The process's arguments.
+     */
+    private final String[] arguments;
 
-	private final User user;
-	
-	private final Map<Long, Process> children = new HashMap<>();
+    /**
+     * The process's modules.
+     */
+    private final List<String> modules = new LinkedList<>();
 
-	private ProcessState state;
+    /**
+     * The owner of the process.
+     */
+    private final User user;
 
-	public Process(long id, Process parent, String name, String[] arguments, User user, String[] modules, ProcessState state) {
-		this(id, parent, name, arguments, user, modules);
-		this.state = state;
-	}
+    /**
+     * The children of the process.
+     */
+    private final Map<Long, Process> children = new HashMap<>();
 
-	public Process(long id, Process parent, String name, String[] arguments, User user, String ... modules) {
+    /**
+     * The state of the process.
+     */
+    private ProcessState state;
 
-		this.id = id;
-		this.parent = parent;
-		this.name = name;
-		this.arguments = arguments == null ? new String[0] : arguments;
-		this.user = user;
+    /**
+     * 
+     * @param pid
+     *            The id of this {@link Process}.
+     * @param ppid
+     *            The parent of the process, if there is one.
+     * @param processName
+     *            The name of the process.
+     * @param args
+     *            The arguments of the process.
+     * @param owner
+     *            The owner of the process.
+     * @param processModules
+     *            The modules of the process.
+     * @param processState
+     *            The process state.
+     */
+    public Process(long pid, Process ppid, String processName, String[] args, User owner, String[] processModules, ProcessState processState)
+    {
+        this(pid, ppid, processName, args, owner, processModules);
+        this.state = processState;
+    }
 
-		if (modules != null) {
-			this.modules.addAll(Arrays.asList(modules));
-		}
-		
-		if (parent != null) {
-			this.parent.children.put(id, this);
-		}
-	}
+    /**
+     * 
+     * @param pid
+     *            The id of this {@link Process}.
+     * @param ppid
+     *            The parent of the process, if there is one.
+     * @param processName
+     *            The name of the process.
+     * @param args
+     *            The arguments of the process.
+     * @param owner
+     *            The owner of the process.
+     * @param processModules
+     *            The modules of the process.
+     */
+    public Process(long pid, Process ppid, String processName, String[] args, User owner, String... processModules)
+    {
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
+        this.id = pid;
+        this.parent = ppid;
+        this.name = processName;
+        this.arguments = args == null ? new String[0] : args;
+        this.user = owner;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Process other = (Process) obj;
-		if (id != other.id) {
-			return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+        if (modules != null)
+        {
+            this.modules.addAll(Arrays.asList(processModules));
+        }
 
-	/**
-	 * @return the state
-	 */
-	public ProcessState getState() {
-		return state;
-	}
+        if (parent != null)
+        {
+            this.parent.children.put(id, this);
+        }
+    }
 
-	/**
-	 * @param state
-	 *            the state to set
-	 */
-	public void setState(ProcessState state) {
-		this.state = state;
-	}
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
 
-	/**
-	 * @return the pid
-	 */
-	public long pid() {
-		return id;
-	}
-	
-	/**
-	 * @return the parent
-	 */
-	public Process parent() {
-		return this.parent;
-	}
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        Process other = (Process) obj;
+        if (id != other.id)
+        {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * @return the name
-	 */
-	public String name() {
-		return name;
-	}
+    @Override
+    public String toString()
+    {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
-	/**
-	 * @return the arguments
-	 */
-	public String[] arguments() {
-		return Arrays.copyOf(this.arguments, arguments.length);
-	}
+    /**
+     * @return the state
+     */
+    public ProcessState getState()
+    {
+        return state;
+    }
 
-	/**
-	 * @return the modules
-	 */
-	public List<String> modules() {
-		return Collections.unmodifiableList(modules);
-	}
+    /**
+     * @param newProcessState
+     *            the state to set
+     */
+    public void setState(ProcessState newProcessState)
+    {
+        this.state = newProcessState;
+    }
 
-	/**
-	 * @return the user
-	 */
-	public User user() {
-		return user;
-	}
-	
-	public Map<Long, Process> children() {
-		return Collections.unmodifiableMap(children);
-	}
+    /**
+     * @return the pid
+     */
+    public long pid()
+    {
+        return id;
+    }
 
-	@Override
-	public Sensor<?, Data<?>>[] sensors() {
-		return null;
-	}
+    /**
+     * @return the parent
+     */
+    public Process parent()
+    {
+        return this.parent;
+    }
 
-	@Override
-	public int compareTo(final Process other) {
-		return Long.valueOf(this.pid()).compareTo(other.pid());
-	}	
+    /**
+     * @return the name
+     */
+    public String name()
+    {
+        return name;
+    }
+
+    /**
+     * @return the arguments
+     */
+    public String[] arguments()
+    {
+        return Arrays.copyOf(this.arguments, arguments.length);
+    }
+
+    /**
+     * @return the modules
+     */
+    public List<String> modules()
+    {
+        return Collections.unmodifiableList(modules);
+    }
+
+    /**
+     * @return the user
+     */
+    public User user()
+    {
+        return user;
+    }
+
+    /**
+     * Returns the children of this process.
+     * 
+     * @return The children of this process.
+     */
+    public Map<Long, Process> children()
+    {
+        return Collections.unmodifiableMap(children);
+    }
+
+    @Override
+    public Sensor<?, Data<?>>[] sensors()
+    {
+        return null;
+    }
+
+    @Override
+    public int compareTo(final Process other)
+    {
+        return Long.valueOf(this.pid()).compareTo(other.pid());
+    }
 }

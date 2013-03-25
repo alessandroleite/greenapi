@@ -79,12 +79,18 @@ public class CpuSocket implements Resource
 
     /**
      * 
-     * @param vendorName The vendor name.
-     * @param cpuSocketModel The CPU model.
-     * @param frequencyInMhz The maximum frequency in MHz.
-     * @param cacheSizeInBytes The cache size in bytes.
-     * @param socketCores The cores of this CPU.
-     * @param frequencies This CPU frequencies.
+     * @param vendorName
+     *            The vendor name.
+     * @param cpuSocketModel
+     *            The CPU model.
+     * @param frequencyInMhz
+     *            The maximum frequency in MHz.
+     * @param cacheSizeInBytes
+     *            The cache size in bytes.
+     * @param socketCores
+     *            The cores of this CPU.
+     * @param frequencies
+     *            This CPU frequencies.
      */
     public CpuSocket(String vendorName, String cpuSocketModel, long frequencyInMhz, long cacheSizeInBytes, Cpu[] socketCores,
             Frequency... frequencies)
@@ -232,8 +238,8 @@ public class CpuSocket implements Resource
     {
         synchronized (this)
         {
-            return (this.state() == null || this.state().frequency() == null) ? (this.availableFrequencies()[this.availableFrequencies().length - 1])
-                    : this.state().frequency();
+            Frequency lastAvailableFrequency = this.availableFrequencies()[this.availableFrequencies().length - 1];
+            return this.state() == null || this.state().frequency() == null ? lastAvailableFrequency : this.state().frequency();
         }
     }
 

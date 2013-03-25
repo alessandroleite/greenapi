@@ -33,76 +33,87 @@ import greenapi.core.model.resources.net.NetworkInterfaces;
 import greenapi.core.model.sensors.Sensor;
 import greenapi.core.model.software.os.OperatingSystem;
 
-public class MachineBuilderImpl implements MachineBuilder {
+public class MachineBuilderImpl implements MachineBuilder
+{
 
-	private String machineId;
-	private String name;
-	private CpuSocket[] cpus;
-	private OperatingSystem os;
-	private Memory[] memories;
-	private Sensor<?, ?>[] sensors;
-	private NetworkInterfaces networkInterfaces;
-	private Storages storages = new Storages();
+    private String machineId;
+    private String name;
+    private CpuSocket[] cpus;
+    private OperatingSystem os;
+    private Memory[] memories;
+    private Sensor<?, ?>[] sensors;
+    private NetworkInterfaces networkInterfaces;
+    private Storages storages = new Storages();
 
-	@Override
-	public Machine build() throws ResourceException {
-		Machine machine = new Machine(machineId, name, memories, storages,
-				networkInterfaces, cpus, os);
-		
-		return machine;
-	}
+    @Override
+    public Machine build() throws ResourceException
+    {
+        Machine machine = new Machine(machineId, name, memories, storages, networkInterfaces, cpus, os);
 
-	@Override
-	public MachineBuilder withId(String id) {
-		this.machineId = id;
-		return this;
-	}
+        return machine;
+    }
 
-	@Override
-	public MachineBuilder withName(String name) {
-		this.name = name;
-		return this;
-	}
+    @Override
+    public MachineBuilder withId(String id)
+    {
+        this.machineId = id;
+        return this;
+    }
 
-	@Override
-	public MachineBuilder withCpus(CpuSocket... cpuSockets) {
-		this.cpus = cpuSockets;
-		return this;
-	}
+    @Override
+    public MachineBuilder withName(String name)
+    {
+        this.name = name;
+        return this;
+    }
 
-	@Override
-	public MachineBuilder withMemory(Memory... memories) {
-		this.memories = memories;
-		return this;
-	}
+    @Override
+    public MachineBuilder withCpus(CpuSocket... cpuSockets)
+    {
+        this.cpus = cpuSockets;
+        return this;
+    }
 
-	@Override
-	public MachineBuilder withStorages(Storage... storages) {
-		
-		if (storages != null){
-			for(Storage storage: storages) {
-				this.storages.add(storage);
-			}
-		}
-		
-		return this;
-	}
+    @Override
+    public MachineBuilder withMemory(Memory... memories)
+    {
+        this.memories = memories;
+        return this;
+    }
 
-	@Override
-	public MachineBuilder withOs(OperatingSystem os) {
-		this.os = os;
-		return this;
-	}
-	
-	@Override
-	public MachineBuilder withNetInterfaces(NetworkInterfaces  networkInterfaces) {
-		this.networkInterfaces = networkInterfaces;
-		return this;
-	}
+    @Override
+    public MachineBuilder withStorages(Storage... storages)
+    {
 
-	@Override
-	public MachineBuilder withSensors(Sensor<?, ?>... sensors) {
-		this.sensors = sensors;
-		return this;
-	}
+        if (storages != null)
+        {
+            for (Storage storage : storages)
+            {
+                this.storages.add(storage);
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public MachineBuilder withOs(OperatingSystem os)
+    {
+        this.os = os;
+        return this;
+    }
+
+    @Override
+    public MachineBuilder withNetInterfaces(NetworkInterfaces networkInterfaces)
+    {
+        this.networkInterfaces = networkInterfaces;
+        return this;
+    }
+
+    @Override
+    public MachineBuilder withSensors(Sensor<?, ?>... sensors)
+    {
+        this.sensors = sensors;
+        return this;
+    }
 }

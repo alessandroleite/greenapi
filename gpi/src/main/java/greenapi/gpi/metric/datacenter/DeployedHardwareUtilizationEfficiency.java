@@ -22,10 +22,11 @@
  */
 package greenapi.gpi.metric.datacenter;
 
+import java.math.BigDecimal;
+
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.Metric;
 
-import java.math.BigDecimal;
 
 /**
  * 

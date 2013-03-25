@@ -19,6 +19,13 @@
 			<artifactId>core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>de.congrace</groupId>
+			<artifactId>exp4j</artifactId>
+			<version>0.3.10</version>
+		</dependency>
+
 	</dependencies>
 
 	<properties>
