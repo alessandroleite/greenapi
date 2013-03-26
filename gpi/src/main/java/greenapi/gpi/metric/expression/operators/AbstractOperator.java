@@ -1,11 +1,12 @@
 package greenapi.gpi.metric.expression.operators;
 
 import greenapi.core.common.base.Strings;
-import greenapi.gpi.metric.expression.Operator;
+import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.operators.evaluators.OperatorEvaluator;
 
-public abstract class AbstractOperator implements Operator
+public abstract class AbstractOperator<R> implements Operator<R>
 {
-
     /**
      * The symbol of the operator.
      */
@@ -28,6 +29,12 @@ public abstract class AbstractOperator implements Operator
     private final int length;
 
     /**
+     * The evaluator of this {@link Operator}.
+     */
+    @SuppressWarnings("rawtypes")
+    private OperatorEvaluator evaluator;
+
+    /**
      * 
      * @param operatorSymbol
      *            The symbol of the operator.
@@ -35,13 +42,16 @@ public abstract class AbstractOperator implements Operator
      *            The precedence of the operator.
      * @param unaryOperator
      *            Flag that indicates if the operator is a unary operator.
+     * @param operationEvaluator
+     *            The evaluator of this {@link Operator}.
      */
-    public AbstractOperator(String operatorSymbol, int operatorPrecedence, boolean unaryOperator)
+    public AbstractOperator(String operatorSymbol, int operatorPrecedence, boolean unaryOperator, OperatorEvaluator<R, ?> operationEvaluator)
     {
         this.symbol = Strings.checkArgumentIsNotNullOrEmpty(operatorSymbol).trim();
         this.precedence = operatorPrecedence;
         this.unary = unaryOperator;
         this.length = this.symbol.length();
+        this.evaluator = operationEvaluator;
     }
 
     /**
@@ -51,24 +61,57 @@ public abstract class AbstractOperator implements Operator
      *            The symbol of the operator.
      * @param operatorPrecedence
      *            The precedence of the operator.
+     * @param operationEvaluator
+     *            The evaluator of this {@link Operator}.
      */
-    public AbstractOperator(String operatorSymbol, int operatorPrecedence)
+    public AbstractOperator(String operatorSymbol, int operatorPrecedence, OperatorEvaluator<R, ?> operationEvaluator)
     {
-        this(operatorSymbol, operatorPrecedence, false);
+        this(operatorSymbol, operatorPrecedence, false, operationEvaluator);
     }
 
+    @Override
+    public <T> Value<R> evaluate(Value<T> operand)
+    {
+        if (!this.isUnary())
+        {
+            throw new EvaluationException(String.format("The operator %s requires the left and right operands!", this.symbol()));
+        }
+        return this.evaluate(operand, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> Value<R> evaluate(Value<T> leftOperand, Value<T> rightOperand)
+    {
+        if (leftOperand == null && rightOperand == null)
+        {
+            throw new EvaluationException("The left and right operands are null!");
+        }
+
+        return this.evaluator.eval(leftOperand.getValue(), rightOperand.getValue(), this);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String symbol()
     {
         return this.symbol;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int precedence()
     {
         return this.precedence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isUnary()
     {
@@ -85,6 +128,9 @@ public abstract class AbstractOperator implements Operator
         return this.length;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {
@@ -94,6 +140,9 @@ public abstract class AbstractOperator implements Operator
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj)
     {
@@ -109,7 +158,7 @@ public abstract class AbstractOperator implements Operator
         {
             return false;
         }
-        AbstractOperator other = (AbstractOperator) obj;
+        AbstractOperator<?> other = (AbstractOperator<?>) obj;
         if (symbol == null)
         {
             if (other.symbol != null)
@@ -124,6 +173,9 @@ public abstract class AbstractOperator implements Operator
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {

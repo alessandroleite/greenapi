@@ -24,14 +24,21 @@ package greenapi.core.model.software.os;
 
 import greenapi.core.common.base.ClassUtils;
 
-public abstract class OperatingSystemFactory {
+public abstract class OperatingSystemFactory
+{
 
-	public static OperatingSystem getSystemOS() {
-		String name = System.getProperty("os.name");
-		String pkg = OperatingSystem.class.getPackage().getName(); 
-		
-		return (OperatingSystem) ClassUtils.				
-				newInstanceForName(String.format(
-				"%s.%s.%sOperatingSystem", pkg, name.toLowerCase(), name), name);
-	}
+    /**
+     * Returns an instance of {@link OperatingSystem} considering the active session. The instance is created basing in the system O.S name. In this
+     * case, for every operating system must have a package named greenapi.core.model.software.os.&lt;os name&gt;.&lt;Os
+     * name&gt;OperatingSystem. Example greenapi.core.model.software.os.linux.LinuxOperatingSystem.
+     * 
+     * @return Returns an instance of {@link OperatingSystem} considering the active session.
+     */
+    public static OperatingSystem getSystemOS()
+    {
+        String name = System.getProperty("os.name");
+        String pkg = OperatingSystem.class.getPackage().getName();
+
+        return (OperatingSystem) ClassUtils.newInstanceForName(String.format("%s.%s.%sOperatingSystem", pkg, name.toLowerCase(), name), name);
+    }
 }

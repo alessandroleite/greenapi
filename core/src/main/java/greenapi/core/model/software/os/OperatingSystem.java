@@ -22,6 +22,9 @@
  */
 package greenapi.core.model.software.os;
 
+import java.io.Serializable;
+import java.util.Map;
+
 import static java.util.Objects.requireNonNull;
 
 import greenapi.core.model.data.Frequency;
@@ -34,59 +37,101 @@ import greenapi.core.model.software.os.commands.Command;
 import greenapi.core.model.software.os.commands.CpuScalingAvailableFrequencies;
 import greenapi.core.model.software.os.commands.Who;
 
-import java.io.Serializable;
-import java.util.Map;
+public abstract class OperatingSystem implements Serializable, Comparable<OperatingSystem>
+{
 
+    /**
+     * Serial code version <code>serialVersionUID</code>.
+     */
+    private static final long serialVersionUID = -63543969636463188L;
 
-public abstract class OperatingSystem implements Serializable,
-		Comparable<OperatingSystem> {
+    /**
+     * OS's name.
+     */
+    private final String name;
 
-	/**
-	 * Serial code version <code>serialVersionUID</code> 
-	 */
-	private static final long serialVersionUID = -63543969636463188L;
-	
-	private final String name;
+    /**
+     * Create an instance of this class.
+     * 
+     * @param osName
+     *            The OS's name.
+     */
+    public OperatingSystem(String osName)
+    {
+        this.name = requireNonNull(osName);
+    }
 
-	public OperatingSystem(String name) {
-		this.name = requireNonNull(name);
-	}
+    /**
+     * Returns O.S's name.
+     * 
+     * @return The O.S's name.
+     */
+    public String name()
+    {
+        return name;
+    }
 
-	public String name() {
-		return name;
-	}
+    /**
+     * Returns the command to get the I/O states of a machine. This method does not execute the command.
+     * 
+     * @return the command to get the I/O states of a machine.
+     */
+    public abstract Command<IOStats> iostats();
 
-	/**
-	 * Returns the command to get the I/O states of a machine. This method does
-	 * not execute the command.
-	 * 
-	 * @return the command to get the I/O states of a machine.
-	 */
-	public abstract Command<IOStats> iostats();
+    /**
+     * Returns the command to get the CPU frequencies. This method does not execute the command.
+     * 
+     * @return Returns the command to get the CPU frequencies.
+     */
+    public abstract CpuScalingAvailableFrequencies cpuAvailableFrequencies();
 
-	/**
-	 * Returns the command to get the CPU frequencies. This method does not
-	 * execute the command.
-	 * 
-	 * @return Returns the command to get the CPU frequencies.
-	 */
-	public abstract CpuScalingAvailableFrequencies cpuAvailableFrequencies();
-	
-	public abstract Frequency currentCpuFrequency();
-	
-	public abstract Map<String, Temperature> cpuTemperature();
-	
-	public abstract NetworkInterface networkInterfaceDescription(String id);
-	
-	public abstract NetworkInterfaces networkInterfaces();
-	
-	public abstract Processes processes();
-	
-	public abstract Who who();
+    /**
+     * Returns the actually CPU frequency.
+     * 
+     * @return The actually CPU frequency.
+     */
+    public abstract Frequency currentCpuFrequency();
 
-	
-	@Override
-	public int compareTo(OperatingSystem other) {
-		return this.name.compareTo(other.name());
-	}
+    /**
+     * Returns the CPUs' temperature.
+     * 
+     * @return A {@link Map} with the temperature of each CPU. The key is id CPU's id.
+     */
+    public abstract Map<String, Temperature> cpuTemperature();
+
+    /**
+     * Returns the description of a given network interface.
+     * 
+     * @param id
+     *            The id of the network interface.
+     * @return The description of a given network interface.
+     */
+    public abstract NetworkInterface networkInterfaceDescription(String id);
+
+    /**
+     * Returns the available network interfaces.
+     * 
+     * @return The available network interfaces.
+     */
+    public abstract NetworkInterfaces networkInterfaces();
+
+    /**
+     * Returns the processes of this O.S.
+     * 
+     * @return The processes of this O.S.
+     */
+    public abstract Processes processes();
+
+    /**
+     * Returns the name of the active user.
+     * 
+     * @return the name of the active user.
+     */
+    public abstract Who who();
+
+    @Override
+    public int compareTo(OperatingSystem other)
+    {
+        return this.name.compareTo(other.name());
+    }
 }

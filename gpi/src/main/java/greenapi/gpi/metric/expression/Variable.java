@@ -14,6 +14,11 @@ public class Variable<T>
      */
     private Value<T> value;
 
+    /***
+     * The type of the variable.
+     */
+    private Class<T> type;
+
     /**
      * Create a new variable.
      * 
@@ -39,10 +44,28 @@ public class Variable<T>
      * @param varValue
      *            This variable value.
      */
+    @SuppressWarnings("unchecked")
     public Variable(String varName, Value<T> varValue)
+    {
+        this(varName, varValue, varValue == null || varValue.getValue() == null ? null : (Class<T>) varValue.getValue().getClass());
+    }
+
+    /**
+     * Create a new variable with a name and a {@link Value}.
+     * 
+     * @param varName
+     *            This variable name. Might not be <code>null</code>.
+     * @param varValue
+     *            This variable value.
+     * @param varType
+     *            The type of this variable. It's the same of its {@link Value}.
+     */
+    public Variable(String varName, Value<T> varValue, Class<T> varType)
     {
         this(varName);
         this.value = varValue;
+        this.type = varType;
+
     }
 
     /**
@@ -74,6 +97,32 @@ public class Variable<T>
     public String name()
     {
         return name;
+    }
+
+    /**
+     * Returns the type of the variable.
+     * 
+     * @return Returns the type of the variable.
+     */
+    @SuppressWarnings("unchecked")
+    public Class<T> type()
+    {
+        if (value != null && value.getValue() != null)
+        {
+            return (Class<T>) value.getValue().getClass();
+        }
+        return type;
+    }
+
+    /**
+     * Define the type of this variable. The variable's type must be the same of its {@link Value}.
+     * 
+     * @param varType
+     *            The type of the variable.
+     */
+    public void setType(Class<T> varType)
+    {
+        this.type = varType;
     }
 
     @Override
