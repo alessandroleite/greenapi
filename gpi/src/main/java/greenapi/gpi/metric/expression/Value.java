@@ -20,11 +20,23 @@ public final class Value<T>
 
     /**
      * Return the value.
+     * 
      * @return The value
      */
     public T getValue()
     {
         return value;
+    }
+
+    /**
+     * Returns the value's type.
+     * 
+     * @return The value's type.
+     */
+    @SuppressWarnings("unchecked")
+    public Class<T> getValueType()
+    {
+        return (Class<T>) getValue().getClass();
     }
 
     @Override

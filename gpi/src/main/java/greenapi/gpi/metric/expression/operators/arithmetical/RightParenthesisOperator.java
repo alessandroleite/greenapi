@@ -3,14 +3,15 @@ package greenapi.gpi.metric.expression.operators.arithmetical;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.operators.AbstractOperator;
 
-public class OpenParentheseOperator extends AbstractOperator<String>
+public class RightParenthesisOperator extends AbstractOperator<String>
 {
+
     /**
-     * Creates an {@link OpenParentheseOperator}.
+     * Creates a {@link RightParenthesisOperator}.
      */
-    public OpenParentheseOperator()
+    public RightParenthesisOperator()
     {
-        super("(", 0, null);
+        super(")", 0, null);
     }
 
     @Override

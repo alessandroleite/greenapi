@@ -22,7 +22,36 @@
  */
 package greenapi.gpi.metric;
 
-public interface Expression <T>
+import java.util.List;
+
+import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.Variable;
+import greenapi.gpi.metric.expression.evaluator.Evaluator;
+
+public interface Expression<T>
 {
+
+    /**
+     * Returns the text that represents an expression. For instance, x * 2 + z % 4.
+     * 
+     * @return The text that represents an expression. For instance, x * 2 + z % 4.
+     */
+    String expression();
+
+    /**
+     * Returns a not <code>null</code> and read-only {@link List} with the variables found in the expression.
+     * 
+     * @return A not <code>null</code> and read-only {@link List} with the variables found in the expression.
+     */
+    List<Variable<?>> variables();
+
+    /**
+     * Evaluate this expression and returns its value.
+     * 
+     * @param evaluator
+     *            The {@link Evaluator} to be used in the evaluation process.
+     * @return The value after evaluate the {@link Expression}.
+     */
+    Value<T> evaluate(Evaluator<Expression<T>, Value<T>> evaluator);
 
 }
