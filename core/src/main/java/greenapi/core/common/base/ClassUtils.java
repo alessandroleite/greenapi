@@ -70,18 +70,43 @@ public final class ClassUtils
      *            The name of the class to be instantiate.
      * @param args
      *            Arguments to use when invoking this constructor
+     * @param <T>
+     *            The type of the given class.
+     * @return An instance of the given class. Can be <code>null</code> if the class wasn't found.
+     */
+    @SuppressWarnings({"unchecked" })
+    public static <T> T newInstanceForName(String fullClassName, Object... args)
+    {
+        try
+        {
+            return (T) newInstanceForName(Class.forName(fullClassName), args);
+        }
+        catch (ClassNotFoundException exception)
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Create a instance of a given class.
+     * 
+     * @param clazz
+     *            The class to be instantiate.
+     * @param args
+     *            Arguments to use when invoking this constructor
+     * @param <T>
+     *            The type of the given class.
      * @return An instance of the given class.
      */
-    public static Object newInstanceForName(String fullClassName, Object... args)
+    public static <T> T newInstanceForName(Class<T> clazz, Object... args)
     {
-
         if (args == null || args.length == 0)
         {
-            return new Mirror().on(fullClassName).invoke().constructor().withoutArgs();
+            return new Mirror().on(clazz).invoke().constructor().withoutArgs();
         }
         else
         {
-            return new Mirror().on(fullClassName).invoke().constructor().withArgs(args);
+            return new Mirror().on(clazz).invoke().constructor().withArgs(args);
         }
     }
 }

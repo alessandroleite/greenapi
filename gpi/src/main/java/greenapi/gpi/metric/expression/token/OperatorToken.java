@@ -22,6 +22,7 @@
  */
 package greenapi.gpi.metric.expression.token;
 
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
@@ -29,6 +30,9 @@ import java.util.Stack;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 import greenapi.gpi.metric.expression.operators.Operator;
+import greenapi.gpi.metric.expression.operators.Operators;
+
+
 
 public final class OperatorToken<T> extends CalculationToken<T>
 {
@@ -50,11 +54,22 @@ public final class OperatorToken<T> extends CalculationToken<T>
         this.operator = op;
     }
 
+    /**
+     * Create a new {@link OperatorToken} of a given operator's symbol.
+     * 
+     * @param symbol
+     *            The operator's symbol.
+     */
+    public OperatorToken(char symbol)
+    {
+        this(Operators.<Value<T>> getOperatorBySymbol(String.valueOf(symbol)));
+    }
+
     @Override
     public void translateForPrefixNotation(Stack<Token> operators, StringBuilder output)
     {
     }
-    
+
     @Override
     public Value<T> evaluate(Stack<Double> stack, Map<String, Variable<?>> variableValues)
     {

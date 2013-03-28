@@ -22,9 +22,12 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
+import java.math.BigInteger;
+
+import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.function.Function;
 
-public interface NumberOfNonIdleServers extends Function
+public interface NumberOfNonIdleServers extends Function<Value<BigInteger>>
 {
     
     

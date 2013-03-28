@@ -53,6 +53,19 @@ public abstract class Token
         return value;
     }
 
+    /**
+     * Returns the name of the {@link Token}. The default is the upper of the class name.
+     * 
+     * @return The name of the {@link Token}. The default is the upper of the class name.
+     */
+    public String getName()
+    {
+        return this.getClass().getName().replaceAll(this.getClass().getPackage().getName(), "").replaceAll(".", "").toUpperCase();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString()
     {
