@@ -1,8 +1,9 @@
 grammar gpi;
 
-options
+options 
 {
-    language=Java;
+    output=AST;
+    ASTLabelType=CommonTree;
 }
 
 ID  :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*
@@ -103,13 +104,18 @@ expression
 function
     :    IDENT '(' ( logicalExpression (',' logicalExpression)* )? ')'
     ;
-    
+
+procedure 
+   :    IDENT '('')';
+   
 IDENT
     :    ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*
     ;
     
 parameter
     :    '[' (IDENT|INT) ']';
+
+args 	: (IDENT | value);    
 
 
 OR       :    '||' | 'or';

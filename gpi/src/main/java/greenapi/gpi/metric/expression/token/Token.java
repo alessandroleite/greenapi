@@ -20,7 +20,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression;
+package greenapi.gpi.metric.expression.token;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -48,9 +48,15 @@ public abstract class Token
      * 
      * @return A {@link String} that represents this {@link Token}.
      */
-    protected String getValue()
+    public String getValue()
     {
         return value;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.getValue();
     }
 
     /**

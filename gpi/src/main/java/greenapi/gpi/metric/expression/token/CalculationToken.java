@@ -20,10 +20,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression;
+package greenapi.gpi.metric.expression.token;
 
 import java.util.Map;
 import java.util.Stack;
+
+import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.Variable;
+
 
 public abstract class CalculationToken<T> extends Token
 {
