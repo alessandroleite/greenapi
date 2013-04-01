@@ -54,7 +54,7 @@ public abstract class AbstractLexer extends Lexer
      */
     protected void WS()
     {
-        while (current() == ' ' || current() == '\t' || current() == '\n' || current() == '\r')
+        while (isWhitespace(current()))
         {
             advance();
         }

@@ -36,8 +36,6 @@ import greenapi.gpi.metric.expression.token.OperatorToken;
 import greenapi.gpi.metric.expression.token.RightParenthesisToken;
 import greenapi.gpi.metric.expression.token.Token;
 
-
-
 public class FunctionLexer extends AbstractLexer
 {
 
