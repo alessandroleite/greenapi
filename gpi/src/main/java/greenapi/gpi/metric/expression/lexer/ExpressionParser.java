@@ -1,16 +1,9 @@
 package greenapi.gpi.metric.expression.lexer;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
-
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.ATOM;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EOT;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EQUALS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.FUNCTION_CALL;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.IDENT;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.LPARENTHESIS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.OP;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.RPARENTHESIS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.UNARY;
 import greenapi.gpi.metric.expression.parser.MismatchedTokenException;
 import greenapi.gpi.metric.expression.parser.NoViableAltException;
 import greenapi.gpi.metric.expression.parser.Parser;
@@ -25,12 +18,15 @@ import greenapi.gpi.metric.expression.token.Token;
 import greenapi.gpi.metric.expression.token.Unary;
 import greenapi.gpi.metric.expression.token.Variable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
-
-
-
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.ATOM;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EOT;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EQUALS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.FUNCTION_CALL;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.IDENT;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.LPARENTHESIS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.OP;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.RPARENTHESIS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.UNARY;
 
 public class ExpressionParser<T> extends Parser
 {
@@ -39,21 +35,92 @@ public class ExpressionParser<T> extends Parser
 
     static enum ExpressionTokens
     {
-        EOT(Lexer.EOF_TYPE), UNARY(1), OP(2), LPARENTHESIS(3), RPARENTHESIS(4), ATOM(5), IDENT(6), EQUALS(7), FUNCTION_CALL(8), COMMA(9);
+        /**
+         * Represents the end of a token.
+         */
+        EOT(Lexer.EOF_TYPE),
 
+        /**
+         * Represents an unary token.
+         */
+        UNARY(1),
+
+        /**
+         * Represents an operator token.
+         */
+        OP(2),
+
+        /**
+         * Represents a left parenthesis.
+         */
+        LPARENTHESIS(3),
+
+        /**
+         * Represents a right parenthesis.
+         */
+        RPARENTHESIS(4),
+
+        /**
+         * Represents a number. It can be INT or FLOAT.
+         */
+        ATOM(5),
+
+        /**
+         * Represents a identifier. It can be a variable or a function name.
+         */
+        IDENT(6),
+
+        /**
+         * Represents an assign.
+         */
+        EQUALS(7),
+
+        /**
+         * Represents a function call.
+         */
+        FUNCTION_CALL(8),
+
+        /**
+         * Represents an argument separator.
+         */
+        COMMA(9);
+
+        /**
+         * The id of the enum.
+         */
         private final int id;
 
-        private ExpressionTokens(int id)
+        /**
+         * Creates a instance of this enum with the given value.
+         * 
+         * @param enumId
+         *            The id of this enum.
+         */
+        private ExpressionTokens(int enumId)
         {
-            this.id = id;
+            this.id = enumId;
         }
 
+        /**
+         * Returns the enum's id.
+         * 
+         * @return The enum's id.
+         */
         public int getId()
         {
             return id;
         }
 
-        public ExpressionTokens get(int id)
+        /**
+         * Factory method to get an enum's instance that has a given id.
+         * 
+         * @param enumId
+         *            The id of the enum to be returned.
+         * @return The enum that has the given id.
+         * @throws IllegalArgumentException
+         *             If the given value is unknown.
+         */
+        public ExpressionTokens get(int enumId)
         {
             for (ExpressionTokens type : ExpressionTokens.values())
             {
@@ -62,17 +129,23 @@ public class ExpressionParser<T> extends Parser
                     return type;
                 }
             }
-            return null;
+            throw new IllegalArgumentException();
         }
     }
 
+    /**
+     * Creates an instance of {@link ExpressionParser} with the given {@link Lexer}.
+     * 
+     * @param input
+     *            The {@link Lexer}'s instance to get the tokens.
+     */
     public ExpressionParser(Lexer input)
     {
         super(input);
     }
 
     /**
-     * stat: expression EOF | assign EOF
+     * stat: expression EOF | assign EOF.
      * 
      * @return A {@link Expr} instance or an {@link Stat} instance.
      * @throws RecognitionException
@@ -101,6 +174,11 @@ public class ExpressionParser<T> extends Parser
         return node;
     }
 
+    /**
+     * Speculates an expression input.
+     * 
+     * @return <code>true</code> if the input is an expression.
+     */
     private boolean speculate_stat_alt1()
     {
         boolean success = true;
@@ -119,6 +197,11 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
+    /**
+     * Speculates an assign input.
+     * 
+     * @return <code>true</code> if the input is an assign.
+     */
     private boolean speculate_stat_alt2()
     {
         boolean success = true;
@@ -138,6 +221,11 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
+    /**
+     * Speculates a function call.
+     * 
+     * @return <code>true</code> if it's a function call.
+     */
     private boolean speculate_function_call()
     {
         boolean success = true;
@@ -156,7 +244,12 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
-    private boolean speculate_unary() throws RecognitionException
+    /**
+     * Speculates an unary operator.
+     * 
+     * @return <code>true</code> if it's an unary operator.
+     */
+    private boolean speculate_unary()
     {
         boolean success = true;
         mark();
@@ -203,6 +296,7 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
+    @SuppressWarnings("unchecked")
     private void expression() throws RecognitionException
     {
         boolean failed = false;
@@ -236,11 +330,16 @@ public class ExpressionParser<T> extends Parser
             // succeed or fail, must record result if backtracking.
             if (isSpeculating())
             {
-                    memoize(startTokenIndex, failed, operands.peek());
+                memoize(startTokenIndex, failed, operands.peek());
             }
         }
     }
 
+    /**
+     * 
+     * @param endWithToken
+     * @throws RecognitionException
+     */
     private void expression(int endWithToken) throws RecognitionException
     {
         while (LA(1) != endWithToken)
@@ -303,6 +402,11 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
+    /**
+     * 
+     * @return
+     * @throws RecognitionException
+     */
     private Assign<T> assign() throws RecognitionException
     {
         Variable<T> var = new Variable<>(LT(1));
@@ -313,6 +417,11 @@ public class ExpressionParser<T> extends Parser
         return new Assign<T>(var, token, operands.pop());
     }
 
+    /**
+     * 
+     * @return
+     * @throws RecognitionException
+     */
     private Unary<T> unary() throws RecognitionException
     {
         Token token = LT(1);
@@ -337,6 +446,11 @@ public class ExpressionParser<T> extends Parser
 
     }
 
+    /**
+     * 
+     * @return
+     * @throws MismatchedTokenException
+     */
     private Expr<T> ident() throws MismatchedTokenException
     {
         Token token = LT(1);
@@ -344,6 +458,11 @@ public class ExpressionParser<T> extends Parser
         return new Variable<T>(token);
     }
 
+    /**
+     * 
+     * @return
+     * @throws MismatchedTokenException
+     */
     private greenapi.gpi.metric.expression.token.Number<T> atom() throws MismatchedTokenException
     {
         greenapi.gpi.metric.expression.token.Number<T> number = new greenapi.gpi.metric.expression.token.Number<>(LT(1));
@@ -351,6 +470,11 @@ public class ExpressionParser<T> extends Parser
         return number;
     }
 
+    /**
+     * 
+     * @return
+     * @throws RecognitionException
+     */
     private BinaryOperator<T> operator() throws RecognitionException
     {
         final boolean unaryPlus = LA(1) == UNARY.getId() && operands.isEmpty();
@@ -389,6 +513,11 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
+    /**
+     * 
+     * @throws RecognitionException
+     */
+    @SuppressWarnings("unchecked")
     private void parenthesis() throws RecognitionException
     {
         boolean failed = false;
@@ -427,6 +556,10 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
+    /**
+     * 
+     * @throws RecognitionException
+     */
     private void term() throws RecognitionException
     {
         if (isAtomTerm())
@@ -456,11 +589,20 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     private boolean isAtomTerm()
     {
         return LA(1) == ATOM.getId() && (LA(2) != LPARENTHESIS.getId() && LA(2) != OP.getId());
     }
 
+    /**
+     * 
+     * @return
+     * @throws RecognitionException
+     */
     private FunctionToken<T> function_call() throws RecognitionException
     {
 
@@ -476,7 +618,12 @@ public class ExpressionParser<T> extends Parser
 
     }
 
-    // (',' args)*
+    /**
+     * (',' args)*.
+     * 
+     * @return
+     * @throws RecognitionException
+     */
     @SuppressWarnings("unchecked")
     private List<Expr<T>> args() throws RecognitionException
     {
@@ -495,7 +642,7 @@ public class ExpressionParser<T> extends Parser
 
         int n = this.operands.size() - size;
 
-        Expr<T> args[] = new Expr[n];
+        Expr<T> [] args = new Expr[n];
 
         for (int i = n; i > 0; i--)
         {
@@ -506,6 +653,10 @@ public class ExpressionParser<T> extends Parser
         return Arrays.asList(args);
     }
 
+    /**
+     * 
+     * @throws RecognitionException
+     */
     private void arg() throws RecognitionException
     {
         term();

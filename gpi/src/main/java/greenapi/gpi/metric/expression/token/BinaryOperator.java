@@ -30,4 +30,14 @@ public class BinaryOperator<T> extends Expr<T>
     {
         return new Value<T>(visitor.visit(this));
     }
+
+    /**
+     * Returns the symbol of the operator.
+     * 
+     * @return the symbol of the operator.
+     */
+    public String symbol()
+    {
+        return this.getToken().getText();
+    }
 }

@@ -1,6 +1,6 @@
 package greenapi.gpi.metric.expression.parser;
 
-public abstract class RecognitionException extends Exception
+public class RecognitionException extends Exception
 {
     /**
      * Serial code version <code>serialVersionUID</code>.
