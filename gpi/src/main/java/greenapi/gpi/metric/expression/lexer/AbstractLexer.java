@@ -1,26 +1,7 @@
-/**
- * Copyright (c) 2012 GreenI2R
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package greenapi.gpi.metric.expression.lexer;
+
+import greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens;
+import greenapi.gpi.metric.expression.token.Token;
 
 public abstract class AbstractLexer extends Lexer
 {
@@ -89,7 +70,29 @@ public abstract class AbstractLexer extends Lexer
      */
     protected boolean isNUMBER(char value)
     {
-        return value >= 48 && value <= 57 || value == '.';
+        return isINT(value) || value == '.';
+    }
+
+    /**
+     * Returns <code>true</code> if the current character is a value between 0 and 9 inclusive.
+     * 
+     * @return <code>true</code> if the current character is a value between 0 and 9 inclusive, otherwise <code>false</code>.
+     */
+    protected boolean isINT()
+    {
+        return isINT(current());
+    }
+
+    /**
+     * Returns <code>true</code> if the given character is a value between 0 and 9 inclusive.
+     * 
+     * @param value
+     *            The value to be verified if it's a {@link Integer} value.
+     * @return <code>true</code> if the given character is a value between 0 and 9 inclusive, otherwise <code>false</code>.
+     */
+    protected boolean isINT(char value)
+    {
+        return value >= 48 && value <= 57;
     }
 
     /**
@@ -115,14 +118,15 @@ public abstract class AbstractLexer extends Lexer
         int ni = index() + 1;
 
         if (ni >= this.length())
-
         {
             return false;
         }
 
-        // final char np = nextWithoutConsume();
+        char e = current();
+        char b = this.get(ni);
+
         // && (isNUMBER(last()) && (np == '-' || np == '+' || isNUMBER(np)));
-        return (current() == 'E' || current() == 'e') || (current() == '+' || current() == '-') || (current() >= 48 && current() <= 57);
+        return (e == 'E' || e == 'e') && (isUNARY(b) || isINT(b));
     }
 
     /**
@@ -160,8 +164,20 @@ public abstract class AbstractLexer extends Lexer
         }
     }
 
+    protected void INT()
+    {
+        if (isINT())
+        {
+            consume();
+        }
+        else
+        {
+            throw new Error("expecting INT; found " + current());
+        }
+    }
+
     /**
-     * Defines what a exponent is. EXPONENT : ('e'|'E') ('+'|'-')?('0'..'9')+.
+     * Defines what an exponent is. EXPONENT : ('e'|'E') (UNARY)? ('0'..'9')+.
      */
     protected void EXPONENT()
     {
@@ -173,5 +189,117 @@ public abstract class AbstractLexer extends Lexer
         {
             throw new Error("expecting EXPONENT; found " + current());
         }
+    }
+
+    /**
+     * Defines what an unary is. UNARY: '+'|'-'
+     */
+    protected void UNARY()
+    {
+        if (isUNARY())
+        {
+            consume();
+        }
+        else
+        {
+            throw new Error("expecting UNARY; found " + current());
+        }
+    }
+
+    /**
+     * Returns <code>true</code> if the current character is '+' or '-'.
+     * 
+     * @return <code>true</code> if the current character is '+' or '-'
+     */
+    protected boolean isUNARY()
+    {
+        return isUNARY(current());
+    }
+
+    /**
+     * Returns <code>true</code> if the given value is an unary (+|-) character.
+     * 
+     * @param value
+     *            The value to be verified.
+     * @return <code>true</code> if the given value is an unary (+|-) character.
+     */
+    protected boolean isUNARY(char value)
+    {
+        return value == '+' || value == '-';
+    }
+
+    /**
+     * Consumes a name token. A name is sequence of >=1 letter. <br/>
+     * name : LETTER+.
+     * 
+     * @return A Token with the name of the identifier.
+     */
+    protected Token name()
+    {
+        StringBuilder buf = new StringBuilder();
+        do
+        {
+            buf.append(current());
+            LETTER();
+        } while (isLETTER());
+
+        return new Token(ExpressionTokens.IDENT.getId(), buf.toString());
+    }
+
+    /**
+     * Consumes a number token. A number is a sequence of one or more digits, thousands separators, E or e and +-. Example: 5,559.25.
+     * 
+     * @return A {@link NumberToken} with the name of the identifier.
+     */
+    protected Token number()
+    {
+        StringBuilder buf = new StringBuilder();
+        do
+        {
+            buf.append(current());
+            NUMBER();
+        } while (isNUMBER());
+
+        if (isEXPONENT())
+        {
+            Token exponent = exponent();
+            buf.append(exponent.getText());
+        }
+
+        return new Token(ExpressionTokens.ATOM.getId(), buf.toString());
+    }
+
+    /**
+     * Consumes a exponent token. A exponent is a 'E' or 'e' followed by a {+,-}? and by numbers [0..9]*
+     * 
+     * @return A exponent token.
+     */
+    protected Token exponent()
+    {
+        StringBuilder buf = new StringBuilder();
+
+        do
+        {
+            buf.append(current());
+            if (isEXPONENT())
+            {
+                EXPONENT();
+            }
+            else if (isUNARY())
+            {
+                UNARY();
+            }
+            else if (isINT())
+            {
+                INT();
+            }
+            else
+            {
+                throw new Error("expecting EXPONENT|UNARY|INT; found " + current());
+            }
+
+        } while (isUNARY() || isINT());
+
+        return new Token(ExpressionTokens.ATOM.getId(), buf.toString());
     }
 }

@@ -1,84 +1,61 @@
-/**
- * Copyright (c) 2012 GreenI2R
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package greenapi.gpi.metric.expression.token;
 
-import java.util.Objects;
-import java.util.Stack;
-
-public abstract class Token
+public final class Token
 {
     /**
-     * The {@link Token} value.
+     * The type of this token.
      */
-    private final String value;
+    private final int type;
 
     /**
-     * Create a new {@link Token} with the given value.
-     * 
-     * @param tokenValue
-     *            The character that represents the {@link Token}. Might not be <code>null</code>.
+     * The text of the token. Might not be <code>null</code>.
      */
-    protected Token(String tokenValue)
+    private final String text;
+
+    /**
+     * 
+     * @param tokenType
+     *            The type of the token.
+     * @param tokenText
+     *            The text of the token. Might not be <code>null</code>.
+     */
+    public Token(int tokenType, String tokenText)
     {
-        this.value = Objects.requireNonNull(tokenValue);
+        this.type = tokenType;
+        this.text = tokenText;
     }
 
     /**
-     * Returns a {@link String} that represents this {@link Token}.
      * 
-     * @return A {@link String} that represents this {@link Token}.
+     * @param tokenType
+     *            The type of the token.
+     * @param c
+     *            The value of this token.
      */
-    public String getValue()
+    public Token(int tokenType, char c)
     {
-        return value;
+        this(tokenType, String.valueOf(c));
     }
 
     /**
-     * Returns the name of the {@link Token}. The default is the upper of the class name.
-     * 
-     * @return The name of the {@link Token}. The default is the upper of the class name.
+     * @return the type
      */
-    public String getName()
+    public int getType()
     {
-        return this.getClass().getName().replaceAll(this.getClass().getPackage().getName(), "").replaceAll(".", "").toUpperCase();
+        return type;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the text
      */
+    public String getText()
+    {
+        return text;
+    }
+
     @Override
     public String toString()
     {
-        return this.getValue();
+        return "type = " + getType() + " text = " + getText();
     }
-
-    /**
-     * 
-     * @param operators
-     *            The {@link Stack} with the operators.
-     * @param output
-     *            The output to write the infix notation value.
-     */
-    abstract void translateForPrefixNotation(Stack<Token> operators, StringBuilder output);
-
 }

@@ -40,5 +40,7 @@ public class InfixToPostfixTest
         assertEquals("3 4 5 * 6 / +", InfixToPostfix.convert("3+4*5/6"));
         assertEquals("300 23 + 43 21 - * 84 7 + /", InfixToPostfix.convert("(300+23)*(43-21)/(84+7)"));
         assertEquals("4 8 + 6 5 - * 3 2 - 2 2 + * /", InfixToPostfix.convert("(4+8)*(6-5)/((3-2)*(2+2))"));
+        
+        System.out.println(InfixToPostfix.convert("3 * (5 + (7 * 8 + 9))"));
     }
 }
