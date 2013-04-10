@@ -1,10 +1,8 @@
 package greenapi.gpi.metric.expression.lexer;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-
 
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.parser.AST;
@@ -23,7 +21,6 @@ import greenapi.gpi.metric.expression.token.Token;
 import greenapi.gpi.metric.expression.token.UnaryToken;
 import greenapi.gpi.metric.expression.token.VarToken;
 
-
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.ATOM;
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EOT;
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EQUALS;
@@ -33,7 +30,6 @@ import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTo
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.OP;
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.RPARENTHESIS;
 import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.UNARY;
-
 
 @SuppressWarnings("unchecked")
 public class ExpressionParser<T> extends Parser
@@ -337,7 +333,7 @@ public class ExpressionParser<T> extends Parser
         finally
         {
             // succeed or fail, must record result if backtracking.
-            if (isSpeculating())
+            if (isSpeculating() && !operands.isEmpty())
             {
                 memoize(startTokenIndex, failed, (AST) operands.peek());
             }
@@ -411,11 +407,6 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
-    /**
-     * 
-     * @return
-     * @throws RecognitionException
-     */
     private AssignToken<T> assign() throws RecognitionException
     {
         VarToken<T> var = new VarToken<>(LT(1));
@@ -423,6 +414,12 @@ public class ExpressionParser<T> extends Parser
         Token token = LT(1);
         match(EQUALS.getId());
         expression();
+
+        if (operands.isEmpty())
+        {
+            throw new RecognitionException("Invalid assignment expression!");
+        }
+
         return new AssignToken<T>(var, token, (ExpressionToken<T, Value<T>>) operands.pop());
     }
 
@@ -450,7 +447,7 @@ public class ExpressionParser<T> extends Parser
         {
             throw new RecognitionException("Expecting IDENT|ATOM; found " + LT(1));
         }
-        
+
         return new UnaryToken<T>(token, (ExpressionToken<T, Value<T>>) expr);
 
     }
@@ -557,7 +554,7 @@ public class ExpressionParser<T> extends Parser
         }
         finally
         {
-            if (isSpeculating())
+            if (isSpeculating() && !operands.isEmpty())
             {
                 memoize(startTokenIndex, failed, (AST) operands.pop());
             }
