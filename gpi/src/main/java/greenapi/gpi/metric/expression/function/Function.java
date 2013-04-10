@@ -23,8 +23,9 @@
 package greenapi.gpi.metric.expression.function;
 
 import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
+
+import java.util.List;
 
 /**
  * This class is used to create a function.
@@ -39,7 +40,7 @@ public interface Function<V>
     String name();
 
     /**
-     * Evaluate and returns the value of a given {@link Expression}.
+     * Evaluates and returns the value of a given {@link Expression}.
      * 
      * @param expression
      *            The expression of the function. In this case, an expression can have variable(s), constant(s) value(s), function(s) or a combination
@@ -48,7 +49,7 @@ public interface Function<V>
      *            The type of the value returned by the evaluate and execution of the given expression.
      * @return The value of the function after it had been executed.
      */
-    <T> Value<V> evaluate(Expression<T> expression);
+    <T> V evaluate(Expression<T> expression);
 
     /**
      * 
@@ -60,5 +61,23 @@ public interface Function<V>
      *            The type of the value returned by the evaluate and execution of the given expression.
      * @return Return the function's value after its execution.
      */
-    <T> Value<V> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<V>> evaluator);
+    <T> V evaluate(Expression<T> expression, Evaluator<Expression<T>, V> evaluator);
+
+    /**
+     * Returns the value of the function execution.
+     * 
+     * @param values
+     *            The function's arguments.
+     * @return The value of the function execution.
+     */
+    V evaluate(V[] arguments);
+
+    /**
+     * Returns the value of the function execution.
+     * 
+     * @param arguments
+     *            The function's arguments.
+     * @return The result of the function execution.
+     */
+    V evaluate(List<V> arguments);
 }

@@ -1,13 +1,12 @@
 package greenapi.gpi.metric.expression.token;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import greenapi.gpi.metric.expression.Value;
 
-public class FunctionToken<T> extends Expr<T>
+public class FunctionToken<T> extends ExpressionToken<T, Value<T>>
 {
 
     /**
@@ -18,7 +17,7 @@ public class FunctionToken<T> extends Expr<T>
     /**
      * The function's arguments.
      */
-    private final List<Expr<T>> args = new ArrayList<>();
+    private final List<ExpressionToken<T, Value<T>>> args = new ArrayList<>();
 
     /**
      * 
@@ -28,14 +27,14 @@ public class FunctionToken<T> extends Expr<T>
      *            The function's arguments.
      */
     @SuppressWarnings("unchecked")
-    public FunctionToken(Token token, Expr<T>... arguments)
+    public FunctionToken(Token token, ExpressionToken<T, Value<T>>... arguments)
     {
         super(token);
         this.name = token.getText();
 
         if (arguments != null)
         {
-            for (Expr<T> arg : arguments)
+            for (ExpressionToken<T, Value<T>> arg : arguments)
             {
                 this.args.add(arg);
             }
@@ -50,9 +49,9 @@ public class FunctionToken<T> extends Expr<T>
      *            The arguments of the given function.
      */
     @SuppressWarnings("unchecked")
-    public FunctionToken(Token token, List<Expr<T>> arguments)
+    public FunctionToken(Token token, List<ExpressionToken<T, Value<T>>> arguments)
     {
-        this(token, arguments.toArray(new Expr[arguments.size()]));
+        this(token, arguments.toArray(new ExpressionToken[arguments.size()]));
     }
 
     /**
@@ -70,7 +69,7 @@ public class FunctionToken<T> extends Expr<T>
      * 
      * @return A read-only list with the arguments.
      */
-    public List<Expr<T>> getArgs()
+    public List<ExpressionToken<T, Value<T>>> getArgs()
     {
         return Collections.unmodifiableList(args);
     }
@@ -81,14 +80,14 @@ public class FunctionToken<T> extends Expr<T>
      * @return An array with the arguments of this function.
      */
     @SuppressWarnings("unchecked")
-    public Expr<T>[] getArgsAsArray()
+    public ExpressionToken<T, Value<T>>[] getArgsAsArray()
     {
-        return args.toArray(new Expr[args.size()]);
+        return args.toArray(new ExpressionToken[args.size()]);
     }
 
     @Override
     public Value<T> visit(ExpressionVisitor<T> visitor)
     {
-        return new Value<T>(visitor.visit(this));
+        return visitor.visit(this);
     }
 }

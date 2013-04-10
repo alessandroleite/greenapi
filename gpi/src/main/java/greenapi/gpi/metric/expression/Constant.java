@@ -45,7 +45,7 @@ public final class Constant<T> extends Variable<T>
     }
 
     @Override
-    public void setValue(Value<T> newValue)
+    public void setValue(T newValue)
     {
         throw new UnsupportedOperationException();
     }

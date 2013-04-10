@@ -99,4 +99,10 @@ public final class Value<T>
         }
         return true;
     }
+
+    @Override
+    public String toString()
+    {
+        return getValue().toString();
+    }
 }

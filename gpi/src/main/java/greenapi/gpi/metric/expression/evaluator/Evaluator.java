@@ -22,7 +22,14 @@
  */
 package greenapi.gpi.metric.expression.evaluator;
 
-public interface Evaluator<T, R>
+import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.Variable;
+import greenapi.gpi.metric.expression.function.Function;
+import greenapi.gpi.metric.expression.operators.Operator;
+
+import java.util.Map;
+
+public interface Evaluator<T, V>
 {
 
     /**
@@ -32,5 +39,63 @@ public interface Evaluator<T, R>
      *            The type (function, expression, variable, etc.) to be evaluate.
      * @return The value after evaluate the given type.
      */
-    R eval(T type);
+    V eval(T type);
+
+    /**
+     * 
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    Map<String, Variable> variables();
+
+    /**
+     * Returns an {@link Operator}'s instance of a given symbol or <code>null</code> if it's unknown.
+     * 
+     * @param symbol
+     *            The symbol of the operator to be returned.
+     * @param <R>
+     *            The type of the function's return value.
+     * @return The {@link Operator} instance that has the given symbol or <code>null</code> if it's unknown.
+     */
+    <R> Operator<R> getOperatorBySymbol(String symbol);
+
+    /**
+     * Returns the {@link Function} that has the given name or <code>null</code> if it doesn't exist.
+     * 
+     * @param name
+     *            The name of the function to be returned.
+     * @return The {@link Function} that has the given name or <code>null</code> if it doesn't exist.
+     */
+    <R> Function<Value<R>> getFunctionByName(String name);
+
+    /**
+     * Returns the {@link Variable} instance that was registered with the given name or <code>null</code> if it's unknown.
+     * 
+     * @param varName
+     *            The name of the variable to be returned.
+     * @param <R>
+     *            The type of the variable's value.
+     * @return The {@link Variable} instance that was registered with the given name or <code>null</code> if it's unknown.
+     */
+    <R> Variable<Value<R>> getVariableByName(String varName);
+
+    /**
+     * Add a {@link Variable} to this evaluator. At this moment the variable can or cannot has a value.
+     * 
+     * @param var
+     *            The variable to be added.
+     * @return The previous instance of the variable.
+     */
+    <R> Variable<?> register(Variable<R> var);
+
+    /**
+     * Add a {@link Function} to this evaluator.
+     * 
+     * @param function
+     *            The function to be added.
+     * @param <R>
+     *            The type of the function's return value.
+     * @return The previous instance of the function.
+     */
+    <R> Function<Value<R>> register(Function<Value<R>> function);
 }

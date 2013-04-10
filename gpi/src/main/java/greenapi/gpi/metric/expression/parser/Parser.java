@@ -302,7 +302,7 @@ public abstract class Parser
      * @throws PreviousParseFailedException
      *             If we've tried to parsed the rule at the current position.
      */
-    public boolean alreadyParsedRule() throws PreviousParseFailedException
+    protected boolean alreadyParsedRule() throws PreviousParseFailedException
     {
 
         Memoization memoI = memoization();
@@ -356,7 +356,7 @@ public abstract class Parser
      * @param failed
      *            The result of the parser. <code>true</code> implies failure parser.
      */
-    public void memoize(int startTokenIndex, boolean failed)
+    protected void memoize(int startTokenIndex, boolean failed)
     {
         this.memoize(startTokenIndex, failed, null);
     }
@@ -370,7 +370,7 @@ public abstract class Parser
      * @param node
      *            The node found in the position.
      */
-    public void memoize(int startTokenIndex, boolean failed, AST node)
+    protected void memoize(int startTokenIndex, boolean failed, AST node)
     {
         // record token just after last in rule if success.
         int stopTokenIndex = failed ? FAILED : index();
@@ -382,7 +382,7 @@ public abstract class Parser
      * 
      * @return The tokens found during the parser.
      */
-    public Collection<Token> tokens()
+    protected Collection<Token> tokens()
     {
         return Collections.unmodifiableCollection(lookahead);
     }

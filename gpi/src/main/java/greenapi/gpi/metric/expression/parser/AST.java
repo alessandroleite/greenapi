@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import greenapi.gpi.metric.expression.token.Token;
 
-public class AST
+public abstract class AST
 {
 
     /**
@@ -13,6 +13,7 @@ public class AST
     private final Token token;
 
     /**
+     * Creates an {@link AST} instance.
      * 
      * @param root
      *            The token that if root of this tree. Might not be <code>null</code>.

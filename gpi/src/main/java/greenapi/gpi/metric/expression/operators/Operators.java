@@ -22,8 +22,9 @@
  */
 package greenapi.gpi.metric.expression.operators;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.common.base.Preconditions;
 
@@ -41,7 +42,7 @@ public final class Operators
     /**
      * The {@link Map} with the {@link Operator}s available in the system.
      */
-    private static final Map<String, Operator> OPERATORS = new HashMap<>();
+    private static final Map<String, Operator> OPERATORS = new ConcurrentHashMap<>();
 
     static
     {
@@ -61,10 +62,9 @@ public final class Operators
      */
     public static void registerOperators()
     {
-        for (Class<?> classes : new ClassFinder().findSubclasses(Operator.class))
+        for (Class<?> clazz : new ClassFinder().findSubclasses(Operator.class))
         {
-            Operator<?> operator = (Operator<?>) ClassUtils.newInstanceForName(classes);
-            OPERATORS.put(operator.symbol(), operator);
+            register((Operator<?>) ClassUtils.newInstanceForName(clazz));
         }
 
         if (OPERATORS.isEmpty())
@@ -84,7 +84,7 @@ public final class Operators
      * @param operator
      *            The {@link Operator} to be registered.
      */
-    public static <R> void registerOperators(Operator<R> operator)
+    public static <R> void register(Operator<R> operator)
     {
         OPERATORS.put(Strings.checkArgumentIsNotNullOrEmpty(operator.symbol()), operator);
 
@@ -103,5 +103,15 @@ public final class Operators
     public static <R> Operator<R> getOperatorBySymbol(String symbol)
     {
         return Preconditions.checkNotNull(OPERATORS.get(symbol), String.format("The operator %s does not exists!", symbol));
+    }
+
+    /**
+     * Returns the available operators.
+     * 
+     * @return A read-only {@link Map} with the available operators.
+     */
+    public static Map<String, Operator> getOperators()
+    {
+        return Collections.unmodifiableMap(OPERATORS);
     }
 }

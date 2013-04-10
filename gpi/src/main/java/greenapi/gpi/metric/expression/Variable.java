@@ -51,8 +51,7 @@ public class Variable<T>
     {
         this.name = Strings.checkArgumentIsNotNullOrEmpty(varName);
 
-        int firstChar = (int) name.charAt(0);
-        if ((firstChar < 65 || firstChar > 90) && (firstChar < 97 || firstChar > 122))
+        if (!isValidName(varName))
         {
             throw new IllegalArgumentException("Invalid variable name!");
         }
@@ -106,9 +105,9 @@ public class Variable<T>
      * @param newValue
      *            The value to assign to this variable.
      */
-    public void setValue(Value<T> newValue)
+    public void setValue(T newValue)
     {
-        this.value = newValue;
+        this.value = new Value<T>(newValue);
     }
 
     /**
@@ -184,5 +183,18 @@ public class Variable<T>
             return false;
         }
         return true;
+    }
+
+    /**
+     * Returns <code>true</code> if the variable's name starts with a character and it doesn't have space.
+     * 
+     * @param name
+     *            The name of the variable to be validated. Might not be <code>null</code> or empty.
+     * @return <code>true</code> if the variable's name starts with a character and it doesn't have space.
+     */
+    public static boolean isValidName(String name)
+    {
+        char firstChar = Strings.checkArgumentIsNotNullOrEmpty(name).trim().charAt(0);
+        return !((firstChar < 65 || firstChar > 90) && (firstChar < 97 || firstChar > 122));
     }
 }

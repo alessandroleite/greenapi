@@ -22,6 +22,7 @@
  */
 package greenapi.gpi.metric.expression.evaluator.impl;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,59 +31,79 @@ import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 import greenapi.gpi.metric.expression.function.Function;
+import greenapi.gpi.metric.expression.function.Functions;
+import greenapi.gpi.metric.expression.lexer.ExpressionLexer;
+import greenapi.gpi.metric.expression.lexer.ExpressionParser;
 import greenapi.gpi.metric.expression.operators.Operator;
+import greenapi.gpi.metric.expression.operators.Operators;
+import greenapi.gpi.metric.expression.parser.RecognitionException;
+import greenapi.gpi.metric.expression.token.MathNodeToken;
+import greenapi.gpi.metric.expression.token.TreeVisitor;
 
-
+@SuppressWarnings("rawtypes")
 public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>>
 {
     /**
-     * {@link Map} with all operators. The key is the operator's symbol.
+     * {@link Map} with the variables. The key is the variable's name.
      */
-    private final Map<String, Operator<?>> operators = new HashMap<>();
-
-    /**
-     * {@link Map} with the available functions. The key if the name of the {@link Function}.
-     */
-    private final Map<String, Function<?>> functions = new HashMap<>();
-
-    /**
-     * {@link Map} with the variables.
-     */
-    private Map<String, Variable<?>> variables = new HashMap<>();
-
+    
+    private Map<String, Variable> variables = new HashMap<>();
+    
     @Override
     public Value<T> eval(Expression<T> expression)
     {
         final String exp = expression.expression();
 
-        for (int i = 0; i < exp.length(); i++)
+        ExpressionParser<Value<T>> parser = new ExpressionParser<>(new ExpressionLexer(exp));
+        try
         {
-            if (isWhitespace(exp.charAt(i)))
-            {
-                continue;
-            }
-            
-//            Operator operator = getNextOperator(exp, exp.charAt(i), null);
-//
-//            if (operator != null) {
-//                operator = nextOperator.getOperator();
-//                operatorIndex = nextOperator.getIndex();
-//            }
+            MathNodeToken<Value<T>, Value<T>> stat = parser.<Value<T>> stat();
+            Value<T> value = new TreeVisitor<Value<T>>(this).visit(stat);
+            return value;
+        }
+        catch (RecognitionException e)
+        {
+            e.printStackTrace();
         }
 
         return null;
     }
 
-    /**
-     * Determines if a character is a space or white space.
-     * 
-     * @param character
-     *            The character being evaluated.
-     * 
-     * @return True if the character is a space or white space and false if not.
-     */
-    private boolean isWhitespace(char character)
+    @Override
+    public <R> Variable<?> register(Variable<R> var)
     {
-        return character == ' ' || character == '\t' || character == '\n' || character == '\r' || character == '\f';
+        return this.variables.put(var.name(), var);
     }
+
+    @Override
+    public <R> Function<Value<R>> register(Function<Value<R>> function)
+    {
+        return Functions.register(function);
+    }
+
+    @Override
+    public Map<String, Variable> variables()
+    {
+        return Collections.unmodifiableMap(variables);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <R> Variable<Value<R>> getVariableByName(String varName)
+    {
+        return this.variables.get(varName);
+    }
+
+    @Override
+    public <R> Operator<R> getOperatorBySymbol(String symbol)
+    {
+        return Operators.getOperatorBySymbol(symbol);
+    }
+
+    @Override
+    public <R> Function<Value<R>> getFunctionByName(String name)
+    {
+        return Functions.getFunctionByName(name);
+    }
+
 }

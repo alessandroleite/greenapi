@@ -24,31 +24,17 @@ package greenapi.gpi.metric.expression.function.math;
 
 import java.math.BigDecimal;
 
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.evaluator.Evaluator;
-import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
-import greenapi.gpi.metric.expression.function.Function;
-
-
-public class Abs implements Function<BigDecimal>
+public class Abs extends FunctionSupport
 {
-    @Override
-    public String name()
+
+    public Abs(int numberOfArgs)
     {
-        return this.getClass().getName().toLowerCase();
+        super(1);
     }
 
     @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression)
+    protected BigDecimal eval(BigDecimal[] arguments)
     {
-        return this.evaluate(expression, Evaluators.<Expression<T>, Value<BigDecimal>>get(expression.getClass()));
-    }
-
-    @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<BigDecimal>> evaluator)
-    {
-        Value<BigDecimal> value = evaluator.eval(expression);
-        return new Value<BigDecimal>(value.getValue().abs());
+        return arguments[0].abs();
     }
 }
