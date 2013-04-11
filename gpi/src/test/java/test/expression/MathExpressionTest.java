@@ -116,7 +116,7 @@ public class MathExpressionTest
     /**
      * 
      * @throws EvaluationException
-     *             If the expression if invalid.
+     *             If the expression is invalid.
      */
     @Test
     public void must_be_valid_expressions() throws EvaluationException
