@@ -20,25 +20,58 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression.token;
+
+import java.util.Objects;
 
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
 
-public class LeftParenthesisOperator extends AbstractOperator<String>
+
+public class UnaryToken<T> extends ExpressionToken<T, Computable<T>>
 {
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * The expression of this {@link UnaryToken} token.
      */
-    public LeftParenthesisOperator()
+    private final ExpressionToken<T, Value<T>> expr;
+
+    /**
+     * 
+     * @param unaryToken
+     *            The unary's token.
+     * @param expression
+     *            The expression of this {@link UnaryToken} token.
+     */
+    public UnaryToken(Token unaryToken, ExpressionToken<T, Value<T>> expression)
     {
-        super("(", 0, null);
+        super(unaryToken);
+        this.expr = Objects.requireNonNull(expression);
     }
 
     @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
+    public Computable<T> visit(ExpressionVisitor<T> visitor) throws EvaluationException
     {
-        return new Value<String>(leftOperand.getValue().toString());
+        return visitor.visit(this);
+    }
+
+    /**
+     * Returns the expression of this {@link UnaryToken} token.
+     * 
+     * @return The expression of this {@link UnaryToken} token.
+     */
+    public ExpressionToken<T, Value<T>> getExpression()
+    {
+        return expr;
+    }
+
+    /**
+     * Returns the symbol of the unary operator.
+     * 
+     * @return The symbol of the unary operator.
+     */
+    public String symbol()
+    {
+        return this.getToken().getText();
     }
 }

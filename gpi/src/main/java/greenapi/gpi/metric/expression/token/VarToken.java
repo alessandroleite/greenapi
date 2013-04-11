@@ -20,25 +20,54 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression.token;
 
-import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
+import greenapi.gpi.metric.expression.Variable;
 
-public class LeftParenthesisOperator extends AbstractOperator<String>
+public class VarToken<T> extends ExpressionToken<T, Variable<T>>
 {
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * The {@link Variable}'s instance.
      */
-    public LeftParenthesisOperator()
+    private final Variable<Value<T>> variable;
+
+    /**
+     * Creates a new variable's token.
+     * 
+     * @param token
+     *            The token that represents the variable.
+     */
+    public VarToken(Token token)
     {
-        super("(", 0, null);
+        super(token);
+        variable = new Variable<Value<T>>(token.getText());
     }
 
     @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
+    public Variable<T> visit(ExpressionVisitor<T> visitor) throws EvaluationException
     {
-        return new Value<String>(leftOperand.getValue().toString());
+        return visitor.visit(this);
+    }
+
+    /**
+     * Returns the variable name.
+     * 
+     * @return The variable name. The name always start with a letter.
+     */
+    public String name()
+    {
+        return this.variable.name();
+    }
+
+    /**
+     * Returns an instance of the Variable's type. The name of the variable is the value of this token.
+     * 
+     * @return An instance of the Variable's type.
+     */
+    public Variable<Value<T>> getVariable()
+    {
+        return variable;
     }
 }

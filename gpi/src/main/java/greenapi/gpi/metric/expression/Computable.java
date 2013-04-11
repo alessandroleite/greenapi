@@ -20,25 +20,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression;
 
-import greenapi.gpi.metric.expression.Computable;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
-
-public class LeftParenthesisOperator extends AbstractOperator<String>
+public interface Computable<R>
 {
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * Return the value.
+     * 
+     * @return The value
      */
-    public LeftParenthesisOperator()
-    {
-        super("(", 0, null);
-    }
-
-    @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
-    {
-        return new Value<String>(leftOperand.getValue().toString());
-    }
+    R getValue();
 }

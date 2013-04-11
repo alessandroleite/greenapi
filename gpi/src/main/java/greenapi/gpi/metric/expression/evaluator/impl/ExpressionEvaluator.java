@@ -27,16 +27,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 import greenapi.gpi.metric.expression.function.Function;
 import greenapi.gpi.metric.expression.function.Functions;
 import greenapi.gpi.metric.expression.lexer.ExpressionLexer;
-import greenapi.gpi.metric.expression.lexer.ExpressionParser;
 import greenapi.gpi.metric.expression.operators.Operator;
 import greenapi.gpi.metric.expression.operators.Operators;
-import greenapi.gpi.metric.expression.parser.RecognitionException;
+import greenapi.gpi.metric.expression.parser.ExpressionParser;
 import greenapi.gpi.metric.expression.token.MathNodeToken;
 import greenapi.gpi.metric.expression.token.TreeVisitor;
 
@@ -44,29 +44,17 @@ import greenapi.gpi.metric.expression.token.TreeVisitor;
 public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>>
 {
     /**
-     * {@link Map} with the variables. The key is the variable's name.
+     * {@link Map} with the variables of this {@link Evaluator}. The key is the variable's name.
      */
-    
     private Map<String, Variable> variables = new HashMap<>();
-    
+
     @Override
-    public Value<T> eval(Expression<T> expression)
+    public Value<T> eval(Expression<T> expression) throws EvaluationException
     {
-        final String exp = expression.expression();
-
-        ExpressionParser<Value<T>> parser = new ExpressionParser<>(new ExpressionLexer(exp));
-        try
-        {
-            MathNodeToken<Value<T>, Value<T>> stat = parser.<Value<T>> stat();
-            Value<T> value = new TreeVisitor<Value<T>>(this).visit(stat);
-            return value;
-        }
-        catch (RecognitionException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
+        ExpressionParser<Value<T>> parser = new ExpressionParser<>(new ExpressionLexer(expression.expression()));
+        MathNodeToken<Value<T>, Value<T>> stat = parser.<Value<T>> stat();
+        Value<T> value = new TreeVisitor<Value<T>>(this).visit(stat);
+        return value;
     }
 
     @Override
@@ -86,10 +74,10 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     {
         return Collections.unmodifiableMap(variables);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
-    public <R> Variable<Value<R>> getVariableByName(String varName)
+    public <R> Variable<R> getVariableByName(String varName)
     {
         return this.variables.get(varName);
     }
@@ -101,9 +89,8 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     }
 
     @Override
-    public <R> Function<Value<R>> getFunctionByName(String name)
+    public <R> Function<R> getFunctionByName(String name)
     {
-        return Functions.getFunctionByName(name);
+        return Functions.<R> getFunctionByName(name);
     }
-
 }

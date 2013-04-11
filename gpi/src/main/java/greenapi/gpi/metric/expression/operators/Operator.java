@@ -22,7 +22,8 @@
  */
 package greenapi.gpi.metric.expression.operators;
 
-import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.EvaluationException;
 
 /**
  * @param <R>
@@ -65,7 +66,7 @@ public interface Operator<R>
      * @throws greenapi.gpi.metric.expression.EvaluationException
      *             If it's impossible to evaluate the operands.
      */
-    <T> Value<R> evaluate(Value<T> leftOperand, Value<T> rightOperand);
+    <T> Computable<R> evaluate(Computable<T> leftOperand, Computable<T> rightOperand) throws EvaluationException;
 
     /**
      * Evaluate one operand and returns its value.
@@ -78,5 +79,5 @@ public interface Operator<R>
      * @throws greenapi.gpi.metric.expression.EvaluationException
      *             If it's impossible to evaluate the given operand.
      */
-    <T> Value<R> evaluate(Value<T> operand);
+    <T> Computable<R> evaluate(Computable<T> operand) throws EvaluationException;
 }

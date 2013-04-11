@@ -22,7 +22,7 @@
  */
 package greenapi.gpi.metric.expression;
 
-public class EvaluationException extends RuntimeException
+public class EvaluationException extends Exception
 {
 
     /**

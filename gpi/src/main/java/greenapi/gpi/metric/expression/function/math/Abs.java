@@ -27,7 +27,10 @@ import java.math.BigDecimal;
 public class Abs extends FunctionSupport
 {
 
-    public Abs(int numberOfArgs)
+    /**
+     * Creates an instance of the {@link Abs} function.
+     */
+    public Abs()
     {
         super(1);
     }

@@ -20,25 +20,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression.function.math;
 
-import greenapi.gpi.metric.expression.Computable;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
+import java.math.BigDecimal;
 
-public class LeftParenthesisOperator extends AbstractOperator<String>
+public class Max extends FunctionSupport
 {
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * Creates an instance of the {@link Max} function.
      */
-    public LeftParenthesisOperator()
+    public Max()
     {
-        super("(", 0, null);
+        super(2);
     }
 
     @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
+    public BigDecimal eval(BigDecimal[] arguments)
     {
-        return new Value<String>(leftOperand.getValue().toString());
+        return arguments[0].max(arguments[1]);
     }
 }

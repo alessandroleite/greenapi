@@ -20,89 +20,68 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression;
+package greenapi.gpi.metric.expression.token;
 
-public final class Value<T> implements Computable<T>
+import greenapi.gpi.metric.expression.Computable;
+
+public class NumberToken<T> extends ExpressionToken<T, Computable<T>>
 {
     /**
-     * The correspondent value.
-     */
-    private final T value;
-
-    /**
-     * Create an instance with a given value.
+     * Creates a {@link NumberToken} node with a given {@link Token}.
      * 
-     * @param valueToAssign
-     *            The value to be assigned.
+     * @param token
+     *            The token that represents a {@link NumberToken}. In this case, the token's text must be a {@link java.lang.Number}.
      */
-    public Value(T valueToAssign)
+    public NumberToken(Token token)
     {
-        this.value = valueToAssign;
+        super(token);
     }
 
-    /**
-     * Return the value.
-     * 
-     * @return The value
-     */
-    public T getValue()
+    @Override
+    public Computable<T> visit(ExpressionVisitor<T> visitor)
     {
-        return value;
-    }
-
-    /**
-     * Returns the value's type.
-     * 
-     * @return The value's type.
-     */
-    @SuppressWarnings("unchecked")
-    public Class<T> getValueType()
-    {
-        return (Class<T>) getValue().getClass();
+        return visitor.visit(this);
     }
 
     @Override
     public int hashCode()
     {
         final int prime = 31;
+
         int result = 1;
-        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        result = prime * result + getToken().getText().hashCode();
+        result = prime * result + getToken().hashCode();
+
         return result;
     }
 
     @Override
     public boolean equals(Object obj)
     {
+
         if (this == obj)
         {
             return true;
         }
+
         if (obj == null)
         {
             return false;
         }
+
         if (getClass() != obj.getClass())
         {
             return false;
         }
-        Value<?> other = (Value<?>) obj;
-        if (value == null)
-        {
-            if (other.value != null)
-            {
-                return false;
-            }
-        }
-        else if (!value.equals(other.value))
-        {
-            return false;
-        }
-        return true;
+
+        NumberToken<?> other = (NumberToken<?>) obj;
+
+        return this.getToken().equals(other.getToken());
     }
 
     @Override
     public String toString()
     {
-        return getValue().toString();
+        return this.getToken().getText().trim();
     }
 }

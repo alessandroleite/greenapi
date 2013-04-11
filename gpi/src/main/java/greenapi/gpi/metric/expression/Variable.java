@@ -24,7 +24,7 @@ package greenapi.gpi.metric.expression;
 
 import greenapi.core.common.base.Strings;
 
-public class Variable<T>
+public class Variable<T> implements Computable<Value<T>>
 {
     /**
      * The name of the variable.
@@ -53,7 +53,7 @@ public class Variable<T>
 
         if (!isValidName(varName))
         {
-            throw new IllegalArgumentException("Invalid variable name!");
+            throw new IllegalArgumentException("The " + varName + " is an invalid variable name!");
         }
     }
 
@@ -103,11 +103,22 @@ public class Variable<T>
      * Assign a new value to this variable.
      * 
      * @param newValue
-     *            The value to assign to this variable.
+     *            The value to be assigned to this variable.
      */
     public void setValue(T newValue)
     {
-        this.value = new Value<T>(newValue);
+        this.setValue(new Value<T>(newValue));
+    }
+
+    /**
+     * Assign a new value to this variable.
+     * 
+     * @param newValue
+     *            The value to be assigned to this variable.
+     */
+    public void setValue(Value<T> newValue)
+    {
+        this.value = newValue;
     }
 
     /**
@@ -194,7 +205,22 @@ public class Variable<T>
      */
     public static boolean isValidName(String name)
     {
-        char firstChar = Strings.checkArgumentIsNotNullOrEmpty(name).trim().charAt(0);
-        return !((firstChar < 65 || firstChar > 90) && (firstChar < 97 || firstChar > 122));
+        char[] letters = Strings.checkArgumentIsNotNullOrEmpty(name).trim().toCharArray();
+
+        for (int i = 0; i < letters.length; i++)
+        {
+            if (Character.isWhitespace(letters[i]))
+            {
+                return false;
+            }
+        }
+
+        return !((letters[0] < 65 || letters[0] > 90) && (letters[0] < 97 || letters[0] > 122));
+    }
+
+    @Override
+    public Value<T> getValue()
+    {
+        return this.value();
     }
 }

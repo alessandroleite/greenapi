@@ -22,11 +22,13 @@
  */
 package greenapi.gpi.metric;
 
-import java.util.List;
+import java.util.Collection;
 
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
+
 
 public interface Expression<T>
 {
@@ -39,19 +41,21 @@ public interface Expression<T>
     String expression();
 
     /**
-     * Returns a not <code>null</code> and read-only {@link List} with the variables found in the expression.
+     * Returns a non <code>null</code> and read-only {@link Collection} with the variables found in the expression.
      * 
-     * @return A not <code>null</code> and read-only {@link List} with the variables found in the expression.
+     * @return A non <code>null</code> and read-only {@link Collection} with the variables found in the expression.
      */
-    List<Variable<?>> variables();
+    Collection<Variable<?>> variables();
 
     /**
-     * Evaluate this expression and returns its value.
+     * Evaluate and execute an expression using the given evaluator.
      * 
      * @param evaluator
      *            The {@link Evaluator} to be used in the evaluation process.
-     * @return The value after evaluate the {@link Expression}.
+     * @return The value after the evaluation of the given {@link Expression}.
+     * @throws EvaluationException
+     *             Throws when the expression to be evaluated is not well formated. In other words, this method throws {@link EvaluationException}
+     *             when the expression is wrong o missing something.
      */
-    Value<T> evaluate(Evaluator<Expression<T>, Value<T>> evaluator);
-
+    Value<T> evaluate(Evaluator<Expression<T>, Value<T>> evaluator) throws EvaluationException;
 }

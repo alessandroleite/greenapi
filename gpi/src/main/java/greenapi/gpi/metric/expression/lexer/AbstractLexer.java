@@ -1,6 +1,27 @@
+/**
+ * Copyright (c) 2012 GreenI2R
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package greenapi.gpi.metric.expression.lexer;
 
-import greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens;
 import greenapi.gpi.metric.expression.token.Token;
 
 public abstract class AbstractLexer extends Lexer
@@ -150,7 +171,7 @@ public abstract class AbstractLexer extends Lexer
     }
 
     /**
-     * Defines what a number is. NUMBER: '0'..'9'.
+     * Defines what a number is. NUMBER: '0'..'9'('.'INT).
      */
     protected void NUMBER()
     {
@@ -164,6 +185,9 @@ public abstract class AbstractLexer extends Lexer
         }
     }
 
+    /**
+     * Defines what a INT is. INT: '0'..'9'.
+     */
     protected void INT()
     {
         if (isINT())
@@ -249,7 +273,7 @@ public abstract class AbstractLexer extends Lexer
     /**
      * Consumes a number token. A number is a sequence of one or more digits, thousands separators, E or e and +-. Example: 5,559.25.
      * 
-     * @return A {@link NumberToken} with the name of the identifier.
+     * @return A {@link greenapi.gpi.metric.expression.token.NumberToken} with the name of the identifier.
      */
     protected Token number()
     {

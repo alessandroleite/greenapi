@@ -20,25 +20,32 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression.token;
 
-import greenapi.gpi.metric.expression.Computable;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
+import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.gpi.metric.expression.parser.AST;
 
-public class LeftParenthesisOperator extends AbstractOperator<String>
+public abstract class MathNodeToken<T, V> extends AST
 {
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * Creates a {@link MathNodeToken}'s instance.
+     * 
+     * @param token
+     *            The token of this node.
      */
-    public LeftParenthesisOperator()
+    public MathNodeToken(Token token)
     {
-        super("(", 0, null);
+        super(token);
     }
 
-    @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
-    {
-        return new Value<String>(leftOperand.getValue().toString());
-    }
+    /**
+     * Visits this a node of the {@link AST} using a given {@link ExpressionVisitor}'s instance.
+     * 
+     * @param visitor
+     *            The {@link ExpressionVisitor} instance to be used. Might not be <code>null</code>.
+     * @return The value after the node had be visited.
+     * @throws EvaluationException
+     *             If the evaluation of this node is impossible.
+     */
+    public abstract V visit(ExpressionVisitor<T> visitor) throws EvaluationException;
 }

@@ -22,6 +22,11 @@
  */
 package greenapi.gpi.metric;
 
+import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.gpi.metric.expression.Value;
+import greenapi.gpi.metric.expression.Variable;
+import greenapi.gpi.metric.expression.function.Function;
+
 public interface MathExpression<T> extends Expression<T>
 {
 
@@ -57,4 +62,59 @@ public interface MathExpression<T> extends Expression<T>
      *             if the value of the given {@link Expression} is out of range.
      */
     MathExpression<T> pow(MathExpression<T> expression);
+
+    /**
+     * Register a variable in the expression. Sometimes it's necessary to evaluate expression that has variables.
+     * 
+     * @param variable
+     *            The variable to be used. Might not be <code>null</code>.
+     * @param <R>
+     *            The type of the variable value.
+     * @return The same {@link MathExpression}'s reference but now with the given variable.
+     */
+    <R> MathExpression<T> withVariable(Variable<R> variable);
+
+    /**
+     * Register a new variable in the expression.
+     * 
+     * @param name
+     *            The name of the variable. Might not be <code>null</code> and might starts with a letter and cannot has any whitespace.
+     * @param value
+     *            The value of the variable.
+     * @param <R>
+     *            The type of the variable value.
+     * @return The same {@link MathExpression}'s reference but now with a variable with the name and value.
+     */
+    <R> MathExpression<T> withVariable(String name, Value<R> value);
+
+    /**
+     * Register a new variable in the expression.
+     * 
+     * @param name
+     *            The name of the variable. Might not be <code>null</code> and might starts with a letter and cannot has any whitespace.
+     * @param value
+     *            The value of the be assigned to the new variable.
+     * @param <R>
+     *            The type of the variable value.
+     * @return The same {@link MathExpression}'s reference but now with a variable with the name and value.
+     */
+    <R> MathExpression<T> withVariable(String name, R value);
+
+    /**
+     * Evaluate this {@link MathExpression} and returns its value.
+     * 
+     * @return The math expression result. It's never <code>null</code>.
+     * @throws EvaluationException
+     *             If the math expression is invalid.
+     */
+    Value<T> evaluate() throws EvaluationException;
+
+    /**
+     * Register a function to be used in the evaluation process.
+     * 
+     * @param function
+     *            A math function. Might not be <code>null</code>.
+     * @return The same {@link MathExpression}'s reference but now with a new function registered.
+     */
+    MathExpression<T> withFunction(Function<Value<T>> function);
 }

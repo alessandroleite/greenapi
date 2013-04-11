@@ -20,25 +20,37 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.operators.arithmetical;
+package greenapi.gpi.metric.expression;
 
-import greenapi.gpi.metric.expression.Computable;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.operators.AbstractOperator;
-
-public class LeftParenthesisOperator extends AbstractOperator<String>
+public class UndefinedVariableException extends EvaluationException
 {
+
     /**
-     * Creates an {@link LeftParenthesisOperator}.
+     * Serial code version <code>serialVersionUID</code>.
      */
-    public LeftParenthesisOperator()
+    private static final long serialVersionUID = 1895887803589520033L;
+
+    /**
+     * Create an {@link UndefinedVariableException} with the given message.
+     * 
+     * @param message
+     *            The message that represents an expression error parser.
+     */
+    public UndefinedVariableException(String message)
     {
-        super("(", 0, null);
+        super(message);
     }
 
-    @Override
-    public <T> Value<String> evaluate(Computable<T> leftOperand, Computable<T> rightOperand)
+    /**
+     * Create an {@link UndefinedVariableException} with a given message and the cause of the exception.
+     * 
+     * @param message
+     *            The message that represents an expression error parser.
+     * @param cause
+     *            The cause of the exception.
+     */
+    public UndefinedVariableException(String message, Throwable cause)
     {
-        return new Value<String>(leftOperand.getValue().toString());
+        super(message, cause);
     }
 }

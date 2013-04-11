@@ -23,6 +23,7 @@
 package greenapi.gpi.metric.expression.operators;
 
 import greenapi.core.common.base.Strings;
+import greenapi.gpi.metric.expression.Computable;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.operators.evaluators.OperatorEvaluator;
@@ -92,7 +93,7 @@ public abstract class AbstractOperator<R> implements Operator<R>
     }
 
     @Override
-    public <T> Value<R> evaluate(Value<T> operand)
+    public <T> Value<R> evaluate(Computable<T> operand) throws EvaluationException
     {
         if (!this.isUnary())
         {
@@ -103,14 +104,14 @@ public abstract class AbstractOperator<R> implements Operator<R>
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> Value<R> evaluate(Value<T> leftOperand, Value<T> rightOperand)
+    public <T> Value<R> evaluate(Computable<T> leftOperand, Computable<T> rightOperand) throws EvaluationException
     {
-        if (leftOperand == null && rightOperand == null)
+        if (!this.isUnary() && (leftOperand == null || rightOperand == null))
         {
-            throw new EvaluationException("The left and right operands are null!");
+            throw new EvaluationException(String.format("This operator %s requires two not null operands !", this.symbol()));
         }
 
-        return this.evaluator.eval(leftOperand.getValue(), rightOperand.getValue(), this);
+        return this.evaluator.eval(leftOperand.getValue(), rightOperand != null ? rightOperand.getValue() : null, this);
     }
 
     /**

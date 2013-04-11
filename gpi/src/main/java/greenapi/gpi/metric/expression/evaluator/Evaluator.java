@@ -22,12 +22,13 @@
  */
 package greenapi.gpi.metric.expression.evaluator;
 
+import java.util.Map;
+
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 import greenapi.gpi.metric.expression.function.Function;
 import greenapi.gpi.metric.expression.operators.Operator;
-
-import java.util.Map;
 
 public interface Evaluator<T, V>
 {
@@ -38,12 +39,15 @@ public interface Evaluator<T, V>
      * @param type
      *            The type (function, expression, variable, etc.) to be evaluate.
      * @return The value after evaluate the given type.
+     * @throws EvaluationException
+     *             If the expression is wrong.
      */
-    V eval(T type);
+    V eval(T type) throws EvaluationException;
 
     /**
+     * Returns a read-only {@link Map} with the {@link Variable}s found in the expression.
      * 
-     * @return
+     * @return A non modifiable {@link Map} with the {@link Variable}s found in the expression.
      */
     @SuppressWarnings("rawtypes")
     Map<String, Variable> variables();
@@ -64,9 +68,11 @@ public interface Evaluator<T, V>
      * 
      * @param name
      *            The name of the function to be returned.
+     * @param <R>
+     *            The type of the function result.
      * @return The {@link Function} that has the given name or <code>null</code> if it doesn't exist.
      */
-    <R> Function<Value<R>> getFunctionByName(String name);
+    <R> Function<R> getFunctionByName(String name);
 
     /**
      * Returns the {@link Variable} instance that was registered with the given name or <code>null</code> if it's unknown.
@@ -77,13 +83,15 @@ public interface Evaluator<T, V>
      *            The type of the variable's value.
      * @return The {@link Variable} instance that was registered with the given name or <code>null</code> if it's unknown.
      */
-    <R> Variable<Value<R>> getVariableByName(String varName);
+    <R> Variable<R> getVariableByName(String varName);
 
     /**
      * Add a {@link Variable} to this evaluator. At this moment the variable can or cannot has a value.
      * 
      * @param var
      *            The variable to be added.
+     * @param <R>
+     *            The type of the variable value.
      * @return The previous instance of the variable.
      */
     <R> Variable<?> register(Variable<R> var);

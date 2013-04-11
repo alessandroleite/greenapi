@@ -1,142 +1,73 @@
-package greenapi.gpi.metric.expression.lexer;
+/**
+ * Copyright (c) 2012 GreenI2R
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+package greenapi.gpi.metric.expression.parser;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
 import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.parser.AST;
-import greenapi.gpi.metric.expression.parser.MismatchedTokenException;
-import greenapi.gpi.metric.expression.parser.NoViableAltException;
-import greenapi.gpi.metric.expression.parser.Parser;
-import greenapi.gpi.metric.expression.parser.RecognitionException;
+import greenapi.gpi.metric.expression.lexer.Lexer;
 import greenapi.gpi.metric.expression.token.AssignToken;
 import greenapi.gpi.metric.expression.token.BinaryOperatorToken;
 import greenapi.gpi.metric.expression.token.ExpressionToken;
 import greenapi.gpi.metric.expression.token.FunctionToken;
 import greenapi.gpi.metric.expression.token.MathNodeToken;
 import greenapi.gpi.metric.expression.token.NumberToken;
-import greenapi.gpi.metric.expression.token.StatToken;
 import greenapi.gpi.metric.expression.token.Token;
 import greenapi.gpi.metric.expression.token.UnaryToken;
 import greenapi.gpi.metric.expression.token.VarToken;
 
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.ATOM;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EOT;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.EQUALS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.FUNCTION_CALL;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.IDENT;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.LPARENTHESIS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.OP;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.RPARENTHESIS;
-import static greenapi.gpi.metric.expression.lexer.ExpressionParser.ExpressionTokens.UNARY;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.ATOM;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.COMMA;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.EOT;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.EQUALS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.FUNCTION_CALL;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.IDENT;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.LPARENTHESIS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.OP;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.RPARENTHESIS;
+import static greenapi.gpi.metric.expression.lexer.ExpressionTokens.UNARY;
 
 @SuppressWarnings("unchecked")
 public class ExpressionParser<T> extends Parser
 {
 
+    /**
+     * The stack with the operands.
+     */
     @SuppressWarnings("rawtypes")
     private final Stack operands = new Stack();
 
-    static enum ExpressionTokens
-    {
-        /**
-         * Represents the end of a token.
-         */
-        EOT(Lexer.EOF_TYPE),
+    /**
+     * The {@link Stack} with the operators found in the expression.
+     */
+    private final Stack<Token> operators = new Stack<>();
 
-        /**
-         * Represents an unary token.
-         */
-        UNARY(1),
-
-        /**
-         * Represents an operator token.
-         */
-        OP(2),
-
-        /**
-         * Represents a left parenthesis.
-         */
-        LPARENTHESIS(3),
-
-        /**
-         * Represents a right parenthesis.
-         */
-        RPARENTHESIS(4),
-
-        /**
-         * Represents a number. It can be INT or FLOAT.
-         */
-        ATOM(5),
-
-        /**
-         * Represents a identifier. It can be a variable or a function name.
-         */
-        IDENT(6),
-
-        /**
-         * Represents an assign.
-         */
-        EQUALS(7),
-
-        /**
-         * Represents a function call.
-         */
-        FUNCTION_CALL(8),
-
-        /**
-         * Represents an argument separator.
-         */
-        COMMA(9);
-
-        /**
-         * The id of the enum.
-         */
-        private final int id;
-
-        /**
-         * Creates a instance of this enum with the given value.
-         * 
-         * @param enumId
-         *            The id of this enum.
-         */
-        private ExpressionTokens(int enumId)
-        {
-            this.id = enumId;
-        }
-
-        /**
-         * Returns the enum's id.
-         * 
-         * @return The enum's id.
-         */
-        public int getId()
-        {
-            return id;
-        }
-
-        /**
-         * Factory method to get an enum's instance that has a given id.
-         * 
-         * @param enumId
-         *            The id of the enum to be returned.
-         * @return The enum that has the given id.
-         * @throws IllegalArgumentException
-         *             If the given value is unknown.
-         */
-        public ExpressionTokens get(int enumId)
-        {
-            for (ExpressionTokens type : ExpressionTokens.values())
-            {
-                if (type.getId() == id)
-                {
-                    return type;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-    }
+    /**
+     * Flag that indicates a function call.
+     */
+    private boolean functionArgs;
 
     /**
      * Creates an instance of {@link ExpressionParser} with the given {@link Lexer}.
@@ -152,11 +83,12 @@ public class ExpressionParser<T> extends Parser
     /**
      * stat: expression EOF | assign EOF.
      * 
-     * @return A {@link ExpressionToken} instance or an {@link StatToken} instance.
+     * @param <V>
+     *            The type of the node's value.
+     * @return A {@link ExpressionToken} instance or an {@link greenapi.gpi.metric.expression.token.StatToken} instance.
      * @throws RecognitionException
      *             If the given expression is invalid for this parser.
      */
-
     public <V> MathNodeToken<T, V> stat() throws RecognitionException
     {
         MathNodeToken<T, V> node;
@@ -278,14 +210,33 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
+    /**
+     * Returns <code>true</code> if the current token is a unary operator, otherwise returns <code>false</code>.
+     * 
+     * @return <code>true</code> if the current token is a unary operator, otherwise returns <code>false</code>.
+     */
     private boolean isUnary()
     {
         boolean newExpressionOrEOT = LA(2) == LPARENTHESIS.getId() || LA(2) == RPARENTHESIS.getId() || LA(2) == EOT.getId();
-        boolean minusOrPlusSign = (LT(1).getText().equals("+") || LT(1).getText().equals("-"))
-                && (LA(2) == ATOM.getId() || LA(2) == IDENT.getId() || newExpressionOrEOT);
-        return minusOrPlusSign && this.operands.isEmpty();
+        boolean minusOrPlusSign = (LT(1).getText().equals("+") || LT(1).getText().equals("-")) && 
+                (LA(2) == ATOM.getId() || LA(2) == IDENT.getId() || newExpressionOrEOT);
+
+        if (minusOrPlusSign && this.operands.isEmpty())
+        {
+            return true;
+        }
+        else if (minusOrPlusSign && !this.operands.isEmpty() && this.functionArgs)
+        {
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * Returns <code>true</code> if the current token is a parenthesis expression. In that case '(' EXPR ')'.
+     * 
+     * @return <code>true</code> if the current token is a parenthesis expression. In that case '(' EXPR ')'.
+     */
     private boolean speculate_parenthesis_expression()
     {
         boolean success = true;
@@ -302,6 +253,11 @@ public class ExpressionParser<T> extends Parser
         return success;
     }
 
+    /**
+     * 
+     * @throws RecognitionException
+     *             If it's an invalid expression.
+     */
     private void expression() throws RecognitionException
     {
         boolean failed = false;
@@ -341,9 +297,10 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
-     * 
      * @param endWithToken
+     *            The expected token to finish the walk.
      * @throws RecognitionException
+     *             If it's an invalid expression.
      */
     private void expression(int endWithToken) throws RecognitionException
     {
@@ -362,6 +319,7 @@ public class ExpressionParser<T> extends Parser
                 else
                 {
                     operands.push(operator());
+                    // operator();
                 }
             }
             else if (LA(1) == OP.getId())
@@ -386,10 +344,6 @@ public class ExpressionParser<T> extends Parser
                 {
                     parenthesis();
                 }
-                // else if (speculate_function_call())
-                // {
-                // function_call();
-                // }
                 else
                 {
                     throw new RecognitionException("expecting RPARENTHESIS; found " + LT(1));
@@ -407,6 +361,12 @@ public class ExpressionParser<T> extends Parser
         }
     }
 
+    /**
+     * 
+     * @return An assignment token with the variable and the expression.
+     * @throws RecognitionException
+     *             If it's an invalid assignment expression.
+     */
     private AssignToken<T> assign() throws RecognitionException
     {
         VarToken<T> var = new VarToken<>(LT(1));
@@ -425,37 +385,40 @@ public class ExpressionParser<T> extends Parser
 
     /**
      * 
-     * @return
+     * @return The unary operator with the operator and it's expression.
      * @throws RecognitionException
+     *             If it's an invalid unary operator.
      */
     private UnaryToken<T> unary() throws RecognitionException
     {
         Token token = LT(1);
         match(UNARY.getId());
 
-        ExpressionToken<T, ?> expr;
+        //ExpressionToken<T, ?> expr;
 
         if (LA(1) == IDENT.getId())
         {
-            expr = ident();
+            this.operands.push(ident());
         }
         else if (LA(1) == ATOM.getId())
         {
-            expr = atom();
+            this.operands.push(atom());
         }
         else
         {
-            throw new RecognitionException("Expecting IDENT|ATOM; found " + LT(1));
+            //throw new RecognitionException("Expecting IDENT|ATOM; found " + LT(1));
+            expression();
         }
 
-        return new UnaryToken<T>(token, (ExpressionToken<T, Value<T>>) expr);
+        return new UnaryToken<T>(token, (ExpressionToken<T, Value<T>>) this.operands.pop());
 
     }
 
     /**
      * 
-     * @return
+     * @return The token that represents an identifier.
      * @throws MismatchedTokenException
+     *             If it's not a valid identifier.
      */
     private VarToken<T> ident() throws MismatchedTokenException
     {
@@ -466,8 +429,9 @@ public class ExpressionParser<T> extends Parser
 
     /**
      * 
-     * @return
+     * @return The {@link NumberToken} with its value.
      * @throws MismatchedTokenException
+     *             If the token is not a number.
      */
     private NumberToken<T> atom() throws MismatchedTokenException
     {
@@ -477,9 +441,11 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
+     * Processes a binary operator expression.
      * 
-     * @return
+     * @return The binary operator with its operands.
      * @throws RecognitionException
+     *             If it's an invalid binary expression.
      */
     private BinaryOperatorToken<T> operator() throws RecognitionException
     {
@@ -494,11 +460,11 @@ public class ExpressionParser<T> extends Parser
             }
             else
             {
-                Token token = LT(1);
-                if (token.getText().charAt(0) != '+' && token.getText().charAt(0) != '-')
+                Token operator = LT(1);
+
+                if (operator.getText().charAt(0) != '+' && operator.getText().charAt(0) != '-')
                 {
                     match(OP.getId());
-
                 }
                 else
                 {
@@ -506,10 +472,13 @@ public class ExpressionParser<T> extends Parser
                 }
 
                 ExpressionToken<T, Value<T>> left = (ExpressionToken<T, Value<T>>) operands.pop();
+                operators.push(operator);
+                // processOperator(token);
                 term();
                 ExpressionToken<T, Value<T>> right = (ExpressionToken<T, Value<T>>) operands.pop();
+                operators.pop();
 
-                return new BinaryOperatorToken<T>(token, left, right);
+                return new BinaryOperatorToken<T>(operator, left, right);
             }
 
         }
@@ -521,7 +490,10 @@ public class ExpressionParser<T> extends Parser
 
     /**
      * 
+     * @param <V>
+     *            The return type of the parenthesis' expression.
      * @throws RecognitionException
+     *             If it's an invalid parenthesis expression.
      */
     private <V> void parenthesis() throws RecognitionException
     {
@@ -532,7 +504,7 @@ public class ExpressionParser<T> extends Parser
         if (isSpeculating() && alreadyParsedRule())
         {
             ExpressionToken<T, V> expr = (ExpressionToken<T, V>) memoization(startTokenIndex).getNode();
-            operands.push(expr);// match(RPARENTHESIS.getId());
+            operands.push(expr);
             return;
         }
 
@@ -564,13 +536,37 @@ public class ExpressionParser<T> extends Parser
     /**
      * 
      * @throws RecognitionException
+     *             If it's an invalid expression.
      */
     private void term() throws RecognitionException
     {
-        if (isAtomTerm())
+        if (speculate_function_call())
+        {
+            this.operands.push(function_call());
+            return;
+        }
+        else if ((LA(2) == OP.getId() && precedence(LT(2)) > precedence(operators.peek())) || LA(2) == LPARENTHESIS.getId())
+        {
+            expression();
+            return;
+        }
+        else if (isAtomTerm())
         {
             this.operands.push(atom());
             return;
+        }
+        else if (LA(1) == IDENT.getId())
+        {
+            if (speculate_function_call())
+            {
+                operands.push(function_call());
+                return;
+            }
+            else
+            {
+                operands.push(ident());
+                return;
+            }
         }
         else if (LA(1) == UNARY.getId())
         {
@@ -595,8 +591,9 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
+     * Returns <code>true</code> if the current token is a number or a variable. Otherwise return <code>false</code>.
      * 
-     * @return
+     * @return <code>true</code> if the current token is a number or a variable. Otherwise return <code>false</code>.
      */
     private boolean isAtomTerm()
     {
@@ -605,8 +602,11 @@ public class ExpressionParser<T> extends Parser
 
     /**
      * 
-     * @return
+     * @param <V>
+     *            The return type of the function.
+     * @return A {@link FunctionToken} and its arguments.
      * @throws RecognitionException
+     *             If it's an invalid function call.
      */
     private <V> FunctionToken<T> function_call() throws RecognitionException
     {
@@ -616,9 +616,13 @@ public class ExpressionParser<T> extends Parser
         match(IDENT.getId());
         match(LPARENTHESIS.getId());
 
+        functionArgs = true;
+
         List<ExpressionToken<T, Value<T>>> args = args();
 
         match(RPARENTHESIS.getId());
+
+        functionArgs = false;
 
         return new FunctionToken<T>(new Token(FUNCTION_CALL.getId(), ident.getText()), args);
 
@@ -627,8 +631,11 @@ public class ExpressionParser<T> extends Parser
     /**
      * (',' args)*.
      * 
-     * @return
+     * @param <V>
+     *            the type of the arguments.
+     * @return A {@link List} with the arguments of a function.
      * @throws RecognitionException
+     *             If it's an invalid expression.
      */
     private <V> List<ExpressionToken<T, V>> args() throws RecognitionException
     {
@@ -638,9 +645,9 @@ public class ExpressionParser<T> extends Parser
         if (LA(1) != RPARENTHESIS.getId())
         {
             arg();
-            while (LA(1) == ExpressionTokens.COMMA.getId())
+            while (LA(1) == COMMA.getId())
             {
-                match(ExpressionTokens.COMMA.getId());
+                match(COMMA.getId());
                 arg();
             }
         }
@@ -659,11 +666,34 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
-     * 
      * @throws RecognitionException
+     *             If it's an invalid argument.
      */
     private void arg() throws RecognitionException
     {
         term();
+    }
+
+    /**
+     * Returns the precedence of a given operator.
+     * 
+     * @param token
+     *            The token that represents a valid operator.
+     * @return The precedence of the operator.
+     */
+    private int precedence(Token token)
+    {
+
+        switch (token.getText().charAt(0))
+        {
+        case '/':
+        case '*':
+        case '%':
+            return 6;
+        case '+':
+        case '-':
+        default:
+            return 5;
+        }
     }
 }

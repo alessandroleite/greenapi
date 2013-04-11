@@ -22,13 +22,16 @@
  */
 package greenapi.gpi.metric.expression.function;
 
+import java.util.List;
+
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 
-import java.util.List;
-
 /**
  * This class is used to create a function.
+ * 
+ * @param <V>
+ *            The return type of the function.
  */
 public interface Function<V>
 {
@@ -66,7 +69,7 @@ public interface Function<V>
     /**
      * Returns the value of the function execution.
      * 
-     * @param values
+     * @param arguments
      *            The function's arguments.
      * @return The value of the function execution.
      */
