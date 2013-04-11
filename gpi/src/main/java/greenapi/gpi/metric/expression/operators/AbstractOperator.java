@@ -99,19 +99,23 @@ public abstract class AbstractOperator<R> implements Operator<R>
         {
             throw new EvaluationException(String.format("The operator %s requires the left and right operands!", this.symbol()));
         }
-        return this.evaluate(operand, null);
+        return this.evaluate(null, operand);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> Value<R> evaluate(Computable<T> leftOperand, Computable<T> rightOperand) throws EvaluationException
     {
-        if (!this.isUnary() && (leftOperand == null || rightOperand == null))
+        if (!isUnary() && (leftOperand == null || rightOperand == null))
         {
             throw new EvaluationException(String.format("This operator %s requires two not null operands !", this.symbol()));
         }
+        else if (isUnary() && rightOperand == null)
+        {
+            throw new EvaluationException(String.format("This unary operator %s requires one not null operand!", this.symbol()));
+        }
 
-        return this.evaluator.eval(leftOperand.getValue(), rightOperand != null ? rightOperand.getValue() : null, this);
+        return this.evaluator.eval(leftOperand == null ? null : leftOperand.getValue(), rightOperand.getValue(), this);
     }
 
     /**

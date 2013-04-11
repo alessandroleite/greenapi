@@ -45,7 +45,7 @@ public final class ArithmeticalEvaluator implements OperatorEvaluator<BigDecimal
     public <T> Value<BigDecimal> eval(T leftValue, T rightValue, ArithmeticalOperator operator)
     {
         BigDecimal nullValue = operator.getNeutralValue();
-        return new Value<BigDecimal>(operator.evaluate(asBigDecimal(rightValue, nullValue), asBigDecimal(leftValue, nullValue)));
+        return new Value<BigDecimal>(operator.evaluate(asBigDecimal(leftValue, nullValue), asBigDecimal(rightValue, nullValue)));
     }
 
     /**

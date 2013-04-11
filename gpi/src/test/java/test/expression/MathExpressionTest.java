@@ -79,6 +79,19 @@ public class MathExpressionTest
          * @param result
          *            The expected value of this expression.
          */
+        private Expression(String expr, double result)
+        {
+            this(expr, BigDecimal.valueOf(result));
+        }
+        
+        /**
+         * Creates an instance of this class.
+         * 
+         * @param expr
+         *            The math expression.
+         * @param result
+         *            The expected value of this expression.
+         */
         private Expression(String expr, long result)
         {
             this(expr, BigDecimal.valueOf(result));
@@ -99,6 +112,48 @@ public class MathExpressionTest
         expressions.add(new Expression("1+2+3+4", 10));
         expressions.add(new Expression("(a * b + c)", 65));
         expressions.add(new Expression("a + b * c", 79));
+        expressions.add(new Expression("2 - -4", 6));
+        expressions.add(new Expression("4 + -1", 3));
+        expressions.add(new Expression("1.2 + 0.4", 1.6d));
+        expressions.add(new Expression("1.2 + .4", 1.6d));
+        expressions.add(new Expression("0.2 - 0.4", -.2d));
+        expressions.add(new Expression("-4 + 1", -3));
+        expressions.add(new Expression("-4 + -1", -5));
+        expressions.add(new Expression("4 * -3", -12));
+        expressions.add(new Expression("-4 * -3", 12));
+
+        //
+        expressions.add(new Expression("4 / 2", 2));
+        expressions.add(new Expression("2 / 4", 0.5));
+        expressions.add(new Expression("4 / -2", -2));
+        expressions.add(new Expression("7 % 2", 1.0));
+        expressions.add(new Expression("7 % -2", 1.0));
+        expressions.add(new Expression("4 * 3 + 2", 14));
+        expressions.add(new Expression("4 + 3 * 2", 10));
+        expressions.add(new Expression("4 / 2 * 8", 16));
+        expressions.add(new Expression("(4)", 4));
+        expressions.add(new Expression("(-4)", -4));
+        expressions.add(new Expression("-(4)", -4));
+        expressions.add(new Expression("-(-4)", 4));
+        expressions.add(new Expression("-(-(4))", 4));
+        expressions.add(new Expression("(4 + 3)", 7));
+        expressions.add(new Expression("-(3 + 3)", -6));
+        expressions.add(new Expression("(3) + 1", 4));
+        expressions.add(new Expression("(3) - 1", 2));
+        expressions.add(new Expression("(4 + 3) * 2", 14));
+        expressions.add(new Expression("4 + (3 + 1) + (3 + 1) + 1", 13));
+        expressions.add(new Expression("((4 + 3) * 2)", 14));
+        expressions.add(new Expression("((4 + 3) * 2) * 3", 42));
+        expressions.add(new Expression("((4 + 3) * -2) * 3", -42));
+        expressions.add(new Expression("((4 + 3) * 2) / -7", -2));
+        expressions.add(new Expression("(4 / 2) * 8", 16));
+        expressions.add(new Expression("4 / (2 * 8)", 0.25));
+        expressions.add(new Expression("(4 * 2) / 8", 1));
+        expressions.add(new Expression("4 * (2 / 8)", 1));
+        expressions.add(new Expression("(4 / (2) * 8)", 16));
+        expressions.add(new Expression("-(3 + -(3 - 4))", 4));
+        
+        ///
 
         expressions.add(new Expression("2.5e2 + 10 * 10", 350));
         expressions.add(new Expression("(2.5e2 + 10) * 10", 2600));
