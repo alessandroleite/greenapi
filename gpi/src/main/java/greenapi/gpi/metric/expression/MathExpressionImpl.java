@@ -108,15 +108,17 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
             }
         }
 
-        return eval.eval(this);
+        Value<T> result = eval.eval(this);
+        this.variables.putAll(eval.variables());
+        return result;
     }
 
     @Override
     public Value<T> evaluate() throws EvaluationException
     {
         Value<T> result = this.evaluator.eval(this);
-        this.evaluator.variables();
-
+        this.variables.putAll(this.evaluator.variables());
+        
         return result;
     }
 

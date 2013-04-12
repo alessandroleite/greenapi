@@ -361,6 +361,14 @@
 				<version>${aspectj-maven-plugin.version}</version>
 				<inherited>true</inherited>
 			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <version>2.12</version>
+			    <configuration>
+				<argLine>-XX:-UseSplitVerifier</argLine> <!-- Cobertura and Java 7 http://goo.gl/M5w1v -->
+			    </configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>

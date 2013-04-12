@@ -40,13 +40,12 @@ import greenapi.gpi.metric.expression.parser.ExpressionParser;
 import greenapi.gpi.metric.expression.token.MathNodeToken;
 import greenapi.gpi.metric.expression.token.TreeVisitor;
 
-@SuppressWarnings("rawtypes")
 public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>>
 {
     /**
      * {@link Map} with the variables of this {@link Evaluator}. The key is the variable's name.
      */
-    private Map<String, Variable> variables = new HashMap<>();
+    private Map<String, Variable<?>> variables = new HashMap<>();
 
     @Override
     public Value<T> eval(Expression<T> expression) throws EvaluationException
@@ -70,7 +69,7 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     }
 
     @Override
-    public Map<String, Variable> variables()
+    public Map<String, Variable<?>> variables()
     {
         return Collections.unmodifiableMap(variables);
     }
@@ -79,7 +78,7 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     @Override
     public <R> Variable<R> getVariableByName(String varName)
     {
-        return this.variables.get(varName);
+        return (Variable<R>) this.variables.get(varName);
     }
 
     @Override

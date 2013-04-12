@@ -369,9 +369,10 @@ public class ExpressionParser<T> extends Parser
      */
     private AssignToken<T> assign() throws RecognitionException
     {
-        VarToken<T> var = new VarToken<>(LT(1));
+        Token varToken = LT(1); 
         match(IDENT.getId());
-        Token token = LT(1);
+        
+        VarToken<T> var = new VarToken<>(varToken);
         match(EQUALS.getId());
         expression();
 
@@ -380,7 +381,7 @@ public class ExpressionParser<T> extends Parser
             throw new RecognitionException("Invalid assignment expression!");
         }
 
-        return new AssignToken<T>(var, token, (ExpressionToken<T, Value<T>>) operands.pop());
+        return new AssignToken<T>(var, varToken, (ExpressionToken<T, Value<T>>) operands.pop());
     }
 
     /**
@@ -406,8 +407,12 @@ public class ExpressionParser<T> extends Parser
         }
         else
         {
-            //throw new RecognitionException("Expecting IDENT|ATOM; found " + LT(1));
             expression();
+        }
+        
+        if (operands.isEmpty())
+        {
+            throw new RecognitionException("Expecting IDENT|ATOM; found " + LT(1));
         }
 
         return new UnaryToken<T>(token, (ExpressionToken<T, Value<T>>) this.operands.pop());

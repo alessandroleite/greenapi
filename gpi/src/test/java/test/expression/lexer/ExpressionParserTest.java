@@ -34,6 +34,7 @@ import greenapi.gpi.metric.expression.token.AssignToken;
 import greenapi.gpi.metric.expression.token.BinaryOperatorToken;
 import greenapi.gpi.metric.expression.token.FunctionToken;
 import greenapi.gpi.metric.expression.token.MathNodeToken;
+import greenapi.gpi.metric.expression.token.NumberToken;
 import greenapi.gpi.metric.expression.token.UnaryToken;
 import greenapi.gpi.metric.expression.token.VarToken;
 
@@ -63,7 +64,7 @@ public class ExpressionParserTest extends TestSupport
                     binaryOperationExpressions.get(i).getExpression())).stat();
 
             Assert.assertNotNull(stat);
-            assertEquals(new Class[] {BinaryOperatorToken.class, UnaryToken.class, VarToken.class}, stat.getClass());
+            assertEquals(new Class[] {BinaryOperatorToken.class, UnaryToken.class, NumberToken.class, VarToken.class}, stat.getClass());
         }
     }
     
@@ -103,5 +104,32 @@ public class ExpressionParserTest extends TestSupport
             Assert.assertNotNull(stat);
             Assert.assertEquals(AssignToken.class, stat.getClass());
         }
+    }
+
+    /**
+     * Tests the parser of invalid expressions.
+     * 
+     * @throws RecognitionException
+     *             If it's an invalid expression.
+     */
+    @Test(expected = RecognitionException.class)
+    public void must_be_invalid_mathematical_operation() throws RecognitionException
+    {
+        
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("-")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 +")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 -")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 + -")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("--1")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 * / 1")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("*1")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("(1")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 * (")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 - )")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("(1))")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("((1)")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("((1 + 1)) * 2)")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 * ()")).stat();
+        new ExpressionParser<BigDecimal>(new ExpressionLexer("1 (*) 1")).stat();
     }
 }

@@ -151,18 +151,20 @@ public abstract class TestSupport
      * The expressions containing only assignment operations.
      */
     private final List<Expression> mathematicalAssignmentOperations = new ArrayList<>();
-
+    
     /**
      * All expressions (mathematical, mathematical operations with variables, function call).
      */
     private List<Expression> expressions = new ArrayList<>();
-
+    
+    
     /**
      * Prepares this test resources.
      */
     @Before
     public void setUp()
     {
+        mathematicalOperations.add(new Expression("1", 1));
         mathematicalOperations.add(new Expression("1+2+3+4", 10));
         mathematicalOperations.add(new Expression("2 - -4", 6));
         mathematicalOperations.add(new Expression("4 + -1", 3));

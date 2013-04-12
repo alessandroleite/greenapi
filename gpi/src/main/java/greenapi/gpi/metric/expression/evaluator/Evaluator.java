@@ -49,8 +49,7 @@ public interface Evaluator<T, V>
      * 
      * @return A non modifiable {@link Map} with the {@link Variable}s found in the expression.
      */
-    @SuppressWarnings("rawtypes")
-    Map<String, Variable> variables();
+    Map<String, Variable<?>> variables();
 
     /**
      * Returns an {@link Operator}'s instance of a given symbol or <code>null</code> if it's unknown.

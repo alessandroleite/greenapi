@@ -26,6 +26,8 @@ import java.math.BigDecimal;
 
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.MathExpressionImpl;
+import greenapi.gpi.metric.expression.UndefinedFunctionException;
+import greenapi.gpi.metric.expression.UndefinedVariableException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.evaluator.impl.ExpressionEvaluator;
 import greenapi.gpi.metric.expression.function.math.Abs;
@@ -60,5 +62,45 @@ public class MathExpressionTest extends TestSupport
             
             Assert.assertEquals(expression.getValue(), result.getValue());
         }
+    }
+    
+    /**
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test
+    public void must_assign_eight_to_a_variable() throws EvaluationException
+    {
+        MathExpressionImpl<BigDecimal> math = new MathExpressionImpl<BigDecimal>("a = 2 ^ 3");
+        Assert.assertTrue(math.variables().isEmpty());
+        
+        Value<BigDecimal> value = math.evaluate(new ExpressionEvaluator<BigDecimal>());
+        Assert.assertEquals(value.getValue(), BigDecimal.valueOf(8));
+        
+        Assert.assertEquals(1, math.variables().size());
+    }
+
+    /**
+     * Tests the use of undefined variable.
+     * 
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test(expected = UndefinedVariableException.class)
+    public void must_throw_undefined_variable_use() throws EvaluationException
+    {
+        new MathExpressionImpl<BigDecimal>("max(a)").withFunction(new Abs()).withFunction(new Max()).evaluate(new ExpressionEvaluator<BigDecimal>());
+    }
+    
+    /**
+     * Tests the use of undefined function.
+     * 
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test(expected = UndefinedFunctionException.class)
+    public void must_throw_undefined_function_call() throws EvaluationException
+    {
+        new MathExpressionImpl<BigDecimal>("abss(1)").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
     }
 }

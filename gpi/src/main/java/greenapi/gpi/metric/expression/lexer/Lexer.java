@@ -80,23 +80,23 @@ public abstract class Lexer
         c = p >= input.length() ? EOF : input.charAt(p);
     }
 
-    /**
-     * Check if the current value of the input is equals of a given value.
-     * 
-     * @param x
-     *            The value to be checked.
-     */
-    public void match(char x)
-    {
-        if (c == x)
-        {
-            consume();
-        }
-        else
-        {
-            throw new Error("expecting " + x + ";found " + c);
-        }
-    }
+//    /**
+//     * Check if the current value of the input is equals of a given value.
+//     * 
+//     * @param x
+//     *            The value to be checked.
+//     */
+//    protected void match(char x)
+//    {
+//        if (c == x)
+//        {
+//            consume();
+//        }
+//        else
+//        {
+//            throw new Error("expecting " + x + ";found " + c);
+//        }
+//    }
 
     /**
      * Returns the character of the cursor.

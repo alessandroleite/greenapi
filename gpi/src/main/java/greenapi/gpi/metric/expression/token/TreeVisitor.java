@@ -28,6 +28,7 @@ import java.util.List;
 
 import greenapi.gpi.metric.expression.Computable;
 import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.gpi.metric.expression.UndefinedFunctionException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
@@ -90,7 +91,7 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
         {
             return (V) this.visit((FunctionToken<T>) node);
         }
-        throw new IllegalArgumentException("Unknown token " + node.getToken().getText());
+        throw new EvaluationException("Unknown token " + node.getToken().getText());
     }
 
     @Override
@@ -98,7 +99,6 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     {
         Value<T> value = new Value<T>((T) new BigDecimal(number.getToken().getText()));
         // Constant<T> constt = new Constant<T>(number.getToken().getClass().getSimpleName(), value);
-
         // return (Computable<T>) constt;
         return value;
     }
@@ -107,6 +107,11 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     public Computable<T> visit(FunctionToken<T> functionToken) throws EvaluationException
     {
         Function<Computable<T>> function = this.evaluator.getFunctionByName(functionToken.getName());
+        
+        if (function == null)
+        {
+            throw new UndefinedFunctionException(String.format("Undefined function: %s!", functionToken.getName()));
+        }
 
         List<Computable<T>> values = new ArrayList<>();
 
@@ -151,12 +156,13 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     @Override
     public Computable<T> visit(AssignToken<T> assign) throws EvaluationException
     {
-//        Computable<T> variable = assign.getId().visit(this);
-//        
-//        variable.setValue(assign.getValue().visit(this));
-//        this.evaluator.register(variable);
-//
-//        return (Computable<T>) variable;
-        return null;
+        Value<T> value = assign.getValue().visit(this);
+        
+        Variable<Value<T>> variable = assign.getId().getVariable();
+        variable.setValue(value);
+        
+        this.evaluator.register(variable);
+        
+        return value;
     }
 }
