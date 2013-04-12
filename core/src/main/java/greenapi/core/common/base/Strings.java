@@ -91,7 +91,24 @@ public final class Strings
      */
     public static String checkArgumentIsNotNullOrEmpty(String value)
     {
-        Preconditions.checkArgument(!com.google.common.base.Strings.isNullOrEmpty(value));
+        return checkArgumentIsNotNullOrEmpty(value, null);
+    }
+
+    /**
+     * Check if a given {@link String} is not <code>null</code> or empty and return the same {@link String}. If the value is <code>null</code> or
+     * empty this method throws the exception {@link IllegalArgumentException}.
+     * 
+     * @param value
+     *            The {@link String} to be checked.
+     * @param message
+     *            The message to be used in the {@link IllegalArgumentException}.
+     * @return The given {@link String}.
+     * @throws IllegalArgumentException
+     *             if the value is <code>null</code> or empty.
+     */
+    public static String checkArgumentIsNotNullOrEmpty(String value, String message)
+    {
+        Preconditions.checkArgument(!com.google.common.base.Strings.isNullOrEmpty(value), message);
         return value;
     }
 }

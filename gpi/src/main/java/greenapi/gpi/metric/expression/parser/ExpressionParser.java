@@ -534,7 +534,6 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
-     * 
      * @throws RecognitionException
      *             If it's an invalid expression.
      */
@@ -545,7 +544,15 @@ public class ExpressionParser<T> extends Parser
             this.operands.push(function_call());
             return;
         }
-        else if ((LA(2) == OP.getId() && precedence(LT(2)) > precedence(operators.peek())) || LA(2) == LPARENTHESIS.getId())
+        else if (isUnary())
+        {
+            this.operands.push(unary());
+        }
+        else if (speculate_parenthesis_expression())
+        {
+            parenthesis();
+        }
+        else if (isHighPrecedenceOperator())
         {
             expression();
             return;
@@ -591,13 +598,40 @@ public class ExpressionParser<T> extends Parser
     }
 
     /**
-     * Returns <code>true</code> if the current token is a number or a variable. Otherwise return <code>false</code>.
+     * Returns <code>true</code> if the current token is a number. Otherwise return <code>false</code>.
      * 
-     * @return <code>true</code> if the current token is a number or a variable. Otherwise return <code>false</code>.
+     * @return <code>true</code> if the current token is a number. Otherwise return <code>false</code>.
      */
     private boolean isAtomTerm()
     {
-        return LA(1) == ATOM.getId() && (LA(2) != LPARENTHESIS.getId() && LA(2) != OP.getId());
+        if (LA(1) == ATOM.getId())
+        {
+            if (LA(2) != LPARENTHESIS.getId() && LA(2) != OP.getId())
+            {
+                return true;
+            }
+
+            if (!this.operators.isEmpty() && LA(2) == OP.getId() && precedence(this.operators.peek()) >= precedence(LT(2)))
+            {
+                return true;
+            }
+
+        }
+        return false;
+    }    
+    
+    
+    /**
+     * Returns <code>true</code> if the next token is a operator with a higher precedence then operator in the top or if it's a left parenthesis.
+     * 
+     * @return <code>true</code> if the next token is a operator with a higher precedence then operator in the top or if it's a left parenthesis.
+     */
+    private boolean isHighPrecedenceOperator()
+    {
+        boolean l1 = LA(1) == LPARENTHESIS.getId() && (LA(2) != UNARY.getId() && LA(2) != ATOM.getId() && LA(2) == IDENT.getId());
+        boolean l2 = (LA(2) == OP.getId() && precedence(LT(2)) > precedence(operators.peek())) || LA(2) == LPARENTHESIS.getId();
+        
+        return l1 || l2;
     }
 
     /**

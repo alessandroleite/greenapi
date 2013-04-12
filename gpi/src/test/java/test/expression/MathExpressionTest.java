@@ -23,8 +23,6 @@
 package test.expression;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.MathExpressionImpl;
@@ -35,141 +33,12 @@ import greenapi.gpi.metric.expression.function.math.Max;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 
-public class MathExpressionTest
+public class MathExpressionTest extends TestSupport
 {
 
     /**
-     * A math expression and its value.
-     */
-    static final class Expression
-    {
-
-        /**
-         * The expected value of the expression.
-         */
-        private final BigDecimal value;
-
-        /**
-         * The math expression.
-         */
-        private final String expression;
-
-        /**
-         * Creates an instance of this class.
-         * 
-         * @param expr
-         *            The math expression.
-         * @param result
-         *            The expected value of this expression.
-         */
-        private Expression(String expr, BigDecimal result)
-        {
-            this.expression = expr;
-            this.value = result;
-        }
-
-        /**
-         * Creates an instance of this class.
-         * 
-         * @param expr
-         *            The math expression.
-         * @param result
-         *            The expected value of this expression.
-         */
-        private Expression(String expr, double result)
-        {
-            this(expr, BigDecimal.valueOf(result));
-        }
-        
-        /**
-         * Creates an instance of this class.
-         * 
-         * @param expr
-         *            The math expression.
-         * @param result
-         *            The expected value of this expression.
-         */
-        private Expression(String expr, long result)
-        {
-            this(expr, BigDecimal.valueOf(result));
-        }
-    }
-
-    /**
-     * The expression to be tested.
-     */
-    private List<Expression> expressions = new ArrayList<>();
-
-    /**
-     * Prepares this test resources.
-     */
-    @Before
-    public void setUp()
-    {
-        expressions.add(new Expression("1+2+3+4", 10));
-        expressions.add(new Expression("(a * b + c)", 65));
-        expressions.add(new Expression("a + b * c", 79));
-        expressions.add(new Expression("2 - -4", 6));
-        expressions.add(new Expression("4 + -1", 3));
-        expressions.add(new Expression("1.2 + 0.4", 1.6d));
-        expressions.add(new Expression("1.2 + .4", 1.6d));
-        expressions.add(new Expression("0.2 - 0.4", -.2d));
-        expressions.add(new Expression("-4 + 1", -3));
-        expressions.add(new Expression("-4 + -1", -5));
-        expressions.add(new Expression("4 * -3", -12));
-        expressions.add(new Expression("-4 * -3", 12));
-
-        //
-        expressions.add(new Expression("4 / 2", 2));
-        expressions.add(new Expression("2 / 4", 0.5));
-        expressions.add(new Expression("4 / -2", -2));
-        expressions.add(new Expression("7 % 2", 1.0));
-        expressions.add(new Expression("7 % -2", 1.0));
-        expressions.add(new Expression("4 * 3 + 2", 14));
-        expressions.add(new Expression("4 + 3 * 2", 10));
-        expressions.add(new Expression("4 / 2 * 8", 16));
-        expressions.add(new Expression("(4)", 4));
-        expressions.add(new Expression("(-4)", -4));
-        expressions.add(new Expression("-(4)", -4));
-        expressions.add(new Expression("-(-4)", 4));
-        expressions.add(new Expression("-(-(4))", 4));
-        expressions.add(new Expression("(4 + 3)", 7));
-        expressions.add(new Expression("-(3 + 3)", -6));
-        expressions.add(new Expression("(3) + 1", 4));
-        expressions.add(new Expression("(3) - 1", 2));
-        expressions.add(new Expression("(4 + 3) * 2", 14));
-        expressions.add(new Expression("4 + (3 + 1) + (3 + 1) + 1", 13));
-        expressions.add(new Expression("((4 + 3) * 2)", 14));
-        expressions.add(new Expression("((4 + 3) * 2) * 3", 42));
-        expressions.add(new Expression("((4 + 3) * -2) * 3", -42));
-        expressions.add(new Expression("((4 + 3) * 2) / -7", -2));
-        expressions.add(new Expression("(4 / 2) * 8", 16));
-        expressions.add(new Expression("4 / (2 * 8)", 0.25));
-        expressions.add(new Expression("(4 * 2) / 8", 1));
-        expressions.add(new Expression("4 * (2 / 8)", 1));
-        expressions.add(new Expression("(4 / (2) * 8)", 16));
-        expressions.add(new Expression("-(3 + -(3 - 4))", 4));
-        
-        ///
-
-        expressions.add(new Expression("2.5e2 + 10 * 10", 350));
-        expressions.add(new Expression("(2.5e2 + 10) * 10", 2600));
-
-        expressions.add(new Expression("3 * (5 + a)", 36));
-        expressions.add(new Expression("3 * (5 + (a * b + c))", 210));
-
-        expressions.add(new Expression("3 + (2 * abs(d) + n)", 21));
-
-        expressions.add(new Expression("max(2, abs (-(3)) )", 3));
-
-        // expressions.add(new Expression("a = b + 2", 4));
-    }
-
-    /**
-     * 
      * @throws EvaluationException
      *             If the expression is invalid.
      */
@@ -177,9 +46,9 @@ public class MathExpressionTest
     public void must_be_valid_expressions() throws EvaluationException
     {
 
-        for (Expression expression : expressions)
+        for (Expression expression : expressions())
         {
-            Value<BigDecimal> result = new MathExpressionImpl<BigDecimal>(expression.expression)
+            Value<BigDecimal> result = new MathExpressionImpl<BigDecimal>(expression.getExpression())
                     .withVariable("a", BigDecimal.valueOf(7))
                     .withVariable("b", BigDecimal.valueOf(8))
                     .withVariable("c", BigDecimal.valueOf(9))
@@ -189,7 +58,7 @@ public class MathExpressionTest
                     .withFunction(new Max())
                     .evaluate(new ExpressionEvaluator<BigDecimal>());
             
-            Assert.assertEquals(expression.value, result.getValue());
+            Assert.assertEquals(expression.getValue(), result.getValue());
         }
     }
 }

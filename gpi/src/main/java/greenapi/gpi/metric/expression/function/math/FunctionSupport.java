@@ -80,11 +80,7 @@ public abstract class FunctionSupport implements Function<Value<BigDecimal>>
     @Override
     public Value<BigDecimal> evaluate(List<Value<BigDecimal>> arguments)
     {
-
-        if (arguments == null || arguments.size() != numberOfArguments)
-        {
-            usage();
-        }
+        checkArguments(arguments);
 
         List<BigDecimal> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<BigDecimal>, BigDecimal>()
         {
@@ -108,12 +104,28 @@ public abstract class FunctionSupport implements Function<Value<BigDecimal>>
     /**
      * This method throws the exception {@link IllegalArgumentException} with the instructions to call this {@link Function}.
      * 
+     * @param args {@link List} with the arguments passed to the function.
      * @throws IllegalArgumentException
      *             Exception with the instruction to call this {@link Function}.
      */
-    protected void usage()
+    protected void checkArguments(List<Value<BigDecimal>> args)
     {
-        throw new IllegalArgumentException();
+        StringBuilder message = new StringBuilder();
+        
+        if (args == null)
+        {
+            message.append(String.format("The function %s requires %s argument%s. But there wasn't any argument.", this.name(),
+                    this.numberOfArguments, this.numberOfArguments > 0 ? "s" : ""));
+            
+            throw new IllegalArgumentException(message.toString());
+        }
+        else if (args.size() != this.numberOfArguments)
+        {
+            message.append(String.format("The function %s requires %s argument%s.", this.name(),
+                    this.numberOfArguments, this.numberOfArguments > 0 ? "s" : ""));
+            
+            throw new IllegalArgumentException(message.toString());
+        }
     }
 
     /**

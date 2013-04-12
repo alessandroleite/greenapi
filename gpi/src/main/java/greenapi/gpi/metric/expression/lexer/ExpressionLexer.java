@@ -95,7 +95,6 @@ public class ExpressionLexer extends AbstractLexer
     @Override
     public String getTokenName(int tokenType)
     {
-        //return ExpressionTokens.get(tokenType).name();
-        return null;
+        return ExpressionTokens.get(tokenType).name();
     }
 }

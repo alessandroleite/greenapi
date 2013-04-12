@@ -22,6 +22,7 @@
  */
 package greenapi.gpi.metric.expression.lexer;
 
+import greenapi.core.common.base.Strings;
 import greenapi.gpi.metric.expression.token.Token;
 
 public abstract class Lexer
@@ -53,13 +54,12 @@ public abstract class Lexer
     private char c;
 
     /**
-     * 
      * @param expression
-     *            The expression to be analyzed and identified the tokens. Might not be <code>null</code>.
+     *            The expression to be analyzed and identified the tokens. Might not be <code>null</code> or empty.
      */
     public Lexer(String expression)
     {
-        this.input = expression;
+        this.input = Strings.checkArgumentIsNotNullOrEmpty(expression, "The expression might not be null or empty!");
         c = input.charAt(p);
     }
 

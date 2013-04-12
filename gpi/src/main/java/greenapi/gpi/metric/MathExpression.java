@@ -117,4 +117,13 @@ public interface MathExpression<T> extends Expression<T>
      * @return The same {@link MathExpression}'s reference but now with a new function registered.
      */
     MathExpression<T> withFunction(Function<Value<T>> function);
+
+    /**
+     * Register a function to be used in the math operations.
+     * 
+     * @param function
+     *            The class of the function. Might not be <code>null</code>.
+     * @return The same {@link MathExpression}'s reference but now with a new function registered.
+     */
+    MathExpression<T> withFunction(Class<Function<Value<T>>> function);
 }

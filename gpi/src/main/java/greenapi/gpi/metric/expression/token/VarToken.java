@@ -22,11 +22,12 @@
  */
 package greenapi.gpi.metric.expression.token;
 
+import greenapi.gpi.metric.expression.Computable;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.Variable;
 
-public class VarToken<T> extends ExpressionToken<T, Variable<T>>
+public class VarToken<T> extends ExpressionToken<T, Computable<T>>
 {
     /**
      * The {@link Variable}'s instance.
@@ -46,7 +47,7 @@ public class VarToken<T> extends ExpressionToken<T, Variable<T>>
     }
 
     @Override
-    public Variable<T> visit(ExpressionVisitor<T> visitor) throws EvaluationException
+    public Computable<T> visit(ExpressionVisitor<T> visitor) throws EvaluationException
     {
         return visitor.visit(this);
     }

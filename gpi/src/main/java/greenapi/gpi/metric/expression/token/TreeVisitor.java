@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import greenapi.gpi.metric.expression.Computable;
-import greenapi.gpi.metric.expression.Constant;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
 import greenapi.gpi.metric.expression.Value;
@@ -71,6 +70,10 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
         {
             return (V) this.visit((BinaryOperatorToken<T>) node);
         }
+        else if (node instanceof UnaryToken)
+        {
+            return (V) this.visit((UnaryToken<T>) node);
+        }
         else if (node instanceof AssignToken)
         {
             return (V) this.visit((AssignToken<T>) node);
@@ -94,9 +97,10 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     public Computable<T> visit(NumberToken<T> number)
     {
         Value<T> value = new Value<T>((T) new BigDecimal(number.getToken().getText()));
-        Constant<T> constt = new Constant<T>(number.getToken().getClass().getSimpleName(), value);
-        
-        return (Computable<T>) constt;
+        // Constant<T> constt = new Constant<T>(number.getToken().getClass().getSimpleName(), value);
+
+        // return (Computable<T>) constt;
+        return value;
     }
 
     @Override
@@ -125,16 +129,16 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     }
 
     @Override
-    public <R> Variable<R> visit(VarToken<T> variable) throws UndefinedVariableException
+    public Computable<T> visit(VarToken<T> variable) throws UndefinedVariableException
     {
-        final Variable<R> var = this.evaluator.<R> getVariableByName(variable.name());
+        final Variable<T> var = this.evaluator.<T> getVariableByName(variable.name());
 
         if (var == null)
         {
             throw new UndefinedVariableException(String.format("Undefined variable: %s!", variable.name()));
         }
 
-        return var;
+        return var.getValue();
     }
 
     @Override
@@ -147,10 +151,12 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     @Override
     public Computable<T> visit(AssignToken<T> assign) throws EvaluationException
     {
-        Variable<T> variable = assign.getId().visit(this);
-        variable.setValue(assign.getValue().visit(this));
-        this.evaluator.register(variable);
-
-        return (Computable<T>) variable;
+//        Computable<T> variable = assign.getId().visit(this);
+//        
+//        variable.setValue(assign.getValue().visit(this));
+//        this.evaluator.register(variable);
+//
+//        return (Computable<T>) variable;
+        return null;
     }
 }

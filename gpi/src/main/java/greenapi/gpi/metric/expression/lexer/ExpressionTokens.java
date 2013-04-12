@@ -109,15 +109,15 @@ public enum ExpressionTokens
      * @throws IllegalArgumentException
      *             If the given value is unknown.
      */
-    public ExpressionTokens get(int enumId)
+    public static ExpressionTokens get(int enumId)
     {
         for (ExpressionTokens type : ExpressionTokens.values())
         {
-            if (type.getId() == id)
+            if (type.getId() == enumId)
             {
                 return type;
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(String.format("There isn't an enum instance with the id: %s", enumId));
     }
 }

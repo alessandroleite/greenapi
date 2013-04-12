@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import greenapi.core.common.base.ClassUtils;
 import greenapi.core.common.base.Strings;
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.MathExpression;
@@ -171,5 +172,11 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
     {
         Functions.register(function);
         return this;
+    }
+
+    @Override
+    public MathExpression<T> withFunction(Class<Function<Value<T>>> function)
+    {
+        return this.withFunction(ClassUtils.newInstanceForName(function));
     }
 }

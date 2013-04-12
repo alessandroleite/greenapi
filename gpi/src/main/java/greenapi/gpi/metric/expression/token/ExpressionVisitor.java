@@ -25,7 +25,6 @@ package greenapi.gpi.metric.expression.token;
 import greenapi.gpi.metric.expression.Computable;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
-import greenapi.gpi.metric.expression.Variable;
 
 public interface ExpressionVisitor<T>
 {
@@ -34,13 +33,11 @@ public interface ExpressionVisitor<T>
      * 
      * @param variable
      *            The variable tree to be visited.
-     * @param <R>
-     *            The variable's value type.
      * @return The value of the variable.
      * @throws UndefinedVariableException
      *             If the given variable was not defined in the system.
      */
-    <R> Variable<R> visit(VarToken<T> variable) throws UndefinedVariableException;
+    Computable<T> visit(VarToken<T> variable) throws UndefinedVariableException;
 
     /**
      * This method visits a {@link NumberToken} (atom) token type. In this case, this token can be seen as a
