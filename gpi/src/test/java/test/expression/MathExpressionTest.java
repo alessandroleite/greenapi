@@ -24,8 +24,9 @@ package test.expression;
 
 import java.math.BigDecimal;
 
+import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.EvaluationException;
-import greenapi.gpi.metric.expression.MathExpressionImpl;
+import greenapi.gpi.metric.expression.ExpressionBuilder;
 import greenapi.gpi.metric.expression.UndefinedFunctionException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
 import greenapi.gpi.metric.expression.Value;
@@ -50,7 +51,7 @@ public class MathExpressionTest extends TestSupport
 
         for (Expression expression : expressions())
         {
-            Value<BigDecimal> result = new MathExpressionImpl<BigDecimal>(expression.getExpression())
+            Value<BigDecimal> result = ExpressionBuilder.<BigDecimal>newMathExpression(expression.getExpression())
                     .withVariable("a", BigDecimal.valueOf(7))
                     .withVariable("b", BigDecimal.valueOf(8))
                     .withVariable("c", BigDecimal.valueOf(9))
@@ -71,7 +72,7 @@ public class MathExpressionTest extends TestSupport
     @Test
     public void must_assign_eight_to_a_variable() throws EvaluationException
     {
-        MathExpressionImpl<BigDecimal> math = new MathExpressionImpl<BigDecimal>("a = 2 ^ 3");
+        MathExpression<BigDecimal> math = ExpressionBuilder.<BigDecimal> newMathExpression("a = 2 ^ 3");
         Assert.assertTrue(math.variables().isEmpty());
         
         Value<BigDecimal> value = math.evaluate(new ExpressionEvaluator<BigDecimal>());
@@ -89,7 +90,8 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = UndefinedVariableException.class)
     public void must_throw_undefined_variable_use() throws EvaluationException
     {
-        new MathExpressionImpl<BigDecimal>("max(a)").withFunction(new Abs()).withFunction(new Max()).evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<BigDecimal> newMathExpression("max(a)").withFunction(new Abs()).withFunction(new Max())
+                .evaluate(new ExpressionEvaluator<BigDecimal>());
     }
     
     /**
@@ -101,6 +103,6 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = UndefinedFunctionException.class)
     public void must_throw_undefined_function_call() throws EvaluationException
     {
-        new MathExpressionImpl<BigDecimal>("abss(1)").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<BigDecimal> newMathExpression("abss(1)").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
     }
 }

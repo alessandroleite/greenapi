@@ -45,7 +45,6 @@ import test.expression.TestSupport;
 
 public class ExpressionParserTest extends TestSupport
 {
-
     /**
      * Tests mathematical operations with or without variables.
      * 

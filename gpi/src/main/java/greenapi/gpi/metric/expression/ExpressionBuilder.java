@@ -22,10 +22,21 @@
  */
 package greenapi.gpi.metric.expression;
 
+import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.MathExpression;
+import greenapi.gpi.metric.expression.evaluator.Evaluator;
 
-public class ExpressionBuilder
+public final class ExpressionBuilder
 {
+
+    /**
+     * Private constructor.
+     */
+    private ExpressionBuilder()
+    {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * @param expression
      *            The expression to be evaluate and executed.
@@ -39,8 +50,12 @@ public class ExpressionBuilder
      *            The type of the value returned by the expression.
      * @return The result after analyze and execute the given expression.
      */
-    public <T> T evaluate(String expression, Object... variablesValues)
+    public static <T> T evaluate(String expression, Object... variablesValues)
     {
+        MathExpression<Object> newMathExpression = newMathExpression(expression);
+
+        Evaluator<Expression<T>, Value<T>> evaluator;
+
         return null;
     }
 
@@ -51,9 +66,9 @@ public class ExpressionBuilder
      *            The type of the value returned by the expression.
      * @return An instance of a {@link MathExpression}.
      */
-    public <T> MathExpression<T> newMathExpression()
+    public static <T> MathExpression<T> newMathExpression()
     {
-        return null;
+        return new MathExpressionImpl<T>();
     }
 
     /**
@@ -65,8 +80,8 @@ public class ExpressionBuilder
      *            The type of the value returned by the expression.
      * @return A {@link MathExpression} instance of the given expression.
      */
-    public <T> MathExpression<T> newMathExpression(String expression)
+    public static <T> MathExpression<T> newMathExpression(String expression)
     {
-        return null;
+        return new MathExpressionImpl<T>(expression);
     }
 }
