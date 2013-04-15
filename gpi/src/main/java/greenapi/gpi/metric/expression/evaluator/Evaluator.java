@@ -40,7 +40,7 @@ public interface Evaluator<T, V>
      *            The type (function, expression, variable, etc.) to be evaluate.
      * @return The value after evaluate the given type.
      * @throws EvaluationException
-     *             If the expression is wrong.
+     *             If the expression is invalid.
      */
     V eval(T type) throws EvaluationException;
 

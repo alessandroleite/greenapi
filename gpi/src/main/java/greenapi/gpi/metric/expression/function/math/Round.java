@@ -25,7 +25,7 @@ package greenapi.gpi.metric.expression.function.math;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public class Round extends FunctionSupport
+public class Round extends FunctionSupport<BigDecimal>
 {
 
     /**

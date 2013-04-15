@@ -28,10 +28,10 @@ import javax.measure.quantity.Quantity;
 public interface Formulae<V, Q extends Quantity>
 {
     /**
-     * Compute and returns the value of a {@link Formulae}.
+     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
      * 
      * @param expression
-     *            The expression of the formulae.
+     *            The expression of the formulae. Might not be <code>null</code>.
      * @return The value of the formulae.
      */
     Measure<V, Q> compute(Expression<V> expression);

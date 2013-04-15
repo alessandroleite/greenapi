@@ -24,7 +24,7 @@ package greenapi.gpi.metric.expression.function.math;
 
 import java.math.BigDecimal;
 
-public class Sqrt extends FunctionSupport
+public class Sqrt extends FunctionSupport<BigDecimal>
 {
 
     /**

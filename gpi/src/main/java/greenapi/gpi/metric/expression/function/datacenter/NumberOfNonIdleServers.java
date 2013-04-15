@@ -22,14 +22,50 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.util.List;
 
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.function.Function;
+import com.google.common.collect.Lists;
 
-public interface NumberOfNonIdleServers extends Function<Value<BigInteger>>
+import greenapi.core.model.resources.Machine;
+import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.function.math.FunctionSupport;
+
+public class NumberOfNonIdleServers extends FunctionSupport<Machine>
 {
-    
-    
+    /**
+     * Creates an instance of this {@link Class}.
+     */
+    public NumberOfNonIdleServers()
+    {
+        super(1, "nonIdleServers");
+    }
 
+    @Override
+    protected BigDecimal eval(Machine[] args)
+    {
+        int i = 0;
+        for (Machine machine : args)
+        {
+            if (machine.combinedCpuLoad() > 1)
+            {
+                i++;
+            }
+        }
+        return BigDecimal.valueOf(i);
+    }
+
+    @Override
+    protected <R, T extends Computable<R>> Machine[] transform(List<T> arguments)
+    {
+        List<R> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<R>, R>()
+        {
+            public R apply(Computable<R> input)
+            {
+                return input.getValue();
+            }
+        });
+
+        return args.toArray(new Machine[args.size()]);
+    }
 }

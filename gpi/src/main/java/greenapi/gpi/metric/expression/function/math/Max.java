@@ -24,7 +24,7 @@ package greenapi.gpi.metric.expression.function.math;
 
 import java.math.BigDecimal;
 
-public class Max extends FunctionSupport
+public class Max extends FunctionSupport<BigDecimal>
 {
     /**
      * Creates an instance of the {@link Max} function.

@@ -26,21 +26,29 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
 import greenapi.gpi.metric.expression.function.Function;
 
-public abstract class FunctionSupport implements Function<Value<BigDecimal>>
+
+public abstract class FunctionSupport<E> implements Function<Value<BigDecimal>>
 {
     /**
      * The number of arguments required by the function.
      */
     private final int numberOfArguments;
+
+    /**
+     * The name of this function.
+     */
+    private final String name;
 
     /**
      * Creates an instance of {@link FunctionSupport} with the given number of arguments to be checked before call this function.
@@ -51,81 +59,112 @@ public abstract class FunctionSupport implements Function<Value<BigDecimal>>
     public FunctionSupport(int numberOfArgs)
     {
         this.numberOfArguments = numberOfArgs;
+        this.name = this.getClass().getSimpleName().toLowerCase();
+    }
+
+    /**
+     * Creates an instance of {@link FunctionSupport} with the given number of arguments to be checked before call this function.
+     * 
+     * @param numberOfArgs
+     *            The number of arguments that is required to evaluate this function.
+     * @param functionName
+     *            The function's name. Might not be <code>null</code>.
+     */
+    public FunctionSupport(int numberOfArgs, String functionName)
+    {
+        this.numberOfArguments = numberOfArgs;
+        this.name = functionName;
     }
 
     @Override
     public String name()
     {
-        return this.getClass().getSimpleName().toLowerCase();
+        return name;
     }
 
     @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression)
+    public <T> Value<BigDecimal> evaluate(Expression<T> expression) throws EvaluationException
     {
         return this.evaluate(expression, Evaluators.<Expression<T>, Value<BigDecimal>> get(expression.getClass()));
     }
 
     @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<BigDecimal>> evaluator)
+    public <T> Value<BigDecimal> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<BigDecimal>> evaluator) throws EvaluationException
     {
-        return null;
+        return Preconditions.checkNotNull(evaluator).eval(Preconditions.checkNotNull(expression));
     }
 
     @Override
-    public Value<BigDecimal> evaluate(Value<BigDecimal>[] arguments)
+    public <R, T extends Computable<R>> Value<BigDecimal> evaluate(T[] arguments)
     {
         return this.evaluate(Arrays.asList(arguments));
     }
 
     @Override
-    public Value<BigDecimal> evaluate(List<Value<BigDecimal>> arguments)
+    public <R, T extends Computable<R>> Value<BigDecimal> evaluate(List<T> arguments)
     {
         checkArguments(arguments);
-
-        List<BigDecimal> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<BigDecimal>, BigDecimal>()
-        {
-            @SuppressWarnings("unchecked")
-            public BigDecimal apply(Computable<BigDecimal> input)
-            {
-                // FIXME I don't need this. Generic hell.
-                Object value = input.getValue();
-                if (value instanceof Value)
-                {
-                    return ((Value<BigDecimal>) value).getValue();
-                }
-                return input.getValue();
-            }
-        });
-
-        BigDecimal value = this.eval(args.toArray(new BigDecimal[args.size()]));
-        return new Value<BigDecimal>(value);
+        BigDecimal result = this.eval(transform(arguments));
+        return new Value<BigDecimal>(result);
     }
 
     /**
-     * This method throws the exception {@link IllegalArgumentException} with the instructions to call this {@link Function}.
+     * This method throws the exception {@link IllegalArgumentException} with the instructions to call this {@link Function} if the number of
+     * function's arguments is incorrect.
      * 
-     * @param args {@link List} with the arguments passed to the function.
+     * @param args
+     *            {@link List} with the arguments passed to the function.
+     * @param <R>
+     *            The {@link Computable} value type.
+     * @param <T>
+     *            A {@link Computable} argument.
      * @throws IllegalArgumentException
      *             Exception with the instruction to call this {@link Function}.
      */
-    protected void checkArguments(List<Value<BigDecimal>> args)
+    protected <R, T extends Computable<R>> void checkArguments(List<T> args)
     {
         StringBuilder message = new StringBuilder();
-        
+
         if (args == null)
         {
             message.append(String.format("The function %s requires %s argument%s. But there wasn't any argument.", this.name(),
-                    this.numberOfArguments, this.numberOfArguments > 0 ? "s" : ""));
-            
+                    this.numberOfArguments, this.numberOfArguments > 1 ? "s" : ""));
+
             throw new IllegalArgumentException(message.toString());
         }
         else if (args.size() != this.numberOfArguments)
         {
-            message.append(String.format("The function %s requires %s argument%s.", this.name(),
-                    this.numberOfArguments, this.numberOfArguments > 0 ? "s" : ""));
-            
+            message.append(String.format("The function %s requires %s argument%s.", this.name(), this.numberOfArguments,
+                    this.numberOfArguments > 1 ? "s" : ""));
+
             throw new IllegalArgumentException(message.toString());
         }
+    }
+
+    /**
+     * Transforms a {@link List} of T in an array of E. The default implementation assumes that E is a {@link BigDecimal}.
+     * 
+     * @param arguments
+     *            The {@link List} of computable arguments that must be translated to an array of {@link BigDecimal}.
+     * @param <R>
+     *            The {@link Computable} value type.
+     * @param <T>
+     *            A {@link Computable} argument.
+     * @return An array with the arguments transformed in {@link BigDecimal}.
+     */
+    @SuppressWarnings("unchecked")
+    protected <R, T extends Computable<R>> E [] transform(List<T> arguments)
+    {
+
+        List<R> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<R>, R>()
+        {
+            public R apply(Computable<R> input)
+            {
+                return input.getValue();
+            }
+        });
+
+        return (E[]) args.toArray(new BigDecimal[args.size()]);
     }
 
     /**
@@ -135,6 +174,6 @@ public abstract class FunctionSupport implements Function<Value<BigDecimal>>
      *            The arguments of the function. It's never <code>null</code> and the length is always {@link #numberOfArguments}.
      * @return The value after evaluation of this function.
      */
-    protected abstract BigDecimal eval(BigDecimal[] args);
+    protected abstract BigDecimal eval(E [] args);
 
 }

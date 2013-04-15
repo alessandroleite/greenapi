@@ -24,7 +24,7 @@ package greenapi.gpi.metric.expression.function.math;
 
 import java.math.BigDecimal;
 
-public class Atan2 extends FunctionSupport
+public class Atan2 extends FunctionSupport<BigDecimal>
 {
 
     /**

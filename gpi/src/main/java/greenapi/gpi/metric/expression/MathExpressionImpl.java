@@ -34,6 +34,7 @@ import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 import greenapi.gpi.metric.expression.function.Function;
 import greenapi.gpi.metric.expression.function.Functions;
+import greenapi.gpi.metric.expression.token.TreeVariableVisitor;
 
 public final class MathExpressionImpl<T> implements MathExpression<T>
 {
@@ -180,5 +181,15 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
     public MathExpression<T> withFunction(Class<Function<Value<T>>> function)
     {
         return this.withFunction(ClassUtils.newInstanceForName(function));
+    }
+
+    @Override
+    public MathExpression<T> withVariables(Object ... variableValues)
+    {
+        if (variableValues != null && variableValues.length > 0)
+        {
+            new TreeVariableVisitor<>(evaluator, variableValues);
+        }
+        return this;
     }
 }

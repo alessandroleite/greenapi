@@ -51,20 +51,15 @@ public class MathExpressionTest extends TestSupport
 
         for (Expression expression : expressions())
         {
-            Value<BigDecimal> result = ExpressionBuilder.<BigDecimal>newMathExpression(expression.getExpression())
-                    .withVariable("a", BigDecimal.valueOf(7))
-                    .withVariable("b", BigDecimal.valueOf(8))
-                    .withVariable("c", BigDecimal.valueOf(9))
-                    .withVariable("d", BigDecimal.valueOf(-8))
-                    .withVariable("n", BigDecimal.valueOf(2))
-                    .withFunction(new Abs())
-                    .withFunction(new Max())
-                    .evaluate(new ExpressionEvaluator<BigDecimal>());
-            
+            Value<BigDecimal> result = ExpressionBuilder.<BigDecimal> newMathExpression(expression.getExpression())
+                    .withVariable("a", BigDecimal.valueOf(7)).withVariable("b", BigDecimal.valueOf(8)).withVariable("c", BigDecimal.valueOf(9))
+                    .withVariable("d", BigDecimal.valueOf(-8)).withVariable("n", BigDecimal.valueOf(2)).withFunction(new Abs())
+                    .withFunction(new Max()).evaluate(new ExpressionEvaluator<BigDecimal>());
+
             Assert.assertEquals(expression.getValue(), result.getValue());
         }
     }
-    
+
     /**
      * @throws EvaluationException
      *             If the expression is invalid.
@@ -74,10 +69,10 @@ public class MathExpressionTest extends TestSupport
     {
         MathExpression<BigDecimal> math = ExpressionBuilder.<BigDecimal> newMathExpression("a = 2 ^ 3");
         Assert.assertTrue(math.variables().isEmpty());
-        
+
         Value<BigDecimal> value = math.evaluate(new ExpressionEvaluator<BigDecimal>());
         Assert.assertEquals(value.getValue(), BigDecimal.valueOf(8));
-        
+
         Assert.assertEquals(1, math.variables().size());
     }
 
@@ -93,7 +88,20 @@ public class MathExpressionTest extends TestSupport
         ExpressionBuilder.<BigDecimal> newMathExpression("max(a)").withFunction(new Abs()).withFunction(new Max())
                 .evaluate(new ExpressionEvaluator<BigDecimal>());
     }
-    
+
+    /**
+     * Tests the use of implicit variables.
+     * 
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test
+    public void must_work_with_implict_variables() throws EvaluationException
+    {
+        BigDecimal value = ExpressionBuilder.<BigDecimal>evaluate("5 + a * b", 5, 2);
+        Assert.assertEquals(1, value.intValue());
+    }
+
     /**
      * Tests the use of undefined function.
      * 
@@ -103,6 +111,30 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = UndefinedFunctionException.class)
     public void must_throw_undefined_function_call() throws EvaluationException
     {
-        ExpressionBuilder.<BigDecimal> newMathExpression("abss(1)").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<BigDecimal> newMathExpression("abss(1)").evaluate(new ExpressionEvaluator<BigDecimal>());
+    }
+
+    /**
+     * Tests a function call that requires arguments but without inform its arguments.
+     * 
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void must_be_an_illegal_function_call_with_wrong_arguments() throws EvaluationException
+    {
+        ExpressionBuilder.<BigDecimal> newMathExpression("abs()").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
+    }
+
+    /**
+     * Tests a function call that passing more arguments.
+     * 
+     * @throws EvaluationException
+     *             If the expression is invalid.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void must_be_an_illegal_function_call_with_more_arguments_than_required() throws EvaluationException
+    {
+        ExpressionBuilder.<BigDecimal> newMathExpression("max(2,3,4)").withFunction(new Abs()).evaluate(new ExpressionEvaluator<BigDecimal>());
     }
 }

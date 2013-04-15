@@ -25,6 +25,8 @@ package greenapi.gpi.metric.expression.function;
 import java.util.List;
 
 import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 
 /**
@@ -51,8 +53,10 @@ public interface Function<V>
      * @param <T>
      *            The type of the value returned by the evaluate and execution of the given expression.
      * @return The value of the function after it had been executed.
+     * @throws EvaluationException
+     *             If the expression that represents the function is invalid.
      */
-    <T> V evaluate(Expression<T> expression);
+    <T> V evaluate(Expression<T> expression) throws EvaluationException;
 
     /**
      * 
@@ -63,24 +67,34 @@ public interface Function<V>
      * @param <T>
      *            The type of the value returned by the evaluate and execution of the given expression.
      * @return Return the function's value after its execution.
+     * @throws EvaluationException
+     *             If the expression that represents the function is invalid.
      */
-    <T> V evaluate(Expression<T> expression, Evaluator<Expression<T>, V> evaluator);
+    <T> V evaluate(Expression<T> expression, Evaluator<Expression<T>, V> evaluator) throws EvaluationException;
 
     /**
      * Returns the value of the function execution.
      * 
      * @param arguments
      *            The function's arguments.
+     * @param <T>
+     *            The type of the arguments.
+     * @param <R>
+     *            The type of the arguments' value.
      * @return The value of the function execution.
      */
-    V evaluate(V[] arguments);
+    <R, T extends Computable<R>> V evaluate(T[] arguments);
 
     /**
      * Returns the value of the function execution.
      * 
      * @param arguments
      *            The function's arguments.
+     * @param <T>
+     *            The type of the arguments.
+     * @param <R>
+     *            The type of the arguments' value.
      * @return The result of the function execution.
      */
-    V evaluate(List<V> arguments);
+    <R, T extends Computable<R>> V evaluate(List<T> arguments);
 }

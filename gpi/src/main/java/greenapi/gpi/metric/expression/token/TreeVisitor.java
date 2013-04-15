@@ -47,7 +47,7 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
      * Creates an instance of this visitor with a given expression evaluator.
      * 
      * @param eval
-     *            The expression evaluator. An evaluator is useful to get variables, operators and functions.
+     *            The expression's evaluator. An evaluator is useful to get variables, operators and functions.
      */
     public TreeVisitor(Evaluator<?, ?> eval)
     {
@@ -107,21 +107,21 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     public Computable<T> visit(FunctionToken<T> functionToken) throws EvaluationException
     {
         Function<Computable<T>> function = this.evaluator.getFunctionByName(functionToken.getName());
-        
+
         if (function == null)
         {
             throw new UndefinedFunctionException(String.format("Undefined function: %s!", functionToken.getName()));
         }
 
-        List<Computable<T>> values = new ArrayList<>();
+        List<Computable<T>> args = new ArrayList<>();
 
         for (ExpressionToken<T, Value<T>> arg : functionToken.getArgs())
         {
             Computable<T> val = arg.visit(this);
-            values.add(val);
+            args.add(val);
         }
 
-        return function.evaluate(values);
+        return function.evaluate(args);
     }
 
     @Override
@@ -157,12 +157,22 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     public Computable<T> visit(AssignToken<T> assign) throws EvaluationException
     {
         Value<T> value = assign.getValue().visit(this);
-        
+
         Variable<Value<T>> variable = assign.getId().getVariable();
         variable.setValue(value);
-        
+
         this.evaluator.register(variable);
-        
+
         return value;
+    }
+
+    /**
+     * Returns the evaluator of the {@link ExpressionVisitor}.
+     * 
+     * @return the evaluator of the {@link ExpressionVisitor}.
+     */
+    protected Evaluator<?, ?> getEvaluator()
+    {
+        return evaluator;
     }
 }

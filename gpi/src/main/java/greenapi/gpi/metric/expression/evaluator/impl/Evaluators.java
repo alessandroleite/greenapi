@@ -26,17 +26,23 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
 
-@SuppressWarnings("unchecked")
+
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public final class Evaluators
 {
 
     /**
      * The {@link Map} with the available evaluators.
      */
-    @SuppressWarnings("rawtypes")
     private static final Map<Class<?>, Evaluator> REGISTERED_EVALUATORS = new ConcurrentHashMap<>();
+
+    static
+    {
+        registerDefaultEvaluators();
+    }
 
     /**
      * 
@@ -44,6 +50,15 @@ public final class Evaluators
     private Evaluators()
     {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Register the known evaluators of the system.
+     */
+    private static void registerDefaultEvaluators()
+    {
+        register(MathExpression.class, new ExpressionEvaluator());
+        register(String.class, new ImplictVariableExpressionEvaluator<>());
     }
 
     /**

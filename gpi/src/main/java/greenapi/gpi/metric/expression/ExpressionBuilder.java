@@ -25,6 +25,7 @@ package greenapi.gpi.metric.expression;
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
+import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
 
 public final class ExpressionBuilder
 {
@@ -49,14 +50,15 @@ public final class ExpressionBuilder
      * @param <T>
      *            The type of the value returned by the expression.
      * @return The result after analyze and execute the given expression.
+     * @throws EvaluationException
+     *             If the given expression is invalid.
      */
-    public static <T> T evaluate(String expression, Object... variablesValues)
+    public static <T> T evaluate(String expression, Object... variablesValues) throws EvaluationException
     {
-        MathExpression<Object> newMathExpression = newMathExpression(expression);
+        MathExpression<T> newMathExpression = ExpressionBuilder.<T> newMathExpression(expression).withVariables(variablesValues);
+        Evaluator<Expression<T>, Value<T>> evaluator = Evaluators.get(String.class);
 
-        Evaluator<Expression<T>, Value<T>> evaluator;
-
-        return null;
+        return evaluator.eval(newMathExpression).getValue();
     }
 
     /**

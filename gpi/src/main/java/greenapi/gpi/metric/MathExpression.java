@@ -126,4 +126,14 @@ public interface MathExpression<T> extends Expression<T>
      * @return The same {@link MathExpression}'s reference but now with a new function registered.
      */
     MathExpression<T> withFunction(Class<Function<Value<T>>> function);
+
+    /**
+     * Defines a set of variables according its position in the expression. In this case, the expression is parsed and the variables are gather in the
+     * order that them appear in the expression.
+     * 
+     * @param variablesValues
+     *            The variables values.
+     * @return The same {@link MathExpression}'s reference but now with the variables registered.
+     */
+    MathExpression<T> withVariables(Object ... variablesValues);
 }

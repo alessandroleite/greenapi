@@ -52,8 +52,7 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     {
         ExpressionParser<Value<T>> parser = new ExpressionParser<>(new ExpressionLexer(expression.expression()));
         MathNodeToken<Value<T>, Value<T>> stat = parser.<Value<T>> stat();
-        Value<T> value = new TreeVisitor<Value<T>>(this).visit(stat);
-        return value;
+        return new TreeVisitor<Value<T>>(this).visit(stat);
     }
 
     @Override
