@@ -20,24 +20,23 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric;
+package greenapi.gpi.metric.expression.function.math;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import java.math.BigDecimal;
 
-import greenapi.gpi.metric.expression.EvaluationException;
-
-
-public interface Formulae<V, Q extends Quantity>
+public class Pi extends FunctionSupport<BigDecimal>
 {
     /**
-     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
-     * 
-     * @param expression
-     *            The expression of the formulae. Might not be <code>null</code>.
-     * @return The value of the formulae.
-     * @throws EvaluationException
-     *             If the given expression is invalid.
+     * Instantiate this function.
      */
-    Measure<V, Q> compute(Expression<V> expression) throws EvaluationException;
+    public Pi()
+    {
+        super(0);
+    }
+
+    @Override
+    protected BigDecimal eval(BigDecimal[] args)
+    {
+        return BigDecimal.valueOf(Math.PI);
+    }
 }

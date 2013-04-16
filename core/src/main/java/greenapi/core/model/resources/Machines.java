@@ -43,6 +43,16 @@ public class Machines implements Iterable<Machine>
     {
     }
 
+    /**
+     * Add a new machine to this list.
+     * 
+     * @param machine The machine to be added. Might not be <code>null</code>.
+     */
+    public void add(Machine machine)
+    {
+        this.machines.put(machine.getId(), machine);
+    }
+
     @Override
     public Iterator<Machine> iterator()
     {

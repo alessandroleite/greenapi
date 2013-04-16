@@ -20,24 +20,32 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric;
+package greenapi.gpi.metric.test;
+
+import java.math.BigDecimal;
 
 import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
 
+import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.measure.Ratio;
+import greenapi.gpi.metric.datacenter.DeployedHardwareUtilization;
 import greenapi.gpi.metric.expression.EvaluationException;
 
+import junit.framework.Assert;
 
-public interface Formulae<V, Q extends Quantity>
+
+public class DeployHardwareUtilizationTest
 {
+
     /**
-     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
-     * 
-     * @param expression
-     *            The expression of the formulae. Might not be <code>null</code>.
-     * @return The value of the formulae.
      * @throws EvaluationException
-     *             If the given expression is invalid.
+     *             If the expression is invalid.
      */
-    Measure<V, Q> compute(Expression<V> expression) throws EvaluationException;
+    //@org.junit.Test
+    public void must_be_valid() throws EvaluationException
+    {
+        Measure<BigDecimal, Ratio> metric = new DeployedHardwareUtilization(new Datacenter()).value();
+        Assert.assertNotNull(metric);
+    }
+
 }

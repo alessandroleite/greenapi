@@ -32,9 +32,9 @@ import greenapi.core.common.base.Strings;
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
+import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
 import greenapi.gpi.metric.expression.function.Function;
 import greenapi.gpi.metric.expression.function.Functions;
-import greenapi.gpi.metric.expression.token.TreeVariableVisitor;
 
 public final class MathExpressionImpl<T> implements MathExpression<T>
 {
@@ -58,7 +58,7 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
      */
     public MathExpressionImpl()
     {
-        this.expression = new StringBuilder();
+        this("", Evaluators.<Expression<T>, Value<T>> get(MathExpression.class));
     }
 
     /**
@@ -69,7 +69,7 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
      */
     public MathExpressionImpl(String mathExpression)
     {
-        this.expression = new StringBuilder(Strings.checkArgumentIsNotNullOrEmpty(mathExpression).trim());
+        this(Strings.checkArgumentIsNotNullOrEmpty(mathExpression).trim(), Evaluators.<Expression<T>, Value<T>> get(MathExpression.class));
     }
 
     /**
@@ -82,7 +82,7 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
      */
     public MathExpressionImpl(String mathExpression, Evaluator<Expression<T>, Value<T>> eval)
     {
-        this(mathExpression);
+        this.expression = new StringBuilder(mathExpression);
         this.evaluator = eval;
     }
 
@@ -109,6 +109,11 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
             }
         }
 
+        for (Variable<?> var : this.evaluator.variables().values())
+        {
+            eval.register(var);
+        }
+
         Value<T> result = eval.eval(this);
         this.variables.putAll(eval.variables());
         return result;
@@ -119,7 +124,7 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
     {
         Value<T> result = this.evaluator.eval(this);
         this.variables.putAll(this.evaluator.variables());
-        
+
         return result;
     }
 
@@ -147,14 +152,7 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
     @Override
     public <R> MathExpression<T> withVariable(Variable<R> variable)
     {
-        if (this.evaluator == null)
-        {
-            this.variables.put(variable.name(), variable);
-        }
-        else
-        {
-            this.evaluator.register(variable);
-        }
+        this.evaluator.register(variable);
         return this;
     }
 
@@ -181,15 +179,5 @@ public final class MathExpressionImpl<T> implements MathExpression<T>
     public MathExpression<T> withFunction(Class<Function<Value<T>>> function)
     {
         return this.withFunction(ClassUtils.newInstanceForName(function));
-    }
-
-    @Override
-    public MathExpression<T> withVariables(Object ... variableValues)
-    {
-        if (variableValues != null && variableValues.length > 0)
-        {
-            new TreeVariableVisitor<>(evaluator, variableValues);
-        }
-        return this;
     }
 }

@@ -22,12 +22,44 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.util.List;
 
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.function.Function;
+import com.google.common.collect.Lists;
 
-public interface NumberOfServers extends Function<Value<BigInteger>>
+import greenapi.core.model.resources.Machines;
+import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.function.math.FunctionSupport;
+
+public class NumberOfServers extends FunctionSupport<Machines>
 {
+
+    /**
+     * Creates an instance of this class.
+     */
+    public NumberOfServers()
+    {
+        super(1, "numberOfServers");
+    }
+
+    @Override
+    protected BigDecimal eval(Machines[] args)
+    {
+        return BigDecimal.valueOf(args[0].machines().size());
+    }
+    
+    @Override
+    protected <R, T extends Computable<R>> Machines[] transform(List<T> arguments)
+    {
+        List<R> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<R>, R>()
+        {
+            public R apply(Computable<R> input)
+            {
+                return input.getValue();
+            }
+        });
+
+        return args.toArray(new Machines[args.size()]);
+    }
 
 }

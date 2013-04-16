@@ -22,11 +22,11 @@
  */
 package greenapi.core.model.resources.builders.physical.test;
 
+import java.util.Arrays;
+
 import greenapi.core.model.resources.Machine;
 import greenapi.core.model.resources.builders.impl.physical.HardwareBuilder;
 import greenapi.core.model.software.os.OperatingSystemFactory;
-
-import java.util.Arrays;
 
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarProxy;

@@ -20,24 +20,28 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric;
+package greenapi.gpi.metric.expression.function.datacenter;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import java.math.BigDecimal;
 
-import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.metric.expression.function.math.FunctionSupport;
 
 
-public interface Formulae<V, Q extends Quantity>
+public class Pue extends FunctionSupport<Datacenter>
 {
+
     /**
-     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
-     * 
-     * @param expression
-     *            The expression of the formulae. Might not be <code>null</code>.
-     * @return The value of the formulae.
-     * @throws EvaluationException
-     *             If the given expression is invalid.
+     * Creates an instance of this function.
      */
-    Measure<V, Q> compute(Expression<V> expression) throws EvaluationException;
+    public Pue()
+    {
+        super(1);
+    }
+
+    @Override
+    protected BigDecimal eval(Datacenter[] args)
+    {
+        return null;
+    }
 }

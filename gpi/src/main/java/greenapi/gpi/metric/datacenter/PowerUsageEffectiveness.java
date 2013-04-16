@@ -20,24 +20,39 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric;
+package greenapi.gpi.metric.datacenter;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import java.math.BigDecimal;
 
-import greenapi.gpi.metric.expression.EvaluationException;
+import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.ExpressionBuilder;
 
-
-public interface Formulae<V, Q extends Quantity>
+/**
+ * The Power Usage Effectiveness (PUE) measures the energy efficiency of a Data Center, calculated as a ratio between the Total Facility Power and IT
+ * Equipment Power. It is computed as the inverse of DCiE metric as shown in Equation below.
+ * 
+ * <pre>
+ *    PUE = Total Facility Power / IT Equipment Power
+ * </pre>
+ */
+public class PowerUsageEffectiveness extends DatacenterMetric
 {
+
     /**
-     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
+     * Creates an instance of the PUE metric.
      * 
-     * @param expression
-     *            The expression of the formulae. Might not be <code>null</code>.
-     * @return The value of the formulae.
-     * @throws EvaluationException
-     *             If the given expression is invalid.
+     * @param datacentre
+     *            The data center to be evaluated. Might not be <code>null</code>.
      */
-    Measure<V, Q> compute(Expression<V> expression) throws EvaluationException;
+    public PowerUsageEffectiveness(Datacenter datacentre)
+    {
+        super(datacentre, "PUE");
+    }
+
+    @Override
+    protected Expression<BigDecimal> getExpression()
+    {
+        return ExpressionBuilder.<BigDecimal> newMathExpression("pue(n)").withVariable("n", this.getDatacenter());
+    }
 }

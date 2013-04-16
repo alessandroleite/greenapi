@@ -29,6 +29,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import greenapi.core.common.base.ClassFinder;
 import greenapi.core.common.base.ClassUtils;
 import greenapi.core.common.base.Strings;
+import greenapi.gpi.metric.expression.function.datacenter.NumberOfNonIdleServers;
+import greenapi.gpi.metric.expression.function.datacenter.NumberOfServers;
+import greenapi.gpi.metric.expression.function.datacenter.Pue;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public final class Functions
@@ -60,6 +63,10 @@ public final class Functions
         {
             register((Function<?>) ClassUtils.newInstanceForName(clazz));
         }
+        
+        register(new NumberOfServers());
+        register(new NumberOfNonIdleServers());
+        register(new Pue());
     }
 
     /**

@@ -20,24 +20,48 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric;
+package greenapi.gpi.metric.datacenter;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
-
-import greenapi.gpi.metric.expression.EvaluationException;
-
-
-public interface Formulae<V, Q extends Quantity>
+public class MetricException extends RuntimeException
 {
+
     /**
-     * Computes and returns the value of this {@link Formulae} expressed in the given {@link Expression}.
-     * 
-     * @param expression
-     *            The expression of the formulae. Might not be <code>null</code>.
-     * @return The value of the formulae.
-     * @throws EvaluationException
-     *             If the given expression is invalid.
+     * Serial code version <code>serialVersionUID</code>.
      */
-    Measure<V, Q> compute(Expression<V> expression) throws EvaluationException;
+    private static final long serialVersionUID = 386374198327084482L;
+
+    /**
+     * Creates a {@link MetricException} with the given message.
+     * 
+     * @param message
+     *            The message with details about the exception. Normally it's the reason(s).
+     */
+    public MetricException(String message)
+    {
+        super(message);
+    }
+
+    /**
+     * Creates a {@link MetricException} with the given cause.
+     * 
+     * @param cause
+     *            The cause of this exception.
+     */
+    public MetricException(Throwable cause)
+    {
+        super(cause);
+    }
+
+    /**
+     * 
+     * @param message
+     *            The message with details about the exception. Normally it's the reason(s).
+     * @param cause
+     *            The cause of this exception.
+     */
+    public MetricException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
+
 }

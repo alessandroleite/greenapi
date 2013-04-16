@@ -49,7 +49,7 @@ public final class Frequency implements Data<Long>, Comparable<Frequency>, Clone
     private final Measure<Long, javax.measure.quantity.Frequency> value;
 
     /**
-     * Create a {@link Frequency} instance with a given value in MHz.
+     * Creates a {@link Frequency} instance with a given value in MHz.
      * 
      * @param valueInMhz
      *            The frequency's value in MHz.

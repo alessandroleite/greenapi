@@ -34,7 +34,7 @@ import greenapi.gpi.metric.expression.Value;
 public final class Converter
 {
     /**
-     * Private constructor to avoid instance of this utility class.
+     * Default constructor (prevents this class from being instantiated).
      */
     private Converter()
     {

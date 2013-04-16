@@ -22,14 +22,23 @@
  */
 package greenapi.core.model.resources;
 
+import greenapi.core.model.resources.builders.impl.physical.HardwareBuilder;
+import greenapi.core.model.software.os.OperatingSystemFactory;
+
 public class Datacenter
 {
+    /**
+     * The machines of the data center.
+     */
+    private final Machines machines;
 
     /**
      * Creates a {@link Datacenter}'s instance.
      */
     public Datacenter()
     {
+        this.machines = new Machines();
+        machines.add(new HardwareBuilder().withOS(OperatingSystemFactory.getSystemOS()).build());
     }
 
     /**
@@ -39,7 +48,6 @@ public class Datacenter
      */
     public Machines machines()
     {
-        return null;
+        return machines;
     }
-
 }

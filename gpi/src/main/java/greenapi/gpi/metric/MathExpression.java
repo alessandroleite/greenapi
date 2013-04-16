@@ -135,5 +135,5 @@ public interface MathExpression<T> extends Expression<T>
      *            The variables values.
      * @return The same {@link MathExpression}'s reference but now with the variables registered.
      */
-    MathExpression<T> withVariables(Object ... variablesValues);
+    // MathExpression<T> withVariables(Object ... variablesValues);
 }

@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import greenapi.core.common.base.ClassUtils;
 import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
-
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public final class Evaluators
@@ -37,7 +37,7 @@ public final class Evaluators
     /**
      * The {@link Map} with the available evaluators.
      */
-    private static final Map<Class<?>, Evaluator> REGISTERED_EVALUATORS = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Class> REGISTERED_EVALUATORS = new ConcurrentHashMap<>();
 
     static
     {
@@ -45,7 +45,7 @@ public final class Evaluators
     }
 
     /**
-     * 
+     * Default constructor (prevents this class from being instantiated).
      */
     private Evaluators()
     {
@@ -57,8 +57,8 @@ public final class Evaluators
      */
     private static void registerDefaultEvaluators()
     {
-        register(MathExpression.class, new ExpressionEvaluator());
-        register(String.class, new ImplictVariableExpressionEvaluator<>());
+        register(MathExpression.class, ExpressionEvaluator.class);
+        register(String.class, ImplictVariableExpressionEvaluator.class);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class Evaluators
      */
     public static <T, V> Evaluator<T, V> get(Class<?> type)
     {
-        return REGISTERED_EVALUATORS.get(type);
+        return (Evaluator<T, V>) ClassUtils.newInstanceForName(REGISTERED_EVALUATORS.get(type));
     }
 
     /**
@@ -91,8 +91,8 @@ public final class Evaluators
      * 
      * @return The previous evaluator defined for the given type or <code>null</code> if there wasn't one.
      */
-    public static <T, V> Evaluator<T, V> register(Class<?> type, Evaluator<T, V> evaluator)
+    public static <T, V> Class<Evaluator<T, V>> register(Class<?> type, Class evaluator)
     {
-        return REGISTERED_EVALUATORS.put(Objects.requireNonNull(type), Objects.requireNonNull(evaluator));
+        return (Class<Evaluator<T, V>>) REGISTERED_EVALUATORS.put(Objects.requireNonNull(type), evaluator);
     }
 }

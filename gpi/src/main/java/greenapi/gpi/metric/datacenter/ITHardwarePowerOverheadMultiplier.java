@@ -20,40 +20,51 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package greenapi.gpi.metric.expression.evaluator.impl;
+package greenapi.gpi.metric.datacenter;
 
-import greenapi.gpi.metric.Expression;
+import java.math.BigDecimal;
+
+import javax.measure.Measure;
+
+
+import greenapi.gpi.measure.Ratio;
+import greenapi.gpi.metric.Formulae;
+import greenapi.gpi.metric.Metric;
 import greenapi.gpi.metric.expression.EvaluationException;
-import greenapi.gpi.metric.expression.Value;
-import greenapi.gpi.metric.expression.lexer.ExpressionLexer;
-import greenapi.gpi.metric.expression.parser.ExpressionParser;
-import greenapi.gpi.metric.expression.token.MathNodeToken;
-import greenapi.gpi.metric.expression.token.TreeVariableVisitor;
 
-public class ImplictVariableExpressionEvaluator<T> extends ExpressionEvaluator<T>
+
+public class ITHardwarePowerOverheadMultiplier implements Metric<BigDecimal, Ratio>
 {
 
     /**
-     * The value to be assigned to the variables of an expression.
-     */
-    private final Object[] implictVarValue;
-
-    /**
-     * Creates an instance of the {@link ImplictVariableExpressionEvaluator}.
      * 
-     * @param variableValues
-     *            The variable values.
      */
-    public ImplictVariableExpressionEvaluator(Object... variableValues)
+    public ITHardwarePowerOverheadMultiplier()
     {
-        this.implictVarValue = variableValues;
     }
 
     @Override
-    public Value<T> eval(Expression<T> expression) throws EvaluationException
+    public Formulae<BigDecimal, Ratio> formulae()
     {
-        ExpressionParser<Value<T>> parser = new ExpressionParser<>(new ExpressionLexer(expression.expression()));
-        MathNodeToken<Value<T>, Value<T>> stat = parser.<Value<T>> stat();
-        return new TreeVariableVisitor<Value<T>>(this, implictVarValue).visit(stat);
+        return null;
     }
+
+    @Override
+    public Measure<BigDecimal, Ratio> value()
+    {
+        return null;
+    }
+
+    @Override
+    public Measure<BigDecimal, Ratio> value(Formulae<BigDecimal, Ratio> formulae) throws EvaluationException
+    {
+        return null;
+    }
+
+    @Override
+    public String name()
+    {
+        return null;
+    }
+
 }

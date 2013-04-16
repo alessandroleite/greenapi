@@ -22,10 +22,8 @@
  */
 package greenapi.gpi.metric.expression;
 
-import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.MathExpression;
-import greenapi.gpi.metric.expression.evaluator.Evaluator;
-import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
+import greenapi.gpi.metric.expression.evaluator.impl.ImplictVariableExpressionEvaluator;
 
 public final class ExpressionBuilder
 {
@@ -41,7 +39,7 @@ public final class ExpressionBuilder
     /**
      * @param expression
      *            The expression to be evaluate and executed.
-     * @param variablesValues
+     * @param variableValues
      *            The values of the variables that are used in the expression. The variables are resolved according with their position and their
      *            name. If a variable is used more than one time in the expression, we don't need to repeat its value. For instance, consider the
      *            expression: <code><pre>{@code}ExpressionBuilder.evaluate("x + y * z ^ x", 1,2,3)</pre></code>. In this expression we have three
@@ -53,12 +51,12 @@ public final class ExpressionBuilder
      * @throws EvaluationException
      *             If the given expression is invalid.
      */
-    public static <T> T evaluate(String expression, Object... variablesValues) throws EvaluationException
+    public static <T> T evaluate(String expression, Object... variableValues) throws EvaluationException
     {
-        MathExpression<T> newMathExpression = ExpressionBuilder.<T> newMathExpression(expression).withVariables(variablesValues);
-        Evaluator<Expression<T>, Value<T>> evaluator = Evaluators.get(String.class);
+        MathExpression<T> newMathExpression = ExpressionBuilder.<T> newMathExpression(expression);
+        Value<T> value = newMathExpression.evaluate(new ImplictVariableExpressionEvaluator<T>(variableValues));
 
-        return evaluator.eval(newMathExpression).getValue();
+        return value.getValue();
     }
 
     /**

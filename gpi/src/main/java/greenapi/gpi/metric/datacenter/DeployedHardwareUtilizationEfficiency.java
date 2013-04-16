@@ -24,8 +24,13 @@ package greenapi.gpi.metric.datacenter;
 
 import java.math.BigDecimal;
 
+import javax.measure.Measure;
+
 import greenapi.gpi.measure.Ratio;
+import greenapi.gpi.metric.Formulae;
 import greenapi.gpi.metric.Metric;
+import greenapi.gpi.metric.expression.EvaluationException;
+
 
 
 /**
@@ -45,7 +50,31 @@ import greenapi.gpi.metric.Metric;
  * 
  * In some cases the compute performance can fall off as compute load rises above some utilization threshold with the limitation of resources use.
  */
-public interface DeployedHardwareUtilizationEfficiency extends Metric<BigDecimal, Ratio>
+public class DeployedHardwareUtilizationEfficiency implements Metric<BigDecimal, Ratio>
 {
+
+    @Override
+    public Formulae<BigDecimal, Ratio> formulae()
+    {
+        return null;
+    }
+
+    @Override
+    public Measure<BigDecimal, Ratio> value()
+    {
+        return null;
+    }
+
+    @Override
+    public Measure<BigDecimal, Ratio> value(Formulae<BigDecimal, Ratio> formulae) throws EvaluationException
+    {
+        return null;
+    }
+
+    @Override
+    public String name()
+    {
+        return null;
+    }
 
 }

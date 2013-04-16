@@ -24,8 +24,10 @@ package greenapi.gpi.metric.datacenter;
 
 import java.math.BigDecimal;
 
-import greenapi.gpi.measure.Ratio;
-import greenapi.gpi.metric.Metric;
+import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.ExpressionBuilder;
+
 
 /**
  * This metric measures how much servers are running live applications in relation to the numbers of servers in the data center. In essence, this
@@ -43,17 +45,35 @@ import greenapi.gpi.metric.Metric;
  *      Expression<BigDecimal, Ratio> exp = NumberOfNonIdleServers.newInstance(servers).divideBy(NumberOfServers.newInstance(servers));
  * </pre></code>
  * 
- * or 
+ * or
  * 
  * <code><pre>{@code}   
  *      int n = 10;
  *      javax.measure.Measure<BigDecimal, Ratio> value = ExpressionBuilder.evaluate("numberOfNonIdleServers(n) / n", n);
  * </pre></code>
  * 
- * The first example shows the use of two functions (NumberOfNonIdleServers, NumberOfServers) to build an expression and the second
- * shows the use of an expression to get calculate the value.
+ * The first example shows the use of two functions (NumberOfNonIdleServers, NumberOfServers) to build an expression and the second one shows the use
+ * of an expression to calculate its value.
  * 
  */
-public interface DeployedHardwareUtilization extends Metric<BigDecimal, Ratio>
+public final class DeployedHardwareUtilization extends DatacenterMetric
 {
+
+    /**
+     * Creates an instance of this metric using the given {@link Datacenter}.
+     * 
+     * @param datacentre
+     *            The {@link Datacenter} to be evaluated. Might not be <code>null</code>.
+     */
+    public DeployedHardwareUtilization(Datacenter datacentre)
+    {
+        super(datacentre, "DH-UR");
+    }
+
+    @Override
+    protected Expression<BigDecimal> getExpression()
+    {
+        return ExpressionBuilder.<BigDecimal> newMathExpression("numberOfNonIdleServers(s) / numberOfServers(s)").withVariable("s",
+                getDatacenter().machines());
+    }
 }

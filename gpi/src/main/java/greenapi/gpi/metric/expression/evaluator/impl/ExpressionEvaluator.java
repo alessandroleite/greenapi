@@ -70,7 +70,10 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     @Override
     public Map<String, Variable<?>> variables()
     {
-        return Collections.unmodifiableMap(variables);
+        synchronized (variables)
+        {
+            return Collections.unmodifiableMap(variables);
+        }
     }
 
     @SuppressWarnings("unchecked")

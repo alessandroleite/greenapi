@@ -28,26 +28,28 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import greenapi.core.model.resources.Machine;
+import greenapi.core.model.resources.Machines;
 import greenapi.gpi.metric.expression.Computable;
 import greenapi.gpi.metric.expression.function.math.FunctionSupport;
 
-public class NumberOfNonIdleServers extends FunctionSupport<Machine>
+public class NumberOfNonIdleServers extends FunctionSupport<Machines>
 {
     /**
      * Creates an instance of this {@link Class}.
      */
     public NumberOfNonIdleServers()
     {
-        super(1, "nonIdleServers");
+        super(1, "numberOfNonIdleServers");
     }
 
     @Override
-    protected BigDecimal eval(Machine[] args)
+    protected BigDecimal eval(Machines[] args)
     {
         int i = 0;
-        for (Machine machine : args)
+        for (Machine machine : args[0])
         {
-            if (machine.combinedCpuLoad() > 1)
+            // FIXME It depends of the sensors. //machine.combinedCpuLoad() > value
+            if (machine != null)
             {
                 i++;
             }
@@ -56,7 +58,7 @@ public class NumberOfNonIdleServers extends FunctionSupport<Machine>
     }
 
     @Override
-    protected <R, T extends Computable<R>> Machine[] transform(List<T> arguments)
+    protected <R, T extends Computable<R>> Machines[] transform(List<T> arguments)
     {
         List<R> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<R>, R>()
         {
@@ -66,6 +68,6 @@ public class NumberOfNonIdleServers extends FunctionSupport<Machine>
             }
         });
 
-        return args.toArray(new Machine[args.size()]);
+        return args.toArray(new Machines[args.size()]);
     }
 }

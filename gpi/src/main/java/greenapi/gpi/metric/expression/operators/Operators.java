@@ -55,7 +55,7 @@ public final class Operators
     }
 
     /**
-     * Private constructor.
+     * Default constructor (prevents this class from being instantiated).
      */
     private Operators()
     {
