@@ -87,6 +87,7 @@ public class Process implements Resource, Comparable<Process>
     private ProcessState state;
 
     /**
+     * Creates a new {@link Process}'s instance.
      * 
      * @param pid
      *            The id of this {@link Process}.

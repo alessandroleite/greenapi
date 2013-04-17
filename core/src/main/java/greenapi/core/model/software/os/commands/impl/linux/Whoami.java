@@ -35,12 +35,12 @@ public class Whoami extends ExecutableCommand<User> implements Who
 {
 
     /**
-     * 
+     * A constant with the root name.
      */
     static final User ROOT = User.newRootUser("root");
 
     /**
-     * The default constructor.
+     * Creates an instance of this command.
      */
     public Whoami()
     {

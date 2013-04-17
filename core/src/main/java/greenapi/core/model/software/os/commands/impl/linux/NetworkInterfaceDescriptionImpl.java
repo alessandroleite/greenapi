@@ -22,7 +22,6 @@
  */
 package greenapi.core.model.software.os.commands.impl.linux;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -48,7 +47,9 @@ public final class NetworkInterfaceDescriptionImpl extends LinuxCommandSupport<N
 
     /**
      * Create an instance of this class with a given network card id.
-     * @param netId The network card id to be used.
+     * 
+     * @param netId
+     *            The network card id to be used.
      */
     public NetworkInterfaceDescriptionImpl(String netId)
     {
@@ -118,7 +119,7 @@ public final class NetworkInterfaceDescriptionImpl extends LinuxCommandSupport<N
     @Override
     public String[] commandLine(Argument... args)
     {
-        return new String[] {"lshw", "-class", "network", "-xml"};
+        return new String[] { "lshw", "-class", "network", "-xml" };
     }
 
     @Override

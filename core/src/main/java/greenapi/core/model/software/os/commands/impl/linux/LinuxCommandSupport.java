@@ -35,19 +35,20 @@ public abstract class LinuxCommandSupport<T> extends ExecutableCommand<T>
 {
 
     /**
-     * A root user is required to execute the command.
+     * A flag that indicates if root user is required to execute the command.
      */
     private final boolean rootRequired;
 
     /**
-     * This is a bash command.
+     * A flat that indicates if this is a bash command.
      */
     private final boolean bash;
 
     /**
      * @param rootUserRequired
      *            is root required to execute this command?
-     * @param bashCommand Indicate that is command needs bash.
+     * @param bashCommand
+     *            Indicate that is command needs bash.
      * @param commands
      *            array containing the command to call and its arguments.
      * @param envp
@@ -64,7 +65,8 @@ public abstract class LinuxCommandSupport<T> extends ExecutableCommand<T>
     /**
      * @param rootUserRequired
      *            is root required to execute this command?
-     * @param bashCommand Indicate that is command needs bash.
+     * @param bashCommand
+     *            Indicate that is command needs bash.
      * @param envp
      *            array of strings, each element of which has environment variable settings in the format name=value, or null if the subprocess should
      *            inherit the environment of the current process.
@@ -77,7 +79,8 @@ public abstract class LinuxCommandSupport<T> extends ExecutableCommand<T>
     /**
      * @param rootUserRequired
      *            is root required to execute this command?
-     * @param bashCommand Indicate that is command needs bash.
+     * @param bashCommand
+     *            Indicate that is command needs bash.
      */
     public LinuxCommandSupport(boolean rootUserRequired, boolean bashCommand)
     {
@@ -123,7 +126,7 @@ public abstract class LinuxCommandSupport<T> extends ExecutableCommand<T>
             commands[1] = "-c";
         }
         System.arraycopy(instructions, 0, commands, isBashNeeded() ? 2 : 0, instructions.length);
-        return new String[][] {commands, getEnvp()};
+        return new String[][] { commands, getEnvp() };
     }
 
     /**

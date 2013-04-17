@@ -73,7 +73,6 @@ public final class PsImpl implements Ps
 
         for (long pid : proxy.getProcList())
         {
-
             ProcState state = proxy.getProcState(pid);
             ProcCpu cpuState = proxy.getProcCpu(pid);
             ProcMem memState = proxy.getProcMem(pid);

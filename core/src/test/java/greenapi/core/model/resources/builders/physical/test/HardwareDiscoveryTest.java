@@ -31,6 +31,7 @@ import greenapi.core.model.software.os.OperatingSystemFactory;
 import org.hyperic.sigar.SigarException;
 import org.hyperic.sigar.SigarProxy;
 
+
 public class HardwareDiscoveryTest
 {
 

@@ -31,6 +31,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * @param <T>
+ *            The type of the result's value.
  */
 public final class Result<T> implements Serializable
 {
@@ -46,14 +47,15 @@ public final class Result<T> implements Serializable
     private final T value;
 
     /**
-     * The errors of the execution.
+     * The errors occurred during the command execution.
      */
     private final Map<String, Throwable> errors = new HashMap<>();
 
     /**
-     * Create an instance of this class assigned it a value.
+     * Creates an instance of this class with a given value.
      * 
-     * @param resultValue The value of the result.
+     * @param resultValue
+     *            The result value.
      */
     public Result(T resultValue)
     {
@@ -61,12 +63,12 @@ public final class Result<T> implements Serializable
     }
 
     /**
-     * Create an instance of this class assigned it a value and its execution errors.
+     * Creates an instance of this class with the given result and exceptions that occurred during the command execution.
      * 
      * @param resultValue
-     *            The value of the result.
+     *            The result value.
      * @param executionErrors
-     *            The errors of the execution.
+     *            The errors that occurred during the command execution.
      */
     public Result(T resultValue, Throwable... executionErrors)
     {
@@ -75,7 +77,9 @@ public final class Result<T> implements Serializable
         if (errors != null)
         {
             for (Throwable err : executionErrors)
+            {
                 this.errors.put(err.getMessage(), err);
+            }
         }
     }
 

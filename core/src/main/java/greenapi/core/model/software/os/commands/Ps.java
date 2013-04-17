@@ -26,11 +26,10 @@ import greenapi.core.model.resources.logic.Processes;
 
 public interface Ps extends Command<Processes>
 {
-
     /**
      * Return all processes in creation order.
      * 
-     * @return A list with the processes ordered by id.
+     * @return A list with the processes ordered by its id.
      */
     Processes list();
 }

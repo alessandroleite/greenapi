@@ -108,9 +108,9 @@ public class Processes implements Serializable, Iterable<Process>
     }
 
     /**
-     * Returns <code>true</code> if there is no {@link Process}.
+     * Returns <code>true</code> if the list is empty.
      * 
-     * @return <code>true</code> if there is no {@link Process}
+     * @return <code>true</code> if the list is empty.
      */
     public boolean isEmpty()
     {
