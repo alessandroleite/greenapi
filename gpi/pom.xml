@@ -28,11 +28,11 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>de.congrace</groupId>
 			<artifactId>exp4j</artifactId>
 			<version>0.3.10</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 

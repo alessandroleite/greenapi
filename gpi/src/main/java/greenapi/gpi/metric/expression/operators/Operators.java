@@ -22,24 +22,14 @@
  */
 package greenapi.gpi.metric.expression.operators;
 
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 import com.google.common.base.Preconditions;
 
-import greenapi.core.common.base.ClassFinder;
 import greenapi.core.common.base.ClassUtils;
 import greenapi.core.common.base.Strings;
-import greenapi.gpi.metric.expression.operators.arithmetical.AdditionOperator;
-import greenapi.gpi.metric.expression.operators.arithmetical.DivisionOperator;
-import greenapi.gpi.metric.expression.operators.arithmetical.ExponentialOperator;
-import greenapi.gpi.metric.expression.operators.arithmetical.ModulusOperator;
-import greenapi.gpi.metric.expression.operators.arithmetical.MultiplicationOperator;
-import greenapi.gpi.metric.expression.operators.arithmetical.SubtractionOperator;
-
 
 @SuppressWarnings("rawtypes")
 public final class Operators
@@ -67,19 +57,9 @@ public final class Operators
      */
     public static void registerOperators()
     {
-        for (Class<?> clazz : new ClassFinder().findSubclasses(Operator.class))
+        for (Class<?> clazz : ClassUtils.findSubclasses(Operator.class))
         {
             register((Operator<?>) ClassUtils.newInstanceForName(clazz));
-        }
-
-        if (OPERATORS.isEmpty())
-        {
-            OPERATORS.put("+", new AdditionOperator());
-            OPERATORS.put("-", new SubtractionOperator());
-            OPERATORS.put("*", new MultiplicationOperator());
-            OPERATORS.put("/", new DivisionOperator());
-            OPERATORS.put("%", new ModulusOperator());
-            OPERATORS.put("^", new ExponentialOperator());
         }
     }
 

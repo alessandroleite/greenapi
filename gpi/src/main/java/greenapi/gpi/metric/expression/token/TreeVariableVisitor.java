@@ -77,7 +77,6 @@ public class TreeVariableVisitor<T> extends TreeVisitor<T>
             }
 
             return super.visit(variable);
-
         }
     }
 }
