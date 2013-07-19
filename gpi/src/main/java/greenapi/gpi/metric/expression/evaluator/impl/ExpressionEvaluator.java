@@ -25,6 +25,7 @@ package greenapi.gpi.metric.expression.evaluator.impl;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.expression.EvaluationException;
@@ -58,7 +59,7 @@ public class ExpressionEvaluator<T> implements Evaluator<Expression<T>, Value<T>
     @Override
     public <R> Variable<?> register(Variable<R> var)
     {
-        return this.variables.put(var.name(), var);
+        return this.variables.put(Objects.requireNonNull(var).name(), var);
     }
 
     @Override

@@ -22,7 +22,6 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -30,7 +29,10 @@ import com.google.common.collect.Lists;
 import greenapi.core.model.resources.Machine;
 import greenapi.core.model.resources.Machines;
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.function.math.FunctionSupport;
+
+
 
 public class NumberOfNonIdleServers extends FunctionSupport<Machines>
 {
@@ -43,7 +45,7 @@ public class NumberOfNonIdleServers extends FunctionSupport<Machines>
     }
 
     @Override
-    protected BigDecimal eval(Machines[] args)
+    protected Decimal eval(Machines[] args)
     {
         int i = 0;
         for (Machine machine : args[0])
@@ -54,7 +56,7 @@ public class NumberOfNonIdleServers extends FunctionSupport<Machines>
                 i++;
             }
         }
-        return BigDecimal.valueOf(i);
+        return Decimal.from(i);
     }
 
     @Override

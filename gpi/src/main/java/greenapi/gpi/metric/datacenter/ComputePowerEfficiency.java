@@ -22,10 +22,9 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
-
 import greenapi.core.model.resources.Datacenter;
 import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.ExpressionBuilder;
 
 public class ComputePowerEfficiency extends DatacenterMetric
@@ -43,8 +42,8 @@ public class ComputePowerEfficiency extends DatacenterMetric
     }
 
     @Override
-    protected Expression<BigDecimal> getExpression()
+    protected Expression<Decimal> getExpression()
     {
-        return ExpressionBuilder.<BigDecimal> newMathExpression("cpe(n)/pue(n)").withVariable("n", this.getDatacenter());
+        return ExpressionBuilder.<Decimal> newMathExpression("cpe(n)/pue(n)").withVariable("n", this.getDatacenter());
     }
 }

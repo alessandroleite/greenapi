@@ -26,6 +26,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import greenapi.gpi.metric.expression.Decimal;
+
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -42,7 +44,7 @@ public abstract class TestSupport
         /**
          * The expected value of the expression.
          */
-        private final BigDecimal value;
+        private final Decimal value;
 
         /**
          * The math expression.
@@ -57,7 +59,7 @@ public abstract class TestSupport
          * @param result
          *            The expected value of this expression.
          */
-        protected Expression(String expr, BigDecimal result)
+        protected Expression(String expr, Decimal result)
         {
             this.expression = expr;
             this.value = result;
@@ -73,7 +75,7 @@ public abstract class TestSupport
          */
         protected Expression(String expr, double result)
         {
-            this(expr, BigDecimal.valueOf(result));
+            this(expr, Decimal.from(result));
         }
 
         /**
@@ -88,7 +90,7 @@ public abstract class TestSupport
          */
         protected Expression(String expr, long result, int scale)
         {
-            this(expr, BigDecimal.valueOf(result, scale));
+            this(expr, Decimal.from(BigDecimal.valueOf(result, scale)));
         }
 
         /**
@@ -101,7 +103,7 @@ public abstract class TestSupport
          */
         protected Expression(String expr, long result)
         {
-            this(expr, BigDecimal.valueOf(result));
+            this(expr, Decimal.from(result));
         }
 
         /**
@@ -119,7 +121,7 @@ public abstract class TestSupport
          * 
          * @return the value of the expression
          */
-        public BigDecimal getValue()
+        public Decimal getValue()
         {
             return value;
         }

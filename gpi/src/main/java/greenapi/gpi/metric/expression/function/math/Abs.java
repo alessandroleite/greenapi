@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Abs extends FunctionSupport<BigDecimal>
+public class Abs extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,7 +36,7 @@ public class Abs extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
         return arguments[0].abs();
     }

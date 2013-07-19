@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Max extends FunctionSupport<BigDecimal>
+public class Max extends FunctionSupport<Decimal>
 {
     /**
      * Creates an instance of the {@link Max} function.
@@ -35,7 +35,7 @@ public class Max extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    public BigDecimal eval(BigDecimal[] arguments)
+    public Decimal eval(Decimal[] arguments)
     {
         return arguments[0].max(arguments[1]);
     }

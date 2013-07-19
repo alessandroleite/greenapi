@@ -45,21 +45,24 @@ public class SystemMemoryLineChart extends LineChartPanelSupport<Memory> {
 	}
 
 	@Override
-	protected void createSeries() {
-		if (this.getSeries().size() < 1) {
+	protected void createSeries() 
+	{
+		if (this.getSeries().size() < 1) 
+		{
 			this.getTimeSeries().addSeries(new TimeSeries(MemoryType.RAM));
 			this.setDataset(new TranslatingXYDataset(this.getTimeSeries()));
 		}
 	}
 
 	@Override
-	public void update() {
+	public void update() 
+	{
 
-		if (this.getSeries().size() < 1) {
+		if (this.getSeries().size() < 1) 
+		{
 			return;
 		}
 
-		((TimeSeries) this.getSeries().get(0)).add(new Millisecond(),
-				getResource().state().value());
+		((TimeSeries) this.getSeries().get(0)).add(new Millisecond(), getResource().state().value());
 	}
 }

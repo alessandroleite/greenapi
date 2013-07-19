@@ -22,18 +22,15 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
-
 import javax.measure.Measure;
-
 
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.Formulae;
 import greenapi.gpi.metric.Metric;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
 
-
-public class ITHardwarePowerOverheadMultiplier implements Metric<BigDecimal, Ratio>
+public class ITHardwarePowerOverheadMultiplier implements Metric<Decimal, Ratio>
 {
 
     /**
@@ -44,19 +41,19 @@ public class ITHardwarePowerOverheadMultiplier implements Metric<BigDecimal, Rat
     }
 
     @Override
-    public Formulae<BigDecimal, Ratio> formulae()
+    public Formulae<Decimal, Ratio> formulae()
     {
         return null;
     }
 
     @Override
-    public Measure<BigDecimal, Ratio> value()
+    public Measure<Decimal, Ratio> value()
     {
         return null;
     }
 
     @Override
-    public Measure<BigDecimal, Ratio> value(Formulae<BigDecimal, Ratio> formulae) throws EvaluationException
+    public Measure<Decimal, Ratio> value(Formulae<Decimal, Ratio> formulae) throws EvaluationException
     {
         return null;
     }

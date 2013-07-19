@@ -22,7 +22,8 @@
  */
 package greenapi.gpi.metric.expression.operators.arithmetical;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
+
 
 public class ExponentialOperator extends AbstractArithmeticalOperator
 {
@@ -32,11 +33,11 @@ public class ExponentialOperator extends AbstractArithmeticalOperator
      */
     public ExponentialOperator()
     {
-        super("^", 6, false, BigDecimal.ONE);
+        super("^", 6, false, Decimal.ONE);
     }
 
     @Override
-    public BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue)
+    public Decimal evaluate(Decimal leftValue, Decimal rightValue)
     {
         return leftValue.pow(rightValue.intValue());
     }

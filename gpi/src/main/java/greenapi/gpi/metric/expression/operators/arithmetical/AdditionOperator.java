@@ -22,8 +22,8 @@
  */
 package greenapi.gpi.metric.expression.operators.arithmetical;
 
+import greenapi.gpi.metric.expression.Decimal;
 
-import java.math.BigDecimal;
 
 public class AdditionOperator extends AbstractArithmeticalOperator
 {
@@ -32,12 +32,12 @@ public class AdditionOperator extends AbstractArithmeticalOperator
      */
     public AdditionOperator()
     {
-        super("+", 5, true, BigDecimal.ZERO);
+        super("+", 5, true, Decimal.ZERO);
     }
 
     @Override
-    public BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue)
+    public Decimal evaluate(Decimal leftValue, Decimal rightValue)
     {
-        return leftValue.add(rightValue);
+        return leftValue.plus(rightValue);
     }
 }

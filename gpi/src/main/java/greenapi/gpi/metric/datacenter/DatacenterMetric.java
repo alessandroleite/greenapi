@@ -22,7 +22,6 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.measure.DecimalMeasure;
@@ -35,10 +34,12 @@ import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.Formulae;
 import greenapi.gpi.metric.MathExpression;
 import greenapi.gpi.metric.Metric;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 
-public abstract class DatacenterMetric implements Metric<BigDecimal, Ratio>
+
+public abstract class DatacenterMetric implements Metric<Decimal, Ratio>
 {
 
     /**
@@ -65,21 +66,24 @@ public abstract class DatacenterMetric implements Metric<BigDecimal, Ratio>
     }
 
     @Override
-    public Formulae<BigDecimal, Ratio> formulae()
+    public Formulae<Decimal, Ratio> formulae()
     {
-        return new Formulae<BigDecimal, Ratio>()
+        return new Formulae<Decimal, Ratio>()
         {
             @Override
-            public Measure<BigDecimal, Ratio> compute(Expression<BigDecimal> expression) throws EvaluationException
+            public Measure<Decimal, Ratio> compute(Expression<Decimal> expression) throws EvaluationException
             {
-                Value<BigDecimal> value = ((MathExpression<BigDecimal>) expression).evaluate();
-                return DecimalMeasure.<Ratio> valueOf(value.getValue(), Ratio.UNIT);
+                Value<Decimal> value = ((MathExpression<Decimal>) expression).evaluate();
+                DecimalMeasure<Ratio> valueOf = DecimalMeasure.<Ratio> valueOf(value.getValue().bigDecimalValue(), Ratio.UNIT);
+                
+                //FIXME
+                return null;
             }
         };
     }
 
     @Override
-    public Measure<BigDecimal, Ratio> value()
+    public Measure<Decimal, Ratio> value()
     {
         try
         {
@@ -92,7 +96,7 @@ public abstract class DatacenterMetric implements Metric<BigDecimal, Ratio>
     }
 
     @Override
-    public Measure<BigDecimal, Ratio> value(Formulae<BigDecimal, Ratio> formulae) throws EvaluationException
+    public Measure<Decimal, Ratio> value(Formulae<Decimal, Ratio> formulae) throws EvaluationException
     {
         return formulae.compute(getExpression());
     }
@@ -118,6 +122,6 @@ public abstract class DatacenterMetric implements Metric<BigDecimal, Ratio>
      * 
      * @return the {@link Expression} to compute the metric.
      */
-    protected abstract Expression<BigDecimal> getExpression();
+    protected abstract Expression<Decimal> getExpression();
 
 }

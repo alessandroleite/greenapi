@@ -23,7 +23,7 @@
 package greenapi.gpi.metric.expression.operators.arithmetical;
 
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
 public class SubtractionOperator extends AbstractArithmeticalOperator
 {
@@ -33,12 +33,12 @@ public class SubtractionOperator extends AbstractArithmeticalOperator
      */
     public SubtractionOperator()
     {
-        super("-", 5, true, BigDecimal.ZERO);
+        super("-", 5, true, Decimal.ZERO);
     }
 
     @Override
-    public BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue)
+    public Decimal evaluate(Decimal leftValue, Decimal rightValue)
     {
-        return leftValue.subtract(rightValue);
+        return leftValue.minus(rightValue);
     }
 }

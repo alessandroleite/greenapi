@@ -22,14 +22,14 @@
  */
 package greenapi.gpi.metric.test;
 
-import java.math.BigDecimal;
-
 import javax.measure.Measure;
 
 import greenapi.core.model.resources.Datacenter;
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.datacenter.DeployedHardwareUtilization;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
+
 
 import junit.framework.Assert;
 
@@ -44,7 +44,7 @@ public class DeployHardwareUtilizationTest
     //@org.junit.Test
     public void must_be_valid() throws EvaluationException
     {
-        Measure<BigDecimal, Ratio> metric = new DeployedHardwareUtilization(new Datacenter()).value();
+        Measure<Decimal, Ratio> metric = new DeployedHardwareUtilization(new Datacenter()).value();
         Assert.assertNotNull(metric);
     }
 

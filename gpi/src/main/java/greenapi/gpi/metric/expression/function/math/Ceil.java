@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Ceil extends FunctionSupport<BigDecimal>
+public class Ceil extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,8 +36,8 @@ public class Ceil extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return new BigDecimal(Math.ceil(arguments[0].doubleValue()));
+        return Decimal.from(Math.ceil(arguments[0].doubleValue()));
     }
 }

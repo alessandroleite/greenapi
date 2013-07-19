@@ -22,10 +22,9 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
-
 import greenapi.core.model.resources.Datacenter;
 import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.Decimal;
 
 /**
  * 
@@ -55,7 +54,7 @@ public class DataCenterInfrastructureEfficiency extends DatacenterMetric
     }
 
     @Override
-    protected Expression<BigDecimal> getExpression()
+    protected Expression<Decimal> getExpression()
     {
         return null;
     }

@@ -154,8 +154,10 @@ public class ExpressionParser<T> extends Parser
         {
             success = false;
         }
+        
         operands.clear();
         release();
+        
         return success;
     }
 
@@ -722,7 +724,6 @@ public class ExpressionParser<T> extends Parser
      */
     private int precedence(Token token)
     {
-
         switch (token.getText().charAt(0))
         {
         case '/':

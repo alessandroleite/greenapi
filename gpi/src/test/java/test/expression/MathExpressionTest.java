@@ -22,15 +22,15 @@
  */
 package test.expression;
 
-import java.math.BigDecimal;
-
 import greenapi.gpi.metric.MathExpression;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.ExpressionBuilder;
 import greenapi.gpi.metric.expression.UndefinedFunctionException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.evaluator.impl.ExpressionEvaluator;
+
 
 import junit.framework.Assert;
 
@@ -49,13 +49,13 @@ public class MathExpressionTest extends TestSupport
 
         for (Expression expression : expressions())
         {
-            Value<BigDecimal> result = ExpressionBuilder.<BigDecimal> newMathExpression(expression.getExpression())
-                    .withVariable("a", BigDecimal.valueOf(7))
-                    .withVariable("b", BigDecimal.valueOf(8))
-                    .withVariable("c", BigDecimal.valueOf(9))
-                    .withVariable("d", BigDecimal.valueOf(-8))
-                    .withVariable("n", BigDecimal.valueOf(2))
-                    .evaluate(new ExpressionEvaluator<BigDecimal>());
+            Value<Decimal> result = ExpressionBuilder.<Decimal> newMathExpression(expression.getExpression())
+                    .withVariable("a", Decimal.from(7))
+                    .withVariable("b", Decimal.from(8))
+                    .withVariable("c", Decimal.from(9))
+                    .withVariable("d", Decimal.from(-8))
+                    .withVariable("n", Decimal.from(2))
+                    .evaluate(new ExpressionEvaluator<Decimal>());
 
             Assert.assertEquals(expression.getValue(), result.getValue());
         }
@@ -68,11 +68,11 @@ public class MathExpressionTest extends TestSupport
     @Test
     public void must_assign_eight_to_a_variable() throws EvaluationException
     {
-        MathExpression<BigDecimal> math = ExpressionBuilder.<BigDecimal> newMathExpression("a = 2 ^ 3");
+        MathExpression<Decimal> math = ExpressionBuilder.<Decimal> newMathExpression("a = 2 ^ 3");
         Assert.assertTrue(math.variables().isEmpty());
 
-        Value<BigDecimal> value = math.evaluate(new ExpressionEvaluator<BigDecimal>());
-        Assert.assertEquals(BigDecimal.valueOf(8), value.getValue());
+        Value<Decimal> value = math.evaluate(new ExpressionEvaluator<Decimal>());
+        Assert.assertEquals(Decimal.from(8), value.getValue());
 
         Assert.assertEquals(1, math.variables().size());
     }
@@ -86,7 +86,7 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = UndefinedVariableException.class)
     public void must_throw_undefined_variable_use() throws EvaluationException
     {
-        ExpressionBuilder.<BigDecimal> newMathExpression("abs(x)").evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<Decimal> newMathExpression("abs(x)").evaluate(new ExpressionEvaluator<Decimal>());
     }
 
     /**
@@ -98,10 +98,10 @@ public class MathExpressionTest extends TestSupport
     @Test
     public void must_work_with_implict_variables() throws EvaluationException
     {
-        BigDecimal value = ExpressionBuilder.<BigDecimal> evaluate("5 + a * b", 5, 2);
+        Decimal value = ExpressionBuilder.<Decimal> evaluate("5 + a * b", 5, 2);
         Assert.assertEquals(15, value.intValue());
 
-        value = ExpressionBuilder.<BigDecimal> evaluate("x + y * z ^ x", 1, 2, 3);
+        value = ExpressionBuilder.<Decimal> evaluate("x + y * z ^ x", 1, 2, 3);
         Assert.assertEquals(7, value.intValue());
     }
 
@@ -114,7 +114,7 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = UndefinedFunctionException.class)
     public void must_throw_undefined_function_call() throws EvaluationException
     {
-        ExpressionBuilder.<BigDecimal> newMathExpression("abss(1)").evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<Decimal> newMathExpression("abss(1)").evaluate(new ExpressionEvaluator<Decimal>());
     }
 
     /**
@@ -126,7 +126,7 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = IllegalArgumentException.class)
     public void must_be_an_illegal_function_call_with_wrong_arguments() throws EvaluationException
     {
-        ExpressionBuilder.<BigDecimal> newMathExpression("abs()").evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<Decimal> newMathExpression("abs()").evaluate(new ExpressionEvaluator<Decimal>());
     }
 
     /**
@@ -138,6 +138,6 @@ public class MathExpressionTest extends TestSupport
     @Test(expected = IllegalArgumentException.class)
     public void must_be_an_illegal_function_call_with_more_arguments_than_required() throws EvaluationException
     {
-        ExpressionBuilder.<BigDecimal> newMathExpression("max(2,3,4)").evaluate(new ExpressionEvaluator<BigDecimal>());
+        ExpressionBuilder.<Decimal> newMathExpression("max(2,3,4)").evaluate(new ExpressionEvaluator<Decimal>());
     }
 }

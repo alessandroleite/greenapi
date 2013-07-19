@@ -42,7 +42,8 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.ui.RectangleInsets;
 
-public abstract class ChartPanelSupport<T extends Resource> extends JPanel {
+public abstract class ChartPanelSupport<T extends Resource> extends JPanel 
+{
 
 	/**
 	 * Serial code version <code>serialVersionUID</code>

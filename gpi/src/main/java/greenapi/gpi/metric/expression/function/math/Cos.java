@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Cos extends FunctionSupport<BigDecimal>
+public class Cos extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,8 +36,8 @@ public class Cos extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return new BigDecimal(Math.cos(arguments[0].doubleValue()));
+        return Decimal.from(Math.cos(arguments[0].doubleValue()));
     }
 }

@@ -22,10 +22,9 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
-
 import greenapi.core.model.resources.Datacenter;
 import greenapi.gpi.metric.Expression;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.ExpressionBuilder;
 
 
@@ -71,9 +70,9 @@ public final class DeployedHardwareUtilization extends DatacenterMetric
     }
 
     @Override
-    protected Expression<BigDecimal> getExpression()
+    protected Expression<Decimal> getExpression()
     {
-        return ExpressionBuilder.<BigDecimal> newMathExpression("numberOfNonIdleServers(s) / numberOfServers(s)").withVariable("s",
+        return ExpressionBuilder.<Decimal> newMathExpression("numberOfNonIdleServers(s) / numberOfServers(s)").withVariable("s",
                 getDatacenter().machines());
     }
 }

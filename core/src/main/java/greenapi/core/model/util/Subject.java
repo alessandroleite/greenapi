@@ -28,10 +28,10 @@ public interface Subject
 {
 
     /**
-     * Add a new {@link Observer} to this observable ({@link Subject}) that will be notified when the state of the observable object change.
+     * Add a new {@link Observer} to this observable ({@link Subject}) that will be notified when the state of the observable object has been changed.
      * 
      * @param obs
-     *            The {@link Observable} to be add. Must be not <code>null</code>.
+     *            The {@link Observable} to be add. Might not be <code>null</code>.
      */
     void attach(Observer obs);
 
@@ -39,14 +39,14 @@ public interface Subject
      * Remove a given {@link Observer} of this {@link Subject}.
      * 
      * @param obs
-     *            The {@link Observer} to be removed of this {@link Subject}.
+     *            The {@link Observer} to be removed.
      */
     void detach(Observer obs);
 
     /**
-     * Returns a read-only {@link Collection} with the {@link Observer}s of a {@link Subject}.
+     * Returns a read-only {@link Collection} with the {@link Observer}s of the {@link Subject}.
      * 
-     * @return A read-only {@link Collection} with the {@link Observer}s of a {@link Subject}.
+     * @return A read-only {@link Collection} with the {@link Observer}s of the {@link Subject}.
      */
     Collection<Observer> getObservers();
 }

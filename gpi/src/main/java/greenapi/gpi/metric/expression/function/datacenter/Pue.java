@@ -22,9 +22,8 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
-import java.math.BigDecimal;
-
 import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.function.math.FunctionSupport;
 
 
@@ -40,7 +39,7 @@ public class Pue extends FunctionSupport<Datacenter>
     }
 
     @Override
-    protected BigDecimal eval(Datacenter[] args)
+    protected Decimal eval(Datacenter[] args)
     {
         return null;
     }

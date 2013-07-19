@@ -22,10 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Round extends FunctionSupport<BigDecimal>
+public class Round extends FunctionSupport<Decimal>
 {
 
     /**
@@ -37,8 +36,8 @@ public class Round extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return arguments[0].round(new MathContext(BigDecimal.ROUND_HALF_EVEN));
+        return arguments[0].round();
     }
 }

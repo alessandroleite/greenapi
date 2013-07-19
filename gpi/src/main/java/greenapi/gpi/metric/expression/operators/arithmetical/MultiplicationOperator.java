@@ -22,8 +22,7 @@
  */
 package greenapi.gpi.metric.expression.operators.arithmetical;
 
-
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
 public class MultiplicationOperator extends AbstractArithmeticalOperator
 {
@@ -33,12 +32,12 @@ public class MultiplicationOperator extends AbstractArithmeticalOperator
      */
     public MultiplicationOperator()
     {
-        super("*", 6, BigDecimal.ONE);
+        super("*", 6, Decimal.ONE);
     }
 
     @Override
-    public BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue)
+    public Decimal evaluate(Decimal leftValue, Decimal rightValue)
     {
-        return leftValue.multiply(rightValue);
+        return leftValue.times(rightValue);
     }
 }

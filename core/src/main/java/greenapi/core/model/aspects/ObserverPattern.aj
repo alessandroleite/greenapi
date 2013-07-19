@@ -40,7 +40,7 @@ public abstract aspect ObserverPattern
     abstract pointcut notifyObservers(Subject observable, Object data);
 
     /**
-     * This after advice notifies all registered observers about the new state of the observable ({@link Subject}) object.
+     * This after advice notifies all registered observers about a new state of the observable ({@link Subject}) object.
      * 
      * @param observable
      *            The new state of the observable ({@link Subject}) object. It is never <code>null</code>.

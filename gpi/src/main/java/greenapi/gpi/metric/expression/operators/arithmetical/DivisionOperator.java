@@ -23,22 +23,21 @@
 package greenapi.gpi.metric.expression.operators.arithmetical;
 
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
 public class DivisionOperator extends AbstractArithmeticalOperator
 {
-
     /**
      * Creates a {@link DivisionOperator}.
      */
     public DivisionOperator()
     {
-        super("/", 6, false, BigDecimal.ONE);
+        super("/", 6, false, Decimal.ONE);
     }
 
     @Override
-    public BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue)
+    public Decimal evaluate(Decimal leftValue, Decimal rightValue)
     {
-        return leftValue.divide(rightValue);
+        return leftValue.div(rightValue);
     }
 }

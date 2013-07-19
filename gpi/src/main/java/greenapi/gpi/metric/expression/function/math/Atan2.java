@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Atan2 extends FunctionSupport<BigDecimal>
+public class Atan2 extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,8 +36,8 @@ public class Atan2 extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return new BigDecimal(Math.atan2(arguments[0].doubleValue(), arguments[1].doubleValue()));
+        return Decimal.from(Math.atan2(arguments[0].doubleValue(), arguments[1].doubleValue()));
     }
 }

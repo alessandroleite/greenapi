@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Square extends FunctionSupport<BigDecimal>
+public class Square extends FunctionSupport<Decimal>
 {
     /**
      * Creates a new {@link Square} instance.
@@ -35,8 +35,8 @@ public class Square extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] args)
+    protected Decimal eval(Decimal[] args)
     {
-        return args[0].pow(2);
+        return args[0].square();
     }
 }

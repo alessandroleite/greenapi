@@ -25,16 +25,18 @@ package greenapi.ui.tasks;
 import greenapi.core.model.resources.Resource;
 import greenapi.ui.charts.ChartPanelSupport;
 
-public class ChartUpdateTask<T extends Resource> implements Runnable {
+public class ChartUpdateTask<T extends Resource> implements Runnable
+{
+    private final ChartPanelSupport<T> panel;
 
-	private final ChartPanelSupport<T> panel;
+    public ChartUpdateTask(ChartPanelSupport<T> panel)
+    {
+        this.panel = panel;
+    }
 
-	public ChartUpdateTask(ChartPanelSupport<T> panel) {
-		this.panel = panel;
-	}
-
-	@Override
-	public void run() {
-		this.panel.update();
-	}	
+    @Override
+    public void run()
+    {
+        this.panel.update();
+    }
 }

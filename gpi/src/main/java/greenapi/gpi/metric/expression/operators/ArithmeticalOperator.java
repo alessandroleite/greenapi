@@ -22,10 +22,10 @@
  */
 package greenapi.gpi.metric.expression.operators;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
 
-public interface ArithmeticalOperator extends Operator<BigDecimal>
+public interface ArithmeticalOperator extends Operator<Decimal>
 {
 
     /**
@@ -33,7 +33,7 @@ public interface ArithmeticalOperator extends Operator<BigDecimal>
      * 
      * @return The neutral to be used if one of the operands is <code>null</code>.
      */
-    BigDecimal getNeutralValue();
+    Decimal getNeutralValue();
 
     /**
      * Returns the value after the evaluation of the operands.
@@ -44,6 +44,6 @@ public interface ArithmeticalOperator extends Operator<BigDecimal>
      *            The value of the right operand.
      * @return The value of the evaluation. Might not be <code>null</code>.
      */
-    BigDecimal evaluate(BigDecimal leftValue, BigDecimal rightValue);
+    Decimal evaluate(Decimal leftValue, Decimal rightValue);
 
 }

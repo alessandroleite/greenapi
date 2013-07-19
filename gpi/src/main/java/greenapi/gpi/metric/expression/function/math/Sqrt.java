@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Sqrt extends FunctionSupport<BigDecimal>
+public class Sqrt extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,8 +36,8 @@ public class Sqrt extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return new BigDecimal(Math.sqrt(arguments[0].doubleValue()));
+        return Decimal.from(Math.sqrt(arguments[0].doubleValue()));
     }
 }

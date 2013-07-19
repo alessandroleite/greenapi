@@ -22,13 +22,13 @@
  */
 package greenapi.gpi.metric.expression.function.datacenter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 import greenapi.core.model.resources.Machines;
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.function.math.FunctionSupport;
 
 public class NumberOfServers extends FunctionSupport<Machines>
@@ -43,9 +43,9 @@ public class NumberOfServers extends FunctionSupport<Machines>
     }
 
     @Override
-    protected BigDecimal eval(Machines[] args)
+    protected Decimal eval(Machines[] args)
     {
-        return BigDecimal.valueOf(args[0].machines().size());
+        return Decimal.from(args[0].machines().size());
     }
     
     @Override

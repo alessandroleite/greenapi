@@ -4,9 +4,6 @@
     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
 <module name="Checker">
-    <!-- Based on Geosoft Java programming style guidelines. URL: http://geosoft.no/development/javastyle.html. -->
-    <!-- Checks that a package.html file exists for each package.
-    <module name="JavadocPackage"/> -->
 
     <!-- Checks whether files end with a new line. -->
     <module name="NewlineAtEndOfFile"/>
@@ -18,13 +15,6 @@
     <module name="FileTabCharacter"/>
 
     <module name="TreeWalker">
-
-        <!-- Javadoc for class/interface must be present/valid. -->
-        <!-- Require author to be present.                      
-        <module name="JavadocType">
-           <property name="authorFormat" value="\S"/>
-	</module>
-	-->
 
         <!-- Javadoc for methods must be present/valid. -->
         <module name="JavadocMethod">

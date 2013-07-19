@@ -31,6 +31,7 @@ import com.google.common.collect.Lists;
 
 import greenapi.gpi.metric.Expression;
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.evaluator.Evaluator;
@@ -38,7 +39,7 @@ import greenapi.gpi.metric.expression.evaluator.impl.Evaluators;
 import greenapi.gpi.metric.expression.function.Function;
 
 
-public abstract class FunctionSupport<E> implements Function<Value<BigDecimal>>
+public abstract class FunctionSupport<E> implements Function<Value<Decimal>>
 {
     /**
      * The number of arguments required by the function.
@@ -83,29 +84,29 @@ public abstract class FunctionSupport<E> implements Function<Value<BigDecimal>>
     }
 
     @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression) throws EvaluationException
+    public <T> Value<Decimal> evaluate(Expression<T> expression) throws EvaluationException
     {
-        return this.evaluate(expression, Evaluators.<Expression<T>, Value<BigDecimal>> get(expression.getClass()));
+        return this.evaluate(expression, Evaluators.<Expression<T>, Value<Decimal>> get(expression.getClass()));
     }
 
     @Override
-    public <T> Value<BigDecimal> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<BigDecimal>> evaluator) throws EvaluationException
+    public <T> Value<Decimal> evaluate(Expression<T> expression, Evaluator<Expression<T>, Value<Decimal>> evaluator) throws EvaluationException
     {
         return Preconditions.checkNotNull(evaluator).eval(Preconditions.checkNotNull(expression));
     }
 
     @Override
-    public <R, T extends Computable<R>> Value<BigDecimal> evaluate(T[] arguments)
+    public <R, T extends Computable<R>> Value<Decimal> evaluate(T[] arguments)
     {
         return this.evaluate(Arrays.asList(arguments));
     }
 
     @Override
-    public <R, T extends Computable<R>> Value<BigDecimal> evaluate(List<T> arguments)
+    public <R, T extends Computable<R>> Value<Decimal> evaluate(List<T> arguments)
     {
         checkArguments(arguments);
-        BigDecimal result = this.eval(transform(arguments));
-        return new Value<BigDecimal>(result);
+        Decimal result = this.eval(transform(arguments));
+        return new Value<Decimal>(result);
     }
 
     /**
@@ -155,7 +156,6 @@ public abstract class FunctionSupport<E> implements Function<Value<BigDecimal>>
     @SuppressWarnings("unchecked")
     protected <R, T extends Computable<R>> E [] transform(List<T> arguments)
     {
-
         List<R> args = Lists.transform(arguments, new com.google.common.base.Function<Computable<R>, R>()
         {
             public R apply(Computable<R> input)
@@ -174,6 +174,6 @@ public abstract class FunctionSupport<E> implements Function<Value<BigDecimal>>
      *            The arguments of the function. It's never <code>null</code> and the length is always {@link #numberOfArguments}.
      * @return The value after evaluation of this function.
      */
-    protected abstract BigDecimal eval(E [] args);
+    protected abstract Decimal eval(E [] args);
 
 }

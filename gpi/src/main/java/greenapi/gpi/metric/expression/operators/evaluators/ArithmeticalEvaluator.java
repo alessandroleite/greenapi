@@ -22,13 +22,11 @@
  */
 package greenapi.gpi.metric.expression.operators.evaluators;
 
-import java.math.BigDecimal;
-
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.Value;
 import greenapi.gpi.metric.expression.operators.ArithmeticalOperator;
 
-
-public final class ArithmeticalEvaluator implements OperatorEvaluator<BigDecimal, ArithmeticalOperator>
+public final class ArithmeticalEvaluator implements OperatorEvaluator<Decimal, ArithmeticalOperator>
 {
     /**
      * Create an instance of the {@link ArithmeticalEvaluator}.
@@ -42,10 +40,10 @@ public final class ArithmeticalEvaluator implements OperatorEvaluator<BigDecimal
      * {@inheritDoc}
      */
     @Override
-    public <T> Value<BigDecimal> eval(T leftValue, T rightValue, ArithmeticalOperator operator)
+    public <T> Value<Decimal> eval(T leftValue, T rightValue, ArithmeticalOperator operator)
     {
-        BigDecimal nullValue = operator.getNeutralValue();
-        return new Value<BigDecimal>(operator.evaluate(asBigDecimal(leftValue, nullValue), asBigDecimal(rightValue, nullValue)));
+        Decimal nullValue = operator.getNeutralValue();
+        return new Value<Decimal>(operator.evaluate(asDecimal(leftValue, nullValue), asDecimal(rightValue, nullValue)));
     }
 
     /**
@@ -60,15 +58,15 @@ public final class ArithmeticalEvaluator implements OperatorEvaluator<BigDecimal
      *            The type of the value.
      * @return The value as a {@link BigDecimal} value.
      */
-    private <T> BigDecimal asBigDecimal(T value, T defaultValue)
+    private <T> Decimal asDecimal(T value, T defaultValue)
     {
-        if (value instanceof BigDecimal)
+        if (value instanceof Decimal)
         {
-            return (BigDecimal) value;
+            return (Decimal) value;
         }
         else
         {
-            return new BigDecimal(value == null ? defaultValue.toString() : value.toString());
+            return Decimal.from(value == null ? defaultValue.toString() : value.toString());
         }
     }
 }

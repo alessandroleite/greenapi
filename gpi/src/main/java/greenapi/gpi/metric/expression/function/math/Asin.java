@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
+import greenapi.gpi.metric.expression.Decimal;
 
-public class Asin extends FunctionSupport<BigDecimal>
+public class Asin extends FunctionSupport<Decimal>
 {
 
     /**
@@ -36,8 +36,8 @@ public class Asin extends FunctionSupport<BigDecimal>
     }
 
     @Override
-    protected BigDecimal eval(BigDecimal[] arguments)
+    protected Decimal eval(Decimal[] arguments)
     {
-        return new BigDecimal(Math.asin(arguments[0].doubleValue()));
+        return Decimal.from(Math.asin(arguments[0].doubleValue()));
     }
 }
