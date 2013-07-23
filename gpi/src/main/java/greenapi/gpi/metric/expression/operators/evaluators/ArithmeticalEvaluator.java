@@ -66,6 +66,11 @@ public final class ArithmeticalEvaluator implements OperatorEvaluator<Decimal, A
         }
         else
         {
+            if (value == null && defaultValue instanceof Decimal)
+            {
+                return (Decimal) defaultValue;
+            } 
+            
             return Decimal.from(value == null ? defaultValue.toString() : value.toString());
         }
     }

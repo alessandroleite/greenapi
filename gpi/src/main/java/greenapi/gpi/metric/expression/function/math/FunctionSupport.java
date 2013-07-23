@@ -22,7 +22,6 @@
  */
 package greenapi.gpi.metric.expression.function.math;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -164,14 +163,14 @@ public abstract class FunctionSupport<E> implements Function<Value<Decimal>>
             }
         });
 
-        return (E[]) args.toArray(new BigDecimal[args.size()]);
+        return (E[]) args.toArray(new Decimal[args.size()]);
     }
 
     /**
-     * This method executes the correspondent computation according with the function.
+     * Executes the function.
      * 
      * @param args
-     *            The arguments of the function. It's never <code>null</code> and the length is always {@link #numberOfArguments}.
+     *            The arguments of the function. It's never <code>null</code> and the its length is always equals to {@link #numberOfArguments}.
      * @return The value after evaluation of this function.
      */
     protected abstract Decimal eval(E [] args);

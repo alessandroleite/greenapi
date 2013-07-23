@@ -1,3 +1,25 @@
+/**
+ * Copyright (c) 2012 GreenI2R
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package greenapi.gpi.metric.expression;
 
 import java.io.Serializable;
@@ -21,7 +43,7 @@ public final class Decimal extends Number implements Comparable<Decimal>, Serial
     /**
      * An approximation to Euler's number, to 15 decimal places.
      */
-    public static final Decimal E = from(Math.E).round(15);
+    public static final Decimal E = from(Math.E).round(15, RoundingMode.HALF_EVEN);
 
     /**
      * A convenient constant.
@@ -624,6 +646,37 @@ public final class Decimal extends Number implements Comparable<Decimal>, Serial
     {
         return this.value.longValue();
     }
+    
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == this)
+        {
+            return true;
+        }
+        
+        if (obj == null)
+        {
+            return false;
+        }
+        
+        return this.getClass().equals(obj.getClass()) && this.eq((Decimal) obj);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return this.value.toString();
+    }
 
     /**
      * Returns a {@link BigInteger} whose value is this {@link Decimal} converted to.
@@ -696,7 +749,7 @@ public final class Decimal extends Number implements Comparable<Decimal>, Serial
      */
     public static Decimal from(String val)
     {
-        return new Decimal(val);
+        return new Decimal(val);  
     }
 
     /**

@@ -22,11 +22,11 @@
  */
 package greenapi.gpi.metric.expression.token;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import greenapi.gpi.metric.expression.Computable;
+import greenapi.gpi.metric.expression.Decimal;
 import greenapi.gpi.metric.expression.EvaluationException;
 import greenapi.gpi.metric.expression.UndefinedFunctionException;
 import greenapi.gpi.metric.expression.UndefinedVariableException;
@@ -97,7 +97,7 @@ public class TreeVisitor<T> implements ExpressionVisitor<T>
     @Override
     public Computable<T> visit(NumberToken<T> number)
     {
-        Value<T> value = new Value<T>((T) new BigDecimal(number.getToken().getText()));
+        Value<T> value = new Value<T>((T) Decimal.from(number.getToken().getText()));
         // Constant<T> constt = new Constant<T>(number.getToken().getClass().getSimpleName(), value);
         // return (Computable<T>) constt;
         return value;
