@@ -25,7 +25,7 @@ package greenapi.gpi.metric;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import greenapi.gpi.metric.expression.EvaluationException;
+import formulaj.expression.EvaluationException;
 
 public interface Metric<V, Q extends Quantity>
 {
@@ -37,7 +37,7 @@ public interface Metric<V, Q extends Quantity>
     Formulae<V, Q> formulae();
 
     /**
-     * Return the value of this {@link Metric} computed using a given {@link Formulae}. Might not be <code>null</code>.
+     * This method computes and returns the value of a {@link Metric} using its {@link Formulae}.
      * 
      * @return The value of this {@link Metric} computed using a given {@link Formulae}. Might not be <code>null</code>.
      * @throw MetricException If the expression could not be evaluated.
@@ -46,10 +46,10 @@ public interface Metric<V, Q extends Quantity>
     Measure<V, Q> value();
 
     /**
-     * This method computes and returns the value of a {@link Metric} using its {@link Formulae}.
+     * Return the value of this {@link Metric} computed using a given {@link Formulae}.
      * 
      * @param formulae
-     *            The {@link Formulae} to compute the {@link Metric}.
+     *            The {@link Formulae} to compute the {@link Metric}. Might not be <code>null</code>.
      * @return The value of this {@link Metric} after evaluate it using the given {@link Formulae}.
      * @throws EvaluationException
      *             If the expression of the {@link Formulae} is invalid.

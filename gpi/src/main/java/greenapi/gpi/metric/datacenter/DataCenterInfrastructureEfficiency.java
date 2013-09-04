@@ -22,9 +22,9 @@
  */
 package greenapi.gpi.metric.datacenter;
 
+import formulaj.Expression;
+import formulaj.expression.Decimal;
 import greenapi.core.model.resources.Datacenter;
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.expression.Decimal;
 
 /**
  * 

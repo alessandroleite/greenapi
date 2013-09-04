@@ -144,7 +144,7 @@
 				<artifactId>junit</artifactId>
 				<version>4.10</version>
 				<scope>test</scope>
-			</dependency>
+			</dependency>			
 		</dependencies>
 	</dependencyManagement>
 
@@ -415,5 +415,6 @@
 		<license-header-file>${project.basedir}/License.txt</license-header-file>
 		<aspectj-maven-plugin.version>1.4</aspectj-maven-plugin.version>
 		<checkstyle.file>${project.basedir}/checkstyle.xml</checkstyle.file>
+		<formulaj.version>1.0.0-SNAPSHOT</formulaj.version>
 	</properties>
 </project>

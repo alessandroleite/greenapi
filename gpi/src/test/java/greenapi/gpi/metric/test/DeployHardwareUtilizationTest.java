@@ -22,14 +22,13 @@
  */
 package greenapi.gpi.metric.test;
 
-import javax.measure.Measure;
-
+import formulaj.expression.Decimal;
+import formulaj.expression.EvaluationException;
 import greenapi.core.model.resources.Datacenter;
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.datacenter.DeployedHardwareUtilization;
-import greenapi.gpi.metric.expression.Decimal;
-import greenapi.gpi.metric.expression.EvaluationException;
 
+import javax.measure.Measure;
 
 import junit.framework.Assert;
 

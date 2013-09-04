@@ -22,14 +22,14 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import java.math.BigDecimal;
-
-import javax.measure.Measure;
-
+import formulaj.expression.EvaluationException;
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.Formulae;
 import greenapi.gpi.metric.Metric;
-import greenapi.gpi.metric.expression.EvaluationException;
+
+import java.math.BigDecimal;
+
+import javax.measure.Measure;
 
 
 

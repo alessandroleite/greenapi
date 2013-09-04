@@ -22,10 +22,10 @@
  */
 package greenapi.gpi.metric.datacenter;
 
+import formulaj.Expression;
+import formulaj.expression.Decimal;
+import formulaj.expression.ExpressionBuilder;
 import greenapi.core.model.resources.Datacenter;
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.expression.Decimal;
-import greenapi.gpi.metric.expression.ExpressionBuilder;
 
 public class ComputePowerEfficiency extends DatacenterMetric
 {

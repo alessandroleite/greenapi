@@ -22,13 +22,13 @@
  */
 package greenapi.gpi.metric.datacenter;
 
-import javax.measure.Measure;
-
+import formulaj.expression.Decimal;
+import formulaj.expression.EvaluationException;
 import greenapi.gpi.measure.Ratio;
 import greenapi.gpi.metric.Formulae;
 import greenapi.gpi.metric.Metric;
-import greenapi.gpi.metric.expression.Decimal;
-import greenapi.gpi.metric.expression.EvaluationException;
+
+import javax.measure.Measure;
 
 public class ITHardwarePowerOverheadMultiplier implements Metric<Decimal, Ratio>
 {

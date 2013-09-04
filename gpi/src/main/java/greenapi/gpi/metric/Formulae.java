@@ -25,7 +25,9 @@ package greenapi.gpi.metric;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import greenapi.gpi.metric.expression.EvaluationException;
+import formulaj.Expression;
+import formulaj.expression.EvaluationException;
+
 
 
 public interface Formulae<V, Q extends Quantity>

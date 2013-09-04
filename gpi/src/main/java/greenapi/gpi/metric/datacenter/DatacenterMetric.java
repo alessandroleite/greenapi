@@ -22,21 +22,21 @@
  */
 package greenapi.gpi.metric.datacenter;
 
+import formulaj.Expression;
+import formulaj.MathExpression;
+import formulaj.expression.Decimal;
+import formulaj.expression.EvaluationException;
+import formulaj.expression.Value;
+import greenapi.core.common.base.Strings;
+import greenapi.core.model.resources.Datacenter;
+import greenapi.gpi.measure.Ratio;
+import greenapi.gpi.metric.Formulae;
+import greenapi.gpi.metric.Metric;
+
 import java.util.Objects;
 
 import javax.measure.DecimalMeasure;
 import javax.measure.Measure;
-
-import greenapi.core.common.base.Strings;
-import greenapi.core.model.resources.Datacenter;
-import greenapi.gpi.measure.Ratio;
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.Formulae;
-import greenapi.gpi.metric.MathExpression;
-import greenapi.gpi.metric.Metric;
-import greenapi.gpi.metric.expression.Decimal;
-import greenapi.gpi.metric.expression.EvaluationException;
-import greenapi.gpi.metric.expression.Value;
 
 
 public abstract class DatacenterMetric implements Metric<Decimal, Ratio>

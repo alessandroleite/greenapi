@@ -118,7 +118,7 @@
 		<mysql-connector.version>5.1.23</mysql-connector.version>
 		<sigar.version>1.6.4</sigar.version>
 		<mirror.version>1.6.1</mirror.version>
-		<lshw.version>0.4-SNAPSHOT</lshw.version>
+		<lshw.version>1.0.0</lshw.version>
 		<commons-io.version>2.4</commons-io.version>
 		<jscience.version>4.3.1</jscience.version>
 		<javassist.version>3.12.1.GA</javassist.version>

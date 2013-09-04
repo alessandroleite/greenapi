@@ -22,10 +22,10 @@
  */
 package greenapi.gpi.metric.datacenter;
 
+import formulaj.Expression;
+import formulaj.expression.Decimal;
+import formulaj.expression.ExpressionBuilder;
 import greenapi.core.model.resources.Datacenter;
-import greenapi.gpi.metric.Expression;
-import greenapi.gpi.metric.expression.Decimal;
-import greenapi.gpi.metric.expression.ExpressionBuilder;
 
 /**
  * The Power Usage Effectiveness (PUE) measures the energy efficiency of a Data Center, calculated as a ratio between the Total Facility Power and IT
