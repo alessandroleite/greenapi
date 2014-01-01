@@ -35,3 +35,5 @@ Dependencies
 
 The project is licensed under the MIT license. 
 See License.txt for details.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/alessandroleite/greenapi/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
